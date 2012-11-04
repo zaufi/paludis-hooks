@@ -4,8 +4,8 @@
 
 <commands
     version="1.0"
-    xmlns:smh="http://bitbucket.org/zaufi/paludis-hooks/#filesystem-management-hook"
-    xmlns="http://bitbucket.org/zaufi/paludis-hooks/#filesystem-management-hook"
+    xmlns:smh="https://github.com/zaufi/paludis-hooks/#filesystem-management-hook"
+    xmlns="https://github.com/zaufi/paludis-hooks/#filesystem-management-hook"
   >
 
     <package id="boost">

@@ -1,12 +1,14 @@
 cmake_minimum_required(VERSION 2.6)
 project(paludis-hooks)
 
-# Setup package pathes
+# Setup package paths
+# TODO Nowadays all paths are hardcoded and I'm not sure that there is a reason to do it flexible...
 set(PH_PALUDISCONFDIR "/etc/paludis")
 set(PH_HOOKSDIR       "/usr/share/paludis/hooks")
 set(PH_HOOKSCONFDIR   "${PH_PALUDISCONFDIR}/hooks/configs")
 set(PH_LOCALSTATEDIR  "/var")
 set(PH_DATAROOTDIR    "/usr/share/paludis-hooks")
+set(PH_DOCSDIR        "/usr/share/doc/paludis-hooks")
 
 # Autopatch hook
 configure_file(auto-patch/auto-patch.bash.in auto-patch/auto-patch.bash @ONLY)
@@ -40,4 +42,8 @@ install(
 install(
     FILES ${CMAKE_SOURCE_DIR}/filesystem-manager/filesystem-manager.dtd
     DESTINATION ${PH_DATAROOTDIR}/filesystem-manager
+  )
+install(
+    FILES ${CMAKE_SOURCE_DIR}/README.md
+    DESTINATION ${PH_DOCSDIR}
   )
