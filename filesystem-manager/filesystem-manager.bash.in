@@ -1,0 +1,34 @@
+#!/bin/bash
+#
+# Paludis hook script to so some manipulations right after a package
+# installed self into an image directory and before actual installing
+# into a system will take place.
+#
+# Copyright (c), 2010-2012 by Alex Turbov <i.zaufi@gmail.com>
+#
+
+source ${PALUDIS_EBUILD_DIR}/echo_functions.bash
+
+CONFIG_FILE="@PH_HOOKSCONFDIR@/filesystem-manager.conf"
+
+case "${HOOK}" in
+    # ATTENTION This script must be symlinked to the following hook dirs:
+    ebuild_install_post)
+        tmp_file=`mktemp --suffix .sh`
+        if [ -n "${PALUDIS_HOOK_DEBUG}" ]; then
+            env | sort > /tmp/env.log
+            einfo "xsltproc --stringparam 'PN' \"$PN\" \"@PH_DATAROOTDIR@/filesystem-manager/filesystem-manager.xsl\" \"${CONFIG_FILE}\""
+        fi
+        xsltproc --stringparam 'PN' "$PN" "@PH_DATAROOTDIR@/filesystem-manager/filesystem-manager.xsl" "${CONFIG_FILE}" >> $tmp_file
+        if [ -n "${PALUDIS_HOOK_DEBUG}" ]; then
+            einfo "Script to execute:"
+            cat $tmp_file
+        fi
+        if [ -s "$tmp_file" ]; then
+            result=`/bin/sh $tmp_file`
+        fi
+        rm tmp_file
+        ;;
+esac
+
+# kate: hl bash;

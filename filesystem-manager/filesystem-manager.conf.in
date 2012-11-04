@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE config-storage SYSTEM "@FILESYSTEM_MANAGER_DTD@">
+<?xml-stylesheet type="text/xsl" href="@FILESYSTEM_MANAGER_XSL@"?>
+
+<commands
+    version="1.0"
+    xmlns:smh="http://bitbucket.org/zaufi/paludis-hooks/#filesystem-management-hook"
+    xmlns="http://bitbucket.org/zaufi/paludis-hooks/#filesystem-management-hook"
+  >
+
+    <package id="boost">
+        <symlink cd="/usr/share/doc" src="${PF}/html" dst="${PN}" />
+    </package>
+
+    <package id="cmake">
+        <symlink cd="/usr/share/doc" src="${PF}" dst="${PN}" />
+    </package>
+
+    <package id="doxygen">
+        <symlink cd="/usr/share/doc" src="${PF}" dst="${PN}" />
+    </package>
+
+    <package id="xerces-c">
+        <symlink cd="/usr/share/doc" src="${PF}" dst="${PN}" />
+    </package>
+
+    <package id="xapian">
+        <symlink cd="/usr/share/doc" src="${PF}" dst="${PN}" />
+    </package>
+
+    <package id="swig">
+        <symlink cd="/usr/share/doc" src="${PF}" dst="${PN}" />
+    </package>
+
+    <package id="libvmime">
+        <symlink cd="/usr/share/doc" src="${PF}" dst="${PN}" />
+    </package>
+
+    <package id="kdelibs">
+        <symlink cd="/usr/share/doc" src="${PF}/HTML/en/kdelibs-apidox" dst="${PN}" />
+    </package>
+
+    <package id="qt-assistant">
+        <symlink cd="/usr/share/doc" src="qt-${PV}/html" dst="qt" />
+    </package>
+
+    <package id="python-docs">
+        <symlink cd="/usr/share/doc" src="${PF}/html" dst="python-${SLOT}" />
+    </package>
+
+</commands>

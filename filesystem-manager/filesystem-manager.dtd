@@ -1,0 +1,22 @@
+<!ELEMENT commands (package*)>
+<!ATTLIST commands
+    version NMTOKEN "1.0"
+    xmlns CDATA #FIXED "http://bitbucket.org/zaufi/paludis-hooks/#filesystem-management-hook"
+    xmlns:smh CDATA #FIXED "http://bitbucket.org/zaufi/paludis-hooks/#filesystem-management-hook"
+  >
+
+<!ELEMENT package (symlink|rm)+>
+<!ATTLIST package
+    id ID #REQUIRED
+  >
+
+<!ELEMENT symlink (EMPTY)>
+<!ATTLIST symlink
+    src CDATA #REQUIRED
+    dst CDATA #REQUIRED
+  >
+
+<!ELEMENT rm (EMPTY)>
+<!ATTLIST rm
+    dst CDATA #REQUIRED
+  >
