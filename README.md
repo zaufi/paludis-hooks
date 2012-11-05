@@ -7,22 +7,22 @@ Here is a set of my hooks (plugins) for plaudis I wrote and use few years alread
 Autopatch
 ---------
 
-This plugin used to apply a patch to some package w/o neccessety to (re)write an ebuild for it.
-Partucularly it helps me to test some patches before report a bug to gentoo's bugzilla and/or write
+This plugin used to apply a patch to some package w/o necessity to (re)write an ebuild for it.
+Particularly it helps me to test some patches before report a bug to gentoo's bugzilla and/or write
 a separate ebuild (to my overlay).
 
 To apply a patch one have to put it into a directory under `${PATCH_DIR}/stage/category/pkg-ver/`,
 where the `stage` is one of the following: `ebuild_compile_post`, `ebuild_compile_pre`,
 `ebuild_configure_post`, `ebuild_configure_pre`, `ebuild_install_pre` or `ebuild_unpack_post`.
 
-*BTW*, stupid portage, to "implement" the same feature, forces ebuild developers to add a `epatch_user`
+BTW, stupid portage, to "implement" the same feature, forces ebuild developers to add a `epatch_user`
 call (defined in the `eutils.eclass`) to the `src_unpack` function! What a fracking smart solution! :(
 
 
 Filesystem Manager
 ------------------
 
-This plugin can be used to make some manupulations in a package's image (right after `make install`)
+This plugin can be used to make some manipulations in a package's image (right after `make install`)
 and before it will be actually installed into the system. Particularly it used to make a _permanent_
 symlinks to a documentation for some packages I use in my work, so even the package will be updated,
 bookmarks and history in my browser (I use it to view particular HTML docs) will be Ok.
@@ -31,7 +31,7 @@ Every action required to take place described in terms of XML items of configura
 `/etc/paludis/hooks/configs/filesystem-manager.conf`.
 
 Here is a few items possible nowadays, but I have plans to extend this list in future
-(when it become neccessary):
+(when it become necessary):
 
 * `symlink` -- used to create a symlink and has attributes:
     * `cd` -- change to this directory before making a symlink
@@ -47,7 +47,7 @@ TODO
 * Add more commands! Like `*zip` smth...
 * Add ability to glob a package IDs. Like `*/*` or `dev-libs/*`. Possible w/ smth
   like `except` items to specify rule exceptions
-* Add ability to find target objects (files, dirs, whatever) by introdusing smth
+* Add ability to find target objects (files, dirs, whatever) by introducing smth
   like `find` item and iterate over results applying some other actions (ls, rm, & etc...)
 * Implement commands as plugins... need to think about how to update DTD then.
 
