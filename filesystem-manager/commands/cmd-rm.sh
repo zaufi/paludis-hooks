@@ -13,7 +13,7 @@ function _remove_empty_dirs_reqursively()
         # NO! Remove an empty dir to avoid warnings!
         rm -rf ${D}/${cd}
         local parent=`dirname "${cd}"`
-        if [ "$parent" != "/"]; then
+        if [ "$parent" != "/" ]; then
             _remove_empty_dirs_reqursively "$parent"
         fi
     fi

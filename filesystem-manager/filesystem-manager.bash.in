@@ -17,7 +17,7 @@ TEMPLATE_FILE="@PH_DATAROOTDIR@/filesystem-manager/filesystem-manager.xsl"
 if [ ! -f ${CONFIG_FILE} ]; then
     exit 0                                                  # Nothing to do w/o config
 fi
-if [ ! xmllint --valid --noout ${CONFIG_FILE} ]; then
+if [ ! `xmllint --valid --noout ${CONFIG_FILE}` ]; then
     eerror "Filesystem Manager hook: Config file is invalid. Ignoring any actions..."
     exit 1                                                  # Nothing to do w/ incorrect config
 fi

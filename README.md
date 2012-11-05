@@ -56,7 +56,9 @@ Changelog
 
 Version 0.6
 -----------
-* add remove command, so one may remove some files/directories from an image
+* add remove command, so one may remove some files/directories from an image. If there is
+  no more files after removal, empty directory will be removed as well to avoid warnings
+  from `cave`
 * validate configuration file against DTD
 
 Version 0.5
