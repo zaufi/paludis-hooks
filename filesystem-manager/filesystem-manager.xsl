@@ -23,9 +23,9 @@ source ${PALUDIS_EBUILD_DIR}/echo_functions.bash
   -->
 <xsl:template match="fsmh:symlink[@cd][@src][@dst]">
 ebegin &quot;Making the symlink <xsl:value-of select="@src" /> --&gt; <xsl:value-of select="@dst" />&quot;
-cd ${D} <xsl:value-of select="@cd" />
-# ln -s <xsl:value-of select="@src" /><xsl:text> </xsl:text><xsl:value-of select="@dst" />
-cd -
+cd ${D}/<xsl:value-of select="@cd" /> \
+    &amp;&amp; ln -s <xsl:value-of select="@src" /><xsl:text> </xsl:text><xsl:value-of select="@dst" /> \
+    &amp;&amp; cd -
 eend $?
 </xsl:template>
 
@@ -34,7 +34,7 @@ eend $?
   -->
 <xsl:template match="fsmh:rm[@dst]">
 ebegin &quot;Removing the <xsl:value-of select="@dst" />&quot;
-# rm -rf <xsl:value-of select="@dst" />
+rm -rf &quot;${D}&quot;/<xsl:value-of select="@dst" />
 eend 0
 </xsl:template>
 
