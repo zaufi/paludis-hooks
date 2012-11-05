@@ -14,6 +14,10 @@ source ${PALUDIS_EBUILD_DIR}/echo_functions.bash
 CONFIG_FILE="@PH_HOOKSCONFDIR@/filesystem-manager.conf"
 TEMPLATE_FILE="@PH_DATAROOTDIR@/filesystem-manager/filesystem-manager.xsl"
 
+if [ -n "${PALUDIS_HOOK_DEBUG}" ]; then
+    env | sort > /tmp/env.log
+fi
+
 if [ ! -f ${CONFIG_FILE} ]; then
     exit 0                                                  # Nothing to do w/o config
 fi
@@ -30,7 +34,14 @@ case "${HOOK}" in
     # ATTENTION This script must be symlinked to the following hook dirs:
     ebuild_install_post)
         tmp_file=`mktemp "${T}/fsmh.XXXXXXX.sh"`
-        /usr/bin/xsltproc -o $tmp_file --stringparam 'PN' "$PN" "${TEMPLATE_FILE}" "${CONFIG_FILE}"
+        /usr/bin/xsltproc -o $tmp_file \
+            --stringparam 'PN' "${PN}" \
+            --stringparam 'PF' "${PF}" \
+            --stringparam 'PR' "${PR}" \
+            --stringparam 'PV' "${PV}" \
+            --stringparam 'PVR' "${PVR}" \
+            --stringparam 'CATEGORY' "${CATEGORY}" \
+            "${TEMPLATE_FILE}" "${CONFIG_FILE}"
 
         if [ -n "${PALUDIS_HOOK_DEBUG}" ]; then
             einfo "Script to execute:"
