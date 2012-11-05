@@ -2,6 +2,10 @@
 <xsl:stylesheet version = "1.0"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:fsmh="https://github.com/zaufi/paludis-hooks/#filesystem-management-hook">
+<!--
+    Transform a config file into a shell script
+    Copyright (c), 2010-2012 by Alex Turbov <i.zaufi@gmail.com>
+  -->
 
 <xsl:output method="text" encoding="UTF-8"/>
 
@@ -19,7 +23,7 @@ source ${PALUDIS_EBUILD_DIR}/echo_functions.bash
 </xsl:template>
 
 <!--
-    Matching symlink nodes w/ all parameters given
+    Matching `symlink` nodes w/ all required parameters given
   -->
 <xsl:template match="fsmh:symlink[@cd][@src][@dst]">
 ebegin &quot;Making the symlink <xsl:value-of select="@src" /> --&gt; <xsl:value-of select="@dst" />&quot;
@@ -30,7 +34,7 @@ eend $?
 </xsl:template>
 
 <!--
-    Matching rm nodes w/ all parameters given
+    Matching `rm` nodes w/ all required parameters given
   -->
 <xsl:template match="fsmh:rm[@dst]">
 ebegin &quot;Removing the <xsl:value-of select="@dst" />&quot;

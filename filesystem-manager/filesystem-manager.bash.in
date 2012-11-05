@@ -6,31 +6,40 @@
 #
 # Copyright (c), 2010-2012 by Alex Turbov <i.zaufi@gmail.com>
 #
+# Version: @PH_VERSION@
+#
 
 source ${PALUDIS_EBUILD_DIR}/echo_functions.bash
 
 CONFIG_FILE="@PH_HOOKSCONFDIR@/filesystem-manager.conf"
+TEMPLATE_FILE="@PH_DATAROOTDIR@/filesystem-manager/filesystem-manager.xsl"
 
+if [ ! -f ${CONFIG_FILE} ]; then
+    exit 0                                                  # Nothing to do w/o config
+fi
+
+result=0
 case "${HOOK}" in
     # ATTENTION This script must be symlinked to the following hook dirs:
     ebuild_install_post)
-        tmp_file=`mktemp --suffix .sh`
         if [ -n "${PALUDIS_HOOK_DEBUG}" ]; then
             env | sort > /tmp/env.log
-            einfo "xsltproc --stringparam 'PN' \"$PN\" \"@PH_DATAROOTDIR@/filesystem-manager/filesystem-manager.xsl\" \"${CONFIG_FILE}\""
+            einfo "xsltproc --stringparam 'PN' \"$PN\" \"${TEMPLATE}\" \"${CONFIG_FILE}\""
         fi
-        xsltproc -o $tmp_file --stringparam 'PN' "$PN" "@PH_DATAROOTDIR@/filesystem-manager/filesystem-manager.xsl" "${CONFIG_FILE}"
+
+        tmp_file=`mktemp "${T}/fsmh.XXXXXXX.sh"`
+        xsltproc -o $tmp_file --stringparam 'PN' "$PN" "${TEMPLATE_FILE}" "${CONFIG_FILE}"
+
         if [ -n "${PALUDIS_HOOK_DEBUG}" ]; then
             einfo "Script to execute:"
             cat $tmp_file
         fi
-        if [ -r "$tmp_file" ]; then
-            /bin/sh $tmp_file
-        fi
-        rm $tmp_file
+
+        /bin/sh $tmp_file
+        result=$?
         ;;
 esac
 
-exit 0
+exit $result
 
 # kate: hl bash;

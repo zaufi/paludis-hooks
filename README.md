@@ -3,6 +3,7 @@ What is this?
 
 Here is a set of my hooks (plugins) for plaudis I wrote and use few years already.
 
+
 Autopatch
 ---------
 
@@ -13,6 +14,9 @@ a separate ebuild (to my overlay).
 To apply a patch one have to put it into a directory under `${PATCH_DIR}/stage/category/pkg-ver/`,
 where the `stage` is one of the following: `ebuild_compile_post`, `ebuild_compile_pre`,
 `ebuild_configure_post`, `ebuild_configure_pre`, `ebuild_install_pre` or `ebuild_unpack_post`.
+
+*BTW*, stupid portage, to "implement" the same feature, forces ebuild developers to add a `epatch_user`
+call (defined in the `eutils.eclass`) to the `src_unpack` function! What a fracking smart solution! :(
 
 
 Filesystem Manager
@@ -37,9 +41,26 @@ Here is a few items possible nowadays, but I have plans to extend this list in f
     * `dst` -- what to remove
 
 
+TODO
+====
+
+* Add more commands! Like `*zip` smth...
+* Add ability to glob a package IDs. Like `*/*` or `dev-libs/*`. Possible w/ smth
+  like `except` items to specify rule exceptions
+* Add ability to find target objects (files, dirs, whatever) by introdusing smth
+  like `find` item and iterate over results applying some other actions (ls, rm, & etc...)
+* Implement commands as plugins... need to think about how to update DTD then.
+
 Changelog
 =========
 
+Version 0.6
+-----------
+* add remove command, so one may remove some files/directories from an image
+
+
+Version 0.5
+-----------
 * initial commit to github
 
 

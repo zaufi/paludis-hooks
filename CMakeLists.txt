@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 2.6)
 project(paludis-hooks)
 
+set(PH_VERSION "0.6")
+
 # Setup package paths
 # TODO Nowadays all paths are hardcoded and I'm not sure that there is a reason to do it flexible...
 set(PH_PALUDISCONFDIR "/etc/paludis")
