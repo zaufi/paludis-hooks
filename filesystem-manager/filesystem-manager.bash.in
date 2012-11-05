@@ -24,10 +24,10 @@ case "${HOOK}" in
             einfo "Script to execute:"
             cat $tmp_file
         fi
-        if [ -s "$tmp_file" ]; then
+        if [ -r "$tmp_file" ]; then
             result=`/bin/sh $tmp_file`
         fi
-        rm tmp_file
+        rm $tmp_file
         ;;
 esac
 
