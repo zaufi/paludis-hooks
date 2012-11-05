@@ -19,6 +19,9 @@
 # on installing <xsl:value-of select="$PN" /> package
 #
 source ${PALUDIS_EBUILD_DIR}/echo_functions.bash
+for cmd in /usr/share/paludis-hooks/filesystem-manager/commands/*.sh; do
+    source $i
+done
 <xsl:apply-templates select="fsmh:package[@id = $PN]/*" />
 </xsl:template>
 
@@ -26,20 +29,17 @@ source ${PALUDIS_EBUILD_DIR}/echo_functions.bash
     Matching `symlink` nodes w/ all required parameters given
   -->
 <xsl:template match="fsmh:symlink[@cd][@src][@dst]">
-ebegin &quot;Making the symlink <xsl:value-of select="@src" /> --&gt; <xsl:value-of select="@dst" />&quot;
-cd ${D}/<xsl:value-of select="@cd" /> \
-    &amp;&amp; ln -s <xsl:value-of select="@src" /><xsl:text> </xsl:text><xsl:value-of select="@dst" /> \
-    &amp;&amp; cd -
-eend $?
+cmd_symlink \
+    <xsl:value-of select="@cd" /> \
+    <xsl:value-of select="@src" /> \
+    <xsl:value-of select="@dst" />
 </xsl:template>
 
 <!--
     Matching `rm` nodes w/ all required parameters given
   -->
 <xsl:template match="fsmh:rm[@dst]">
-ebegin &quot;Removing the <xsl:value-of select="@dst" />&quot;
-rm -rf &quot;${D}&quot;/<xsl:value-of select="@dst" />
-eend 0
+cmd_rm <xsl:value-of select="@dst" />
 </xsl:template>
 
 </xsl:stylesheet>
