@@ -3,6 +3,10 @@
 # Plugin to implement a `symlink` command of the config file
 #
 
+# @param cd  -- directory to change to before making a symlink
+# @param src -- source name
+# @param dst -- destination name
+#
 function cmd_symlink()
 {
     local cd="$1"

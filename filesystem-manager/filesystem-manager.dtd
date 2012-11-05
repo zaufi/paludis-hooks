@@ -10,13 +10,15 @@
     id ID #REQUIRED
   >
 
-<!ELEMENT symlink (EMPTY)>
+<!ELEMENT symlink EMPTY>
 <!ATTLIST symlink
+    cd CDATA #REQUIRED
     src CDATA #REQUIRED
     dst CDATA #REQUIRED
   >
 
-<!ELEMENT rm (EMPTY)>
+<!ELEMENT rm EMPTY>
 <!ATTLIST rm
+    cd CDATA #REQUIRED
     dst CDATA #REQUIRED
   >

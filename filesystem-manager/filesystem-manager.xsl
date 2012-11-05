@@ -20,7 +20,7 @@
 #
 source ${PALUDIS_EBUILD_DIR}/echo_functions.bash
 for cmd in /usr/share/paludis-hooks/filesystem-manager/commands/*.sh; do
-    source $i
+    source $cmd
 done
 <xsl:apply-templates select="fsmh:package[@id = $PN]/*" />
 </xsl:template>
@@ -30,16 +30,16 @@ done
   -->
 <xsl:template match="fsmh:symlink[@cd][@src][@dst]">
 cmd_symlink \
-    '<xsl:value-of select="@cd" />' \
-    '<xsl:value-of select="@src" />' \
-    '<xsl:value-of select="@dst" />'
+    "<xsl:value-of select="@cd" />" \
+    "<xsl:value-of select="@src" />" \
+    "<xsl:value-of select="@dst" />"
 </xsl:template>
 
 <!--
     Matching `rm` nodes w/ all required parameters given
   -->
-<xsl:template match="fsmh:rm[@dst]">
-cmd_rm '<xsl:value-of select="@dst" />'
+<xsl:template match="fsmh:rm[@cd][@dst]">
+cmd_rm "<xsl:value-of select="@cd" />" "<xsl:value-of select="@dst" />"
 </xsl:template>
 
 </xsl:stylesheet>

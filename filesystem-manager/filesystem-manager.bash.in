@@ -17,13 +17,17 @@ TEMPLATE_FILE="@PH_DATAROOTDIR@/filesystem-manager/filesystem-manager.xsl"
 if [ ! -f ${CONFIG_FILE} ]; then
     exit 0                                                  # Nothing to do w/o config
 fi
+if [ -n "`xmllint --valid --noout ${CONFIG_FILE}`" ]; then
+    eerror "Filesystem Manager hook: Config file is invalid"
+    exit 1                                                  # Nothing to do w/ incorrect config
+fi
 
 result=0
 case "${HOOK}" in
     # ATTENTION This script must be symlinked to the following hook dirs:
     ebuild_install_post)
         if [ -n "${PALUDIS_HOOK_DEBUG}" ]; then
-            env | sort > /tmp/env.log
+            env | sort > /tmp/fsmh.env.log
             einfo "xsltproc --stringparam 'PN' \"$PN\" \"${TEMPLATE}\" \"${CONFIG_FILE}\""
         fi
 

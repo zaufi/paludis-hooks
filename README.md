@@ -57,7 +57,7 @@ Changelog
 Version 0.6
 -----------
 * add remove command, so one may remove some files/directories from an image
-
+* validate configuration file against DTD
 
 Version 0.5
 -----------
