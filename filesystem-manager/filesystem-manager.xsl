@@ -30,16 +30,16 @@ done
   -->
 <xsl:template match="fsmh:symlink[@cd][@src][@dst]">
 cmd_symlink \
-    <xsl:value-of select="@cd" /> \
-    <xsl:value-of select="@src" /> \
-    <xsl:value-of select="@dst" />
+    '<xsl:value-of select="@cd" />' \
+    '<xsl:value-of select="@src" />' \
+    '<xsl:value-of select="@dst" />'
 </xsl:template>
 
 <!--
     Matching `rm` nodes w/ all required parameters given
   -->
 <xsl:template match="fsmh:rm[@dst]">
-cmd_rm <xsl:value-of select="@dst" />
+cmd_rm '<xsl:value-of select="@dst" />'
 </xsl:template>
 
 </xsl:stylesheet>
