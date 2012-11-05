@@ -19,16 +19,18 @@ case "${HOOK}" in
             env | sort > /tmp/env.log
             einfo "xsltproc --stringparam 'PN' \"$PN\" \"@PH_DATAROOTDIR@/filesystem-manager/filesystem-manager.xsl\" \"${CONFIG_FILE}\""
         fi
-        xsltproc --stringparam 'PN' "$PN" "@PH_DATAROOTDIR@/filesystem-manager/filesystem-manager.xsl" "${CONFIG_FILE}" >> $tmp_file
+        xsltproc -o $tmp_file --stringparam 'PN' "$PN" "@PH_DATAROOTDIR@/filesystem-manager/filesystem-manager.xsl" "${CONFIG_FILE}"
         if [ -n "${PALUDIS_HOOK_DEBUG}" ]; then
             einfo "Script to execute:"
             cat $tmp_file
         fi
         if [ -r "$tmp_file" ]; then
-            result=`/bin/sh $tmp_file`
+            /bin/sh $tmp_file
         fi
         rm $tmp_file
         ;;
 esac
+
+exit 0
 
 # kate: hl bash;

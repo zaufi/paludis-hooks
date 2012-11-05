@@ -15,7 +15,7 @@
 # on installing <xsl:value-of select="$PN" /> package
 #
 source ${PALUDIS_EBUILD_DIR}/echo_functions.bash
-<xsl:apply-templates select="fsmh:package[@id = $PN]/fsmh:symlink[@cd][@src][@dst]" />
+<xsl:apply-templates select="fsmh:package[@id = $PN]/*" />
 </xsl:template>
 
 <!--
