@@ -41,6 +41,8 @@ case "${HOOK}" in
             --stringparam 'PV' "${PV}" \
             --stringparam 'PVR' "${PVR}" \
             --stringparam 'CATEGORY' "${CATEGORY}" \
+            --stringparam 'REPOSITORY' "${REPOSITORY}" \
+            --stringparam 'SLOT' "${SLOT}" \
             "${TEMPLATE_FILE}" "${CONFIG_FILE}"
 
         if [ -n "${PALUDIS_HOOK_DEBUG}" ]; then
