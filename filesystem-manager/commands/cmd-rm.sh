@@ -17,11 +17,12 @@ function cmd_rm()
     cd "${D}/${cd}" \
       && rm -rf ${dst} 2>/dev/null \
       && cd -
-    eend 0
+    result=$?
     # Check if there something else in a `cd` dir?
     local hasSmth=`find "${D}/${cd}" ! -type d`
     if [ -z "${hasSmth}" ]; then
         # NO! Remove an empty dir to avoid warnings!
         rm -rf ${D}/${cd}
     fi
+    eend $result
 }
