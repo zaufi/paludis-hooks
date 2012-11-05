@@ -47,7 +47,7 @@ install(
   )
 install(
     DIRECTORY ${CMAKE_SOURCE_DIR}/filesystem-manager/commands
-    DESTINATION ${PH_DATAROOTDIR}/filesystem-manager/commands
+    DESTINATION ${PH_DATAROOTDIR}/filesystem-manager
   )
 install(
     FILES ${CMAKE_SOURCE_DIR}/README.md
