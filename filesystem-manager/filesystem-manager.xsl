@@ -22,7 +22,12 @@ source ${PALUDIS_EBUILD_DIR}/echo_functions.bash
 for cmd in /usr/share/paludis-hooks/filesystem-manager/commands/*.sh; do
     source $cmd
 done
+isSomeActionsWereTakePlace=no
 <xsl:apply-templates select="fsmh:package[@id = $PN]/*" />
+if [ "$isSomeActionsWereTakePlace" != "no" ]; then
+    ewarn "WARNING: <xsl:value-of select="$PN" /> was installed w/ modified image!"
+    ewarn "WARNING: In case of troubles make sure that you installed an unmodified package, before report a bug"
+fi
 </xsl:template>
 
 <!--
@@ -33,6 +38,7 @@ cmd_symlink \
     "<xsl:value-of select="@cd" />" \
     "<xsl:value-of select="@src" />" \
     "<xsl:value-of select="@dst" />"
+isSomeActionsWereTakePlace="yes"
 </xsl:template>
 
 <!--
@@ -40,6 +46,7 @@ cmd_symlink \
   -->
 <xsl:template match="fsmh:rm[@cd][@dst]">
 cmd_rm "<xsl:value-of select="@cd" />" "<xsl:value-of select="@dst" />"
+isSomeActionsWereTakePlace="yes"
 </xsl:template>
 
 </xsl:stylesheet>
