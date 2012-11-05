@@ -1,7 +1,22 @@
+# "Build" script for my paludis-hooks package
+# Copyright 2012 by Alex Turbov <i.zaufi@gmail.com>
+#
+
 cmake_minimum_required(VERSION 2.6)
-project(paludis-hooks)
+project(paludis-hooks NONE)
 
 set(PH_VERSION "0.6")
+
+# seek for xmllint to validate our XML files
+find_program(XMLLINT_EXECUTABLE xmllint)
+# check if xsltproc is even installed
+find_program(XSLTPROC_EXECUTABLE xsltproc)
+if(NOT XSLTPROC_EXECUTABLE)
+  message(FATAL_ERROR "xsltproc executable required for this package")
+endif()
+if(NOT XMLLINT_EXECUTABLE)
+  message(FATAL_ERROR "xmllint executable required for this package")
+endif()
 
 # Setup package paths
 # TODO Nowadays all paths are hardcoded and I'm not sure that there is a reason to do it flexible...
@@ -53,3 +68,5 @@ install(
     FILES ${CMAKE_SOURCE_DIR}/README.md
     DESTINATION ${PH_DOCSDIR}
   )
+
+# kate: hl cmake;

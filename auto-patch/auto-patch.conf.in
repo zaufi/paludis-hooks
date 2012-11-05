@@ -5,7 +5,7 @@
 # REMINDER: autopatch hook applies patches AFTER ebuild has done all
 # unpacking and patching.
 
-# home directory for the patches
-# put the patches in ${PATCH_DIR}/cat/pkg-ver/ subdirectory
-
+# Home directory for the patches.
+# Put the patches in ${PATCH_DIR}/cat/pkg-ver/ subdirectory
+# NOTE Uncomment the following line to override default location
 # PATCH_DIR="@PH_LOCALSTATEDIR@/paludis/autopatches"
