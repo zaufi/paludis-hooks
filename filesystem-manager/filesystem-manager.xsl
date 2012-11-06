@@ -246,6 +246,7 @@ fi
         <xsl:with-param name="message">&gt;&gt;&gt; Package matched: <xsl:value-of select="@spec" /> (priority=<xsl:value-of select="$priority" />, stop=<xsl:value-of select="@stop" />)</xsl:with-param>
     </xsl:call-template>
     <!-- Render script for given package -->
+    einfo "FsM Hook: Apply actions for <xsl:value-of select="@spec" />"
     <xsl:apply-templates select="*" />
 
     <!-- Continue if no `stop' attribute -->

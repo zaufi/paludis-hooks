@@ -30,6 +30,7 @@
             <item dst="AUTHORS*" />
             <item dst="BUGS*" />
             <item dst="COPYING*" />
+            <item dst="CHANGELOG*" />
             <item dst="ChangeLog*" />
             <item dst="Changelog*" />
             <item dst="Credits" />

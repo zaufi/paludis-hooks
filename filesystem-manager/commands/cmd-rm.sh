@@ -11,7 +11,7 @@ function _remove_empty_dirs_reqursively()
     local hasSmth=`find "${D}/${cd}" ! -type d`
     if [ -z "${hasSmth}" ]; then
         # NO! Remove an empty dir to avoid warnings!
-        rm -rf ${D}/${cd}
+        rm -d ${D}/${cd}
         local parent=`dirname "${cd}"`
         if [ "$parent" != "/" ]; then
             _remove_empty_dirs_reqursively "$parent"
@@ -22,18 +22,15 @@ function _remove_empty_dirs_reqursively()
 #
 # Function to remove smth in a given directory
 #
-# @param cd  -- directory to change to before remove
+# @param cd  -- directory to change to, before remove
 # @param dst -- what to remove (possible w/ wildcards)
 #
 function cmd_rm()
 {
     local cd="$1"
     local dst="$2"
-    ebegin "Removing the ${cd}/${dst}"
     cd "${D}/${cd}" \
-      && rm -rf ${dst} 2>/dev/null \
-      && cd -
-    result=$?
+      && rm -vrf ${dst} 2>/dev/null \
+      && cd - >/dev/null
     _remove_empty_dirs_reqursively "${cd}"
-    eend $result
 }
