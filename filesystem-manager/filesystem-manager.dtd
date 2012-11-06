@@ -7,7 +7,8 @@
 
 <!ELEMENT package (symlink|rm)+>
 <!ATTLIST package
-    id ID #REQUIRED
+    spec CDATA #REQUIRED
+    stop (true|false) "false"
   >
 
 <!ELEMENT symlink EMPTY>
@@ -17,8 +18,13 @@
     dst CDATA #REQUIRED
   >
 
-<!ELEMENT rm EMPTY>
+<!ELEMENT rm (item*)>
 <!ATTLIST rm
     cd CDATA #REQUIRED
+    dst CDATA #IMPLIED
+  >
+
+<!ELEMENT item EMPTY>
+<!ATTLIST item
     dst CDATA #REQUIRED
   >

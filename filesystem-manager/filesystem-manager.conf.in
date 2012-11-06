@@ -25,5 +25,27 @@
         <symlink cd="/usr/share/doc" src="${PF}/html" dst="python-${SLOT}" />
     </package>
 
+    <package spec="*/*">
+        <rm cd="/usr/share/doc/${PF}">
+            <item dst="AUTHORS*" />
+            <item dst="BUGS*" />
+            <item dst="COPYING*" />
+            <item dst="ChangeLog*" />
+            <item dst="Changelog*" />
+            <item dst="Credits" />
+            <item dst="FAQ*" />
+            <item dst="HACKING*" />
+            <item dst="INSTALL*" />
+            <item dst="LICENSE*" />
+            <item dst="NEWS*" />
+            <item dst="README*" />
+            <item dst="RELEASE*" />
+            <item dst="THANKS*" />
+            <item dst="TODO*" />
+            <item dst="VERSION*" />
+            <item dst="changelog*" />
+        </rm>
+    </package>
+
    -->
 </commands>

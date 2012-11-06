@@ -14,7 +14,7 @@ source ${PALUDIS_EBUILD_DIR}/echo_functions.bash
 CONFIG_FILE="@PH_HOOKSCONFDIR@/filesystem-manager.conf"
 TEMPLATE_FILE="@PH_DATAROOTDIR@/filesystem-manager/filesystem-manager.xsl"
 
-if [ -n "${PALUDIS_HOOK_DEBUG}" ]; then
+if [ x"${PALUDIS_HOOK_DEBUG}" = 'xyes' ]; then
     env | sort > /tmp/env.log
 fi
 
@@ -43,9 +43,10 @@ case "${HOOK}" in
             --stringparam 'CATEGORY' "${CATEGORY}" \
             --stringparam 'REPOSITORY' "${REPOSITORY}" \
             --stringparam 'SLOT' "${SLOT}" \
+            --stringparam 'debug' "${PALUDIS_HOOK_DEBUG}" \
             "${TEMPLATE_FILE}" "${CONFIG_FILE}"
 
-        if [ -n "${PALUDIS_HOOK_DEBUG}" ]; then
+        if [ x"${PALUDIS_HOOK_DEBUG}" = 'xyes' ]; then
             einfo "Script to execute:"
             cat $tmp_file
         fi
