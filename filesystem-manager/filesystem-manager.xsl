@@ -273,7 +273,6 @@ cmd_symlink \
     "<xsl:value-of select="@cd" />" \
     "<xsl:value-of select="@src" />" \
     "<xsl:value-of select="@dst" />"
-isSomeActionsWereTakePlace="yes"
 </xsl:template>
 
 <!--
@@ -282,7 +281,6 @@ isSomeActionsWereTakePlace="yes"
 <xsl:template match="fsmh:rm[@cd][@dst]">
 # Remove <xsl:value-of select="@dst" /> @ <xsl:value-of select="@cd" />
 cmd_rm "<xsl:value-of select="@cd" />" "<xsl:value-of select="@dst" />"
-isSomeActionsWereTakePlace="yes"
 </xsl:template>
 
 <!--
@@ -295,7 +293,6 @@ isSomeActionsWereTakePlace="yes"
     <xsl:for-each select="fsmh:item[@dst]">
 cmd_rm "<xsl:value-of select="$cd" />" "<xsl:value-of select="@dst" />"
     </xsl:for-each>
-isSomeActionsWereTakePlace="yes"
 </xsl:if>
 </xsl:template>
 

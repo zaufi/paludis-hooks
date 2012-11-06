@@ -14,6 +14,9 @@ function cmd_symlink()
     local dst="$3"
 
     ebegin "Making the symlink $src --> $dst"
-    cd "${D}/$cd" && ln -s "$src" "$dst" && cd -
+    if [ -d "${D}/$cd" ]; then
+        cd "${D}/$cd"
+        ln -s "$src" "$dst" && isSomeActionsWereTakePlace="yes"
+        cd - >/dev/null
     eend $?
 }
