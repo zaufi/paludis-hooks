@@ -9,19 +9,19 @@
   >
     <!-- Just few examples:
 
-    <package spec="boost">
+    <package spec="dev-libs/boost">
         <symlink cd="/usr/share/doc" src="${PF}/html" dst="${PN}" />
     </package>
 
-    <package spec="kdelibs">
+    <package spec="kde-base/kdelibs">
         <symlink cd="/usr/share/doc" src="${PF}/HTML/en/kdelibs-apidox" dst="${PN}" />
     </package>
 
-    <package spec="qt-assistant">
+    <package spec="x11-libs/qt-assistant">
         <symlink cd="/usr/share/doc" src="qt-${PV}/html" dst="qt" />
     </package>
 
-    <package spec="python-docs">
+    <package spec="dev-python/python-docs">
         <symlink cd="/usr/share/doc" src="${PF}/html" dst="python-${SLOT}" />
     </package>
 
