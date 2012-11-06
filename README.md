@@ -54,6 +54,11 @@ TODO
 Changelog
 =========
 
+Version 0.7
+-----------
+* `package` nodes now matched according full featured package specification, so now
+  it is possible to combine actions for different (partial) specs
+
 Version 0.6
 -----------
 * add remove command, so one may remove some files/directories from an image. If there is

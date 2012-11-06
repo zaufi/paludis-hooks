@@ -9,23 +9,23 @@
   >
     <!-- Just few examples:
 
-    <package id="boost">
+    <package spec="boost">
         <symlink cd="/usr/share/doc" src="${PF}/html" dst="${PN}" />
     </package>
 
-    <package id="kdelibs">
+    <package spec="kdelibs">
         <symlink cd="/usr/share/doc" src="${PF}/HTML/en/kdelibs-apidox" dst="${PN}" />
     </package>
 
-    <package id="qt-assistant">
+    <package spec="qt-assistant">
         <symlink cd="/usr/share/doc" src="qt-${PV}/html" dst="qt" />
     </package>
 
-    <package id="python-docs">
+    <package spec="python-docs">
         <symlink cd="/usr/share/doc" src="${PF}/html" dst="python-${SLOT}" />
     </package>
 
-    <package spec="*/*">
+    <package spec="*/*" descr="docs-cleaner">
         <rm cd="/usr/share/doc/${PF}">
             <item dst="AUTHORS*" />
             <item dst="BUGS*" />

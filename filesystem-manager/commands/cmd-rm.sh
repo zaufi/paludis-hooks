@@ -29,8 +29,10 @@ function cmd_rm()
 {
     local cd="$1"
     local dst="$2"
-    cd "${D}/${cd}" \
-      && rm -vrf ${dst} 2>/dev/null \
-      && cd - >/dev/null
-    _remove_empty_dirs_reqursively "${cd}"
+    if [ -d "${D}/${cd}" ]; then
+        cd "${D}/${cd}" \
+        && rm -vrf ${dst} 2>/dev/null \
+        && cd - >/dev/null
+        _remove_empty_dirs_reqursively "${cd}"
+    fi
 }
