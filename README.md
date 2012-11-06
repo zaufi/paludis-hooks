@@ -56,8 +56,9 @@ Changelog
 
 Version 0.7
 -----------
-* `package` nodes now matched according full featured package specification, so now
-  it is possible to combine actions for different (partial) specs
+* `package` nodes now matched according full featured package specification.
+* also package matching was reimplemented, so now it is possible to combine actions
+  for different (partial) specs
 
 Version 0.6
 -----------
