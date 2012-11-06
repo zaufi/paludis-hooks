@@ -14,6 +14,11 @@ source ${PALUDIS_EBUILD_DIR}/echo_functions.bash
 CONFIG_FILE="@PH_HOOKSCONFDIR@/filesystem-manager.conf"
 TEMPLATE_FILE="@PH_DATAROOTDIR@/filesystem-manager/filesystem-manager.xsl"
 
+if [ -n "${FSMH_DO_NOTHING}" ]; then
+    einfo "Filesystem Manager Hook: Do not process any actions due explicit request"
+    exit 0
+fi
+
 if [ x"${PALUDIS_HOOK_DEBUG}" = 'xyes' ]; then
     env | sort > /tmp/env.log
 fi
