@@ -57,6 +57,26 @@ fi
 <!--
     Select `package' nodes according specification priority and call
     `handle-spec' w/ selected set (possible empty).
+
+    p   spec
+    ..................................
+    16  cat/package-ver-rv:slot::repo
+    15  cat/package-ver-rv:slot
+    14  cat/package-ver-rv::repo
+    13  cat/package-ver-rv
+    12  cat/package:slot::repo
+    11  cat/package:slot
+    10  cat/package::repo
+    9   cat/package
+    8   package-ver-rv:slot::repo
+    7   package-ver-rv:slot
+    6   package-ver-rv:repo
+    5   package-ver-rv
+    4   package:slot::repo
+    3   package:slot
+    2   package:repo
+    1   cat/*
+    0   */*
   -->
 <xsl:template name="dispatch-by-priority">
     <xsl:param name="priority" />
@@ -246,7 +266,7 @@ fi
         <xsl:with-param name="message">&gt;&gt;&gt; Package matched: <xsl:value-of select="@spec" /> (priority=<xsl:value-of select="$priority" />, stop=<xsl:value-of select="@stop" />)</xsl:with-param>
     </xsl:call-template>
     <!-- Render script for given package -->
-    ewarn &quot;Filesystem Management Hook: Apply actions<xsl:if test="@descr"> '<xsl:value-of
+    einfo &quot;Filesystem Management Hook: Apply actions<xsl:if test="@descr"> '<xsl:value-of
         select="@descr" />'</xsl:if> for <xsl:value-of select="@spec" />&quot;
     <xsl:apply-templates select="*" />
 
