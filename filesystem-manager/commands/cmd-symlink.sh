@@ -17,7 +17,7 @@ function cmd_symlink()
         ebegin "Making the symlink $src --> $dst"
         cd "${D}/$cd" \
           && ln -s $src $dst \
-          && fsmh_warn_before \
+          && schedule_a_warning_after_all \
           && cd - >/dev/null
         eend $?
     fi

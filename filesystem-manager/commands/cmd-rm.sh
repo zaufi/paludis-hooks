@@ -31,7 +31,7 @@ function cmd_rm()
     local dst="$2"
     if [ -d "${D}/${cd}" ]; then
         cd "${D}/${cd}"
-        rm -vrf ${dst} 2>/dev/null && fsmh_warn_before
+        rm -vrf ${dst} 2>/dev/null && schedule_a_warning_after_all
         cd - >/dev/null
         _remove_empty_dirs_reqursively "${cd}"
     fi
