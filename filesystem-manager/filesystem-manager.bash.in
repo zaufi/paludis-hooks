@@ -39,8 +39,7 @@ export rememberfile
 
 issue_a_warning()
 {
-    local tobe="$1"
-    ewarn "WARNING: ${CATEGORY}/${PF} package installation $tobe altered by the filesystem manager hook."
+    ewarn "WARNING: ${CATEGORY}/${PF} package installation was altered by the filesystem manager hook."
     ewarn "WARNING: Before filing a bug, remove all configured rules, reinstall, and try again..."
 }
 export -f issue_a_warning
