@@ -36,17 +36,11 @@ source ${PALUDIS_EBUILD_DIR}/echo_functions.bash
 for cmd in /usr/share/paludis-hooks/filesystem-manager/commands/*.sh; do
     source $cmd
 done
-isSomeActionsWereTakePlace=no
 
 <!-- Initiate package spec pattern matching starting from highest priority -->
 <xsl:call-template name="dispatch-by-priority">
     <xsl:with-param name="priority" select="number(17)" />
 </xsl:call-template>
-
-if [ "$isSomeActionsWereTakePlace" != "no" ]; then
-    ewarn "WARNING: <xsl:value-of select="$PN" /> was installed w/ modified image!"
-    ewarn "WARNING: In case of troubles make sure that you installed an unmodified package, before report a bug"
-fi
 
 <xsl:call-template name="debug">
     <xsl:with-param name="message">&lt;   Rendering done for <xsl:value-of select="concat($CATEGORY,'/',$PF,':',$SLOT,'::',$REPOSITORY)" /></xsl:with-param>

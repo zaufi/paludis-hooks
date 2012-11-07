@@ -70,12 +70,14 @@
     <package spec="dev-utils/*">
         <symlink cd="/usr/share/doc" src="${PF}" dst="${PN}" />
     </package>
+
     <package spec="*/*">
         <symlink cd="/usr/share/doc" src="${PF}" dst="${PN}" />
     </package>
     <package spec="*/*">
         <rm cd="/usr/share/doc/${PF}" dst="README" />
     </package>
+
     <package spec="*/*" descr="docs-cleaner">
         <rm cd="/usr/share/doc/${PF}">
             <item dst="README" />

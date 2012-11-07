@@ -19,23 +19,28 @@ PATCH_DIR_FULL="${PATCH_DIR}/${HOOK}/${CATEGORY}/${PF}"
 
 rememberfile="${T}/.autopatch_was_here_${PALUDIS_PID}"
 
-issue_a_warning() {
-    ewarn "WARNING: This package will be installed with additional patches applied by auto-patch hook."
+issue_a_warning()
+{
+    local tobe="$1"
+    ewarn "WARNING: ${CATEGORY}/${PF} package $tobe installed with additional patches applied by auto-patch hook."
     ewarn "WARNING: Before filing a bug, remove all patches, reinstall, and try again..."
 }
 
-try_to_apply_patches() {
+try_to_apply_patches()
+{
     if [ -n "${PALUDIS_HOOK_DEBUG}" ]; then
         einfo "Check ${PATCH_DIR_FULL}"
     fi
     if [ -d "${PATCH_DIR_FULL}" ] ; then
         cd ${S}
         for i in `ls ${PATCH_DIR_FULL}/*.patch` ; do
+            # TODO 'epatch' will be available ONLY if current ebuild inherit eutils.eclass
+            # Need to do smth w/ this... :( It seems I have to copy-n-paste it here... :(
             epatch ${i} || die
             touch ${rememberfile}
         done
         if [ -e "${rememberfile}" ]; then
-            issue_a_warning
+            issue_a_warning "will be"
         else
             einfo "No patches in for this package."
         fi
@@ -54,8 +59,7 @@ case "${HOOK}" in
         ;;
     install_all_post)
         if [ -e "${rememberfile}" ] ; then
-            issue_a_warning
-            rm ${rememberfile}
+            issue_a_warning "was"
         fi
         ;;
 esac

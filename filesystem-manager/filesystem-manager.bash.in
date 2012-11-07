@@ -34,6 +34,28 @@ if [ "$?" != "0" ]; then
     exit 1                                                  # Nothing to do w/ incorrect config
 fi
 
+rememberfile="${T}/.filesystem_manager_was_here_${PALUDIS_PID}"
+
+issue_a_warning()
+{
+    local tobe="$1"
+    ewarn "WARNING: ${CATEGORY}/${PF} package installation $tobo altered by the filesystem manager hook."
+    ewarn "WARNING: Before filing a bug, remove all configured rules, reinstall, and try again..."
+}
+
+function fsmh_warn_before()
+{
+    issue_a_warning "will be"
+    touch "${rememberfile}"
+    return 0
+}
+export -f fsmh_warn_before
+
+function fsmh_warn_after()
+{
+    issue_a_warning "was"
+}
+
 result=0
 case "${HOOK}" in
     # ATTENTION This script must be symlinked to the following hook dirs:
@@ -58,6 +80,10 @@ case "${HOOK}" in
 
         /bin/sh $tmp_file
         result=$?
+
+        if [ -e "${rememberfile}" ]; then
+            fsmh_warn_after
+        fi
         ;;
 esac
 
