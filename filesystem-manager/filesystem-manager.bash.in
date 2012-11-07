@@ -35,18 +35,23 @@ if [ "$?" != "0" ]; then
 fi
 
 rememberfile="${T}/.filesystem_manager_was_here_${PALUDIS_PID}"
+export rememberfile
 
 issue_a_warning()
 {
     local tobe="$1"
-    ewarn "WARNING: ${CATEGORY}/${PF} package installation $tobo altered by the filesystem manager hook."
+    ewarn "WARNING: ${CATEGORY}/${PF} package installation $tobe altered by the filesystem manager hook."
     ewarn "WARNING: Before filing a bug, remove all configured rules, reinstall, and try again..."
 }
+export -f issue_a_warning
 
 function fsmh_warn_before()
 {
-    issue_a_warning "will be"
-    touch "${rememberfile}"
+    echo "List of temp dir [$PID]"
+    ls -la ${T}
+    if [ ! -f ${rememberfile} ];
+        touch "${rememberfile}"
+    fi
     return 0
 }
 export -f fsmh_warn_before
