@@ -46,8 +46,6 @@ export -f issue_a_warning
 
 function fsmh_warn_before()
 {
-    echo "List of temp dir [$PID]"
-    ls -la ${T}
     if [ ! -f ${rememberfile} ]; then
         touch "${rememberfile}"
     fi
