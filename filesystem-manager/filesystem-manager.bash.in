@@ -50,7 +50,7 @@ function schedule_a_warning_after_all()
     fi
     return 0
 }
-export -f fsmh_warn_before
+export -f schedule_a_warning_after_all
 
 
 result=0
