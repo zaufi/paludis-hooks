@@ -49,7 +49,7 @@ function fsmh_warn_before()
 {
     echo "List of temp dir [$PID]"
     ls -la ${T}
-    if [ ! -f ${rememberfile} ];
+    if [ ! -f ${rememberfile} ]; then
         touch "${rememberfile}"
     fi
     return 0
