@@ -1,5 +1,6 @@
 #!/bin/sh
 
+sample=${1:-sample.xml}
 xsltproc \
     --stringparam 'PN' cmake \
     --stringparam 'PF' cmake-2.8.9-r4 \
@@ -10,4 +11,4 @@ xsltproc \
     --stringparam 'REPOSITORY' zaufi-overlay \
     --stringparam 'SLOT' 0 \
     --stringparam 'debug' yes \
-    filesystem-manager.xsl sample.xml
+    filesystem-manager.xsl ${sample}
