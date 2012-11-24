@@ -45,7 +45,7 @@ Here is a few items possible nowadays, but I have plans to extend this list in f
 I have `*/* -nls` in my `/etc/paludis/use.conf`, but some packages just don't have that USE flag,
 but install localizations anyway (yep, cuz ebuild authors just lazy ppl... most of the time).
 So `app-admin/localpurge` was "invented" to cleanup unused locales (ALL in my case). But `localepurge`
-will remove `*.mo` files after install, so on uninstall a package some files will be marked as _gone_.
+will remove `*.mo` files after install, so when uninstall a package, some files will be marked as _gone_.
 One simple rule will do the job better:
 
     <package spec="*/*" descr="locale-cleaner">
