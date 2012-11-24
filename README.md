@@ -16,7 +16,7 @@ where the `stage` is one of the following: `ebuild_compile_post`, `ebuild_compil
 `ebuild_configure_post`, `ebuild_configure_pre`, `ebuild_install_pre` or `ebuild_unpack_post`.
 
 BTW, stupid portage, to "implement" the same feature, forces ebuild developers to add a `epatch_user`
-call (defined in the `eutils.eclass`) to the `src_unpack` function! What a fracking smart solution! :(
+call (defined in the `eutils.eclass`) to the `src_unpack` function! What a fraking smart solution! :(
 
 
 Filesystem Manager
@@ -40,6 +40,21 @@ Here is a few items possible nowadays, but I have plans to extend this list in f
 * `rm` -- used to remove smth from the image, so it will not be installed at all.
     * `dst` -- what to remove
 
+### Example
+
+I have `*/* -nls` in my `/etc/paludis/use.conf`, but some packages just doesn't have that USE flag,
+but install localizations anyway (yep, cuz ebuild authors just lazy ppl... most of the time).
+So `app-admin/localpurge` was "invented" to cleanup unused locales (ALL in my case). But `localepurge`
+will remove `*.mo` files after install, so on uninstall a package some files will be marked as _gone_.
+One simple rule will do the job better:
+
+    <package spec="*/*" descr="locale-cleaner">
+        <rm cd="/usr/share/locale/" dst="*/LC_MESSAGES/*.mo" />
+    </package>
+
+Because manipulations (delete `*.mo` files) will be done *before* install, all that files even
+won't be counted by package manager. And I'm not telling about that you don't need to run smth periodically
+(or via cron) -- all your packages will be already clean w/o any external tools :)
 
 TODO
 ====
