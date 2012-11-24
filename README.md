@@ -52,9 +52,9 @@ One simple rule will do the job better:
         <rm cd="/usr/share/locale/" dst="*/LC_MESSAGES/*.mo" />
     </package>
 
-Because manipulations (delete `*.mo` files) will be done *before* install, all that files even
-won't be counted by package manager. And I'm not telling about that you don't need to run smth periodically
-(or via cron) -- all your packages will be already clean w/o any external tools :)
+Because manipulations (delete `*.mo` files) will be done **before** install, all that files even
+won't be counted by package manager. And I'm not telling about that you don't need to run any tool periodically
+(or via cron) -- all your packages will be already clean w/o any manual actions :)
 
 TODO
 ====
