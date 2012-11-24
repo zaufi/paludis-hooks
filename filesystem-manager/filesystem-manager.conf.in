@@ -24,22 +24,39 @@
     <package spec="dev-python/python-docs">
         <symlink cd="/usr/share/doc" src="${PF}/html" dst="python-${SLOT}" />
     </package>
+   -->
 
+    <!-- Remove any translations from all packages! I use only English and USE=-nls
+        app-admin/localepurge doesn't needed anymore! ;-)
+    -->
+    <package spec="*/*" descr="locale-cleaner">
+        <rm cd="/usr/share/locale/" dst="*/LC_MESSAGES/*.mo" />
+    </package>
+
+    <!-- Remove unused (most of the time) shit^Wdocs from /usr/share/doc -->
     <package spec="*/*" descr="docs-cleaner">
         <rm cd="/usr/share/doc/${PF}">
             <item dst="AUTHORS*" />
+            <item dst="*.AUTHORS*" />
             <item dst="BUGS*" />
             <item dst="CHANGELOG*" />
             <item dst="CHANGES*" />
             <item dst="CONTENTS*" />
             <item dst="COPYING*" />
+            <item dst="Copyright*" />
+            <item dst="copyright*" />
             <item dst="ChangeLog*" />
+            <item dst="*.ChangeLog" />
             <item dst="Changelog*" />
+            <item dst="changelog*" />
+            <item dst="CREDITS" />
             <item dst="Credits" />
             <item dst="DISTFILES*" />
+            <item dst="NOTICE*" />
             <item dst="FAQ*" />
             <item dst="HACKING*" />
             <item dst="INSTALL*" />
+            <item dst="KEYS*" />
             <item dst="LICENSE*" />
             <item dst="NEWS*" />
             <item dst="README*" />
@@ -50,9 +67,8 @@
             <item dst="TODO*" />
             <item dst="*.TODO" />
             <item dst="VERSION*" />
-            <item dst="changelog*" />
+            <item dst="WHATSNEW*" />
         </rm>
     </package>
 
-   -->
 </commands>

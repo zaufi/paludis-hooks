@@ -3,22 +3,6 @@
 # Plugin to implement a `rm` command of the config file
 #
 
-function _remove_empty_dirs_reqursively()
-{
-    local cd="$1"
-
-    # Check if there is something else in the `cd` dir?
-    local hasSmth=`find "${D}/${cd}" ! -type d`
-    if [ -z "${hasSmth}" ]; then
-        # NO! Remove an empty dir to avoid warnings!
-        rm -d ${D}/${cd}
-        local parent=`dirname "${cd}"`
-        if [ "$parent" != "/" ]; then
-            _remove_empty_dirs_reqursively "$parent"
-        fi
-    fi
-}
-
 #
 # Function to remove smth in a given directory
 #
@@ -33,6 +17,10 @@ function cmd_rm()
         cd "${D}/${cd}"
         rm -vrf ${dst} 2>/dev/null && schedule_a_warning_after_all
         cd - >/dev/null
-        _remove_empty_dirs_reqursively "${cd}"
+        # Walk through whole image and try to remove possible empty dirs
+        # ATTENTION According EAPI it is incorrect to install empty directories!
+        # If a package need some, then its ebuild must use `keepdir` for this!
+        # So this action also can be considered as sanitize an image before install :)
+        find ${D} -type d -a -empty -exec rmdir -p --ignore-fail-on-non-empty {} +
     fi
 }
