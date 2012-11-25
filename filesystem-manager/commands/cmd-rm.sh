@@ -22,5 +22,9 @@ function cmd_rm()
         # If a package need some, then its ebuild must use `keepdir` for this!
         # So this action also can be considered as sanitize an image before install :)
         find ${D} -type d -a -empty -exec rmdir -p --ignore-fail-on-non-empty {} +
+        # Sometimes (if u really don't want a WHOLE package, but have to install it,
+        # like boring kde-wallpapers) the last command may delete even ${D} directory,
+        # so paludis will complain about broken image :) -- Ok, lets restore it!
+        mkdir -p "${D}"
     fi
 }
