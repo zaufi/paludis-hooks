@@ -39,8 +39,10 @@ Here is a few items possible nowadays, but I have plans to extend this list in f
     * `dst` -- destination of the symlink
 * `rm` -- used to remove smth from the image, so it will not be installed at all.
     * `dst` -- what to remove
+    * `reverse` -- optional attribute to specify that command should remove **everything** except
+      selected target(s)
 
-### Example
+### Examples
 
 I have `*/* -nls` in my `/etc/paludis/use.conf`, but some packages just don't have that USE flag,
 but install localizations anyway (yep, cuz ebuild authors just lazy ppl... most of the time).
@@ -52,22 +54,37 @@ One simple rule will do the job better:
         <rm cd="/usr/share/locale/" dst="*/LC_MESSAGES/*.mo" />
     </package>
 
-Because manipulations (delete `*.mo` files) will be done **before** install, all that files even
+Because manipulations (deleting `*.mo` files) will be done **before** install, all that files even
 won't be counted by package manager. And I'm not telling about that you don't need to run any tool periodically
 (or via cron) -- all your packages will be already clean w/o any manual actions :)
+
+Translations is a part of the "problem": some packages (like `alsa-utils`) want to install translated manual pages
+as well. To remove them (everything except English) one may use the following rule:
+
+    <package spec="*/*" descr="man-pages-cleaner">
+        <rm cd="/usr/share/man/" dst="man{0p,1,1p,2,3,3p,4,5,6,7,8}" reverse="true" />
+    </package>
+
+Note attribute `reverse` tells to the hook that everything except specified items (directories actually)
+should be removed.
 
 TODO
 ====
 
 * Add more commands! Like `*zip` smth...
-* Add ability to glob a package IDs. Like `*/*` or `dev-libs/*`. Possible w/ smth
-  like `except` items to specify rule exceptions
+* Add ability to glob a package IDs. Like `*/*` or `dev-libs/*` (done). Possible w/ smth
+  like `except` items to specify rule exceptions (ORLY?)
 * Add ability to find target objects (files, dirs, whatever) by introducing smth
   like `find` item and iterate over results applying some other actions (ls, rm, & etc...)
-* Implement commands as plugins... need to think about how to update DTD then.
+* Implement commands as **real** plugins... need to think about how to update DTD then.
 
 Changelog
 =========
+
+Version 0.8
+-----------
+* add a boolean attribute `reverse` (w/ values `true` or `false` (default)) to allow removal
+of everything except selected targets.
 
 Version 0.7
 -----------
