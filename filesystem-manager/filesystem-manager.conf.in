@@ -33,6 +33,11 @@
         <rm cd="/usr/share/locale/" dst="*/LC_MESSAGES/*.mo" />
     </package>
 
+    <!-- Remove non English manual pages -->
+    <package spec="*/*" descr="man-pages-cleaner">
+        <rm cd="/usr/share/man/" dst="man{0p,1,1p,2,3,3p,4,5,6,7,8}" reverse="true" />
+    </package>
+
     <!-- Remove unused (most of the time) shit^Wdocs from /usr/share/doc -->
     <package spec="*/*" descr="docs-cleaner">
         <rm cd="/usr/share/doc/${PF}">

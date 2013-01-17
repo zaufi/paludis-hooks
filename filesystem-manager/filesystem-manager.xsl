@@ -292,9 +292,18 @@ cmd_symlink \
 </xsl:template>
 
 <!--
-    Matching `rm` nodes w/ all required parameters given
+    Matching `rm` nodes w/ all parameters given to remove everything
+    except target(s) specified
   -->
-<xsl:template match="fsmh:rm[@cd][@dst]">
+<xsl:template match="fsmh:rm[@cd][@dst][@reverse='true']">
+# Remove everything except <xsl:value-of select="@dst" /> @ <xsl:value-of select="@cd" />
+cmd_rm_reverse "<xsl:value-of select="@cd" />" "<xsl:value-of select="@dst" />"
+</xsl:template>
+
+<!--
+    Matching `rm` nodes w/ all parameters given to remove specified target(s)
+  -->
+<xsl:template match="fsmh:rm[@cd][@dst][@reverse='false']">
 # Remove <xsl:value-of select="@dst" /> @ <xsl:value-of select="@cd" />
 cmd_rm "<xsl:value-of select="@cd" />" "<xsl:value-of select="@dst" />"
 </xsl:template>

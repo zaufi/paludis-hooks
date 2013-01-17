@@ -1,21 +1,26 @@
 #!/bin/sh
 #
 # Plugin to implement an `rm` command of the config file
+# which would remove everything except target(s)
 #
 
 #
-# Function to remove smth in a given directory
+# Function to remove everything except a specified list in a given directory
 #
 # @param cd  -- directory to change to, before remove
-# @param dst -- what to remove (possible w/ wildcards)
+# @param dst -- targets what must stay
 #
-function cmd_rm()
+function cmd_rm_reverse()
 {
     local cd="$1"
     local dst="$2"
     if [ -d "${D}/${cd}" ]; then
         cd "${D}/${cd}"
-        rm -vrf ${dst} 2>/dev/null && schedule_a_warning_after_all
+        eval find ${dst} 2>/dev/null | sed 's,^\./,,' | sort > ${T}/rm_except.lst
+        find | sed 's,^\./,,' | sort | comm -3 ${T}/rm_except.lst - >${T}/rm.lst
+        if [ -s ${T}/rm.lst ]; then
+            rm -vrf `cat ${T}/rm.lst` 2>/dev/null && schedule_a_warning_after_all
+        fi
         cd - >/dev/null
         # Walk through whole image and try to remove possible empty dirs
         # ATTENTION According EAPI it is incorrect to install empty directories!
@@ -25,6 +30,6 @@ function cmd_rm()
         # Sometimes (if u really don't want a WHOLE package, but have to install it,
         # like boring kde-wallpapers) the last command may delete even ${D} directory,
         # so paludis will complain about broken image :) -- Ok, lets restore it!
-        mkdir -p "${D}"
+        test ! -e "${D}" && mkdir -p "${D}"
     fi
 }
