@@ -9,7 +9,7 @@
 
 source ${PALUDIS_EBUILD_DIR}/echo_functions.bash
 
-PATCH_DIR="@PH_LOCALSTATEDIR@/paludis/autopatches"
+PATCH_DIR="@PH_LOCALSTATEDIR@/db/paludis/autopatches"
 CONFIG_FILE="@PH_HOOKSCONFDIR@/auto-patch.conf"
 
 # Configuration override

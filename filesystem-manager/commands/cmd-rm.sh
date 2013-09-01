@@ -8,7 +8,6 @@
 #
 # @param cd  -- directory to change to, before remove
 # @param dst -- what to remove (possible w/ wildcards)
-#
 function cmd_rm()
 {
     local cd="$1"

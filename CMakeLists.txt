@@ -1,5 +1,5 @@
 # "Build" script for my paludis-hooks package
-# Copyright 2012 by Alex Turbov <i.zaufi@gmail.com>
+# Copyright 2012-2013 by Alex Turbov <i.zaufi@gmail.com>
 #
 
 cmake_minimum_required(VERSION 2.6)
@@ -19,7 +19,8 @@ if(NOT XMLLINT_EXECUTABLE)
 endif()
 
 # Setup package paths
-# TODO Nowadays all paths are hardcoded and I'm not sure that there is a reason to do it flexible...
+# TODO Nowadays all paths are hardcoded!
+# And I see no reason to make it configurable...
 set(PH_PALUDISCONFDIR "/etc/paludis")
 set(PH_HOOKSDIR       "/usr/share/paludis/hooks")
 set(PH_HOOKSCONFDIR   "${PH_PALUDISCONFDIR}/hooks/configs")
