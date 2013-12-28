@@ -3,7 +3,7 @@
 #
 function ebuild-for()
 {
-    cave print-ebuild-path $1
+    cave print-ebuild-path $*
 }
 
 function _pkg_meta_diff_impl()
@@ -12,8 +12,8 @@ function _pkg_meta_diff_impl()
     local pkg="$2"
     local i
     for i in `ebuild-for -i "${pkg}"`; do
-        p=`ebuild-for "${op}\`basename '$i' .ebuild\`"`
-        diff ${PKG_META_DIFF_OPTIONS} "$i" "$p"
+        p=`ebuild-for "${op}\`basename \"${i}\" .ebuild\`"`
+        diff ${PKG_META_DIFF_OPTIONS} "${i}" "${p}"
     done
 }
 
