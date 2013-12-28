@@ -2,7 +2,7 @@
 # Aliases for various `cave` commands
 #
 
-[ -f /etc/conf.d/cave.conf ] . /etc/conf.d/cave.conf
+[ -f /etc/conf.d/cave.conf ] && . /etc/conf.d/cave.conf
 
 alias cs='cave search --index ${CAVE_SEARCH_INDEX}'
 alias cm='cave manage-search-index --create ${CAVE_SEARCH_INDEX}'
