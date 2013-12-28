@@ -35,9 +35,13 @@ set(PH_LOCALSTATEDIR  "${CMAKE_INSTALL_FULL_LOCALSTATEDIR}")
 set(PH_DATAROOTDIR    "${CMAKE_INSTALL_FULL_DATAROOTDIR}/paludis-hooks")
 set(PH_DOCSDIR        "${CMAKE_INSTALL_FULL_DOCDIR}")
 # NOTE Hardcoded nowadays! Dunno is there any reason to detect it...
-set(PH_PALUDISCONFDIR "/etc/paludis")
+set(PH_SYSCONFDIR     "${CMAKE_INSTALL_FULL_SYSCONFDIR}")
+set(PH_PALUDISCONFDIR "${PH_SYSCONFDIR}/paludis")
+set(PH_PROFILEDIR     "${PH_SYSCONFDIR}/profile.d")
+set(PH_CONFDIR        "${PH_SYSCONFDIR}/conf.d")
 set(PH_HOOKSDIR       "/usr/share/paludis/hooks")
 set(PH_HOOKSCONFDIR   "${PH_PALUDISCONFDIR}/hooks/configs")
+set(PH_COMMANDSDIR    "/usr/libexec/cave/commands")
 
 # Autopatch hook
 configure_file(auto-patch/auto-patch.bash.in auto-patch/auto-patch.bash @ONLY)
@@ -77,13 +81,25 @@ install(
     DESTINATION ${PH_DATAROOTDIR}/filesystem-manager
   )
 install(
+    FILES profile.d/cave-aliases.sh
+    DESTINATION ${PH_PROFILEDIR}
+  )
+install(
+    FILES conf.d/cave.conf
+    DESTINATION ${PH_CONFDIR}
+  )
+install(
     FILES README.md
     DESTINATION ${PH_DOCSDIR}
   )
 
 if(PYTHONINTERP_FOUND)
     install(
-        PROGRAMS get-ebuild-for
-        DESTINATION ${PH_BINDIR}
+        PROGRAMS print-ebuild-path
+        DESTINATION ${PH_COMMANDSDIR}
+      )
+    install(
+        FILES profile.d/cave-addons.sh
+        DESTINATION ${PH_PROFILEDIR}
       )
 endif()

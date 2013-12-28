@@ -1,0 +1,75 @@
+#!/usr/bin/env python
+#
+# Get path to the ebuild by package specification.
+#
+# Copyright (c) 2013 Alex Turbov <i.zaufi@gmail.com>
+#
+# This command can be used in bash scripts as `cave print-ebuild-path <pkg>`
+#
+
+import argparse
+import paludis
+import os
+import portage.output
+import sys
+
+
+
+def main():
+    log = portage.output.EOutput()
+    parser = argparse.ArgumentParser(description='Get ebuild path for a given spec')
+    parser.add_argument(
+        '-i'
+      , '--installed'
+      , action='store_true'
+      , help='Use `installed` repository'
+      )
+    parser.add_argument(
+        'spec'
+      , metavar='pkg-spec'
+      , type=str
+      , nargs='+'
+      , help='package specification'
+      )
+    args = parser.parse_args()
+
+    try:
+        env = paludis.EnvironmentFactory.instance.create('')
+        installed = env.fetch_repository('installed')
+        fltr = paludis.Filter.And(paludis.Filter.SupportsInstallAction(), paludis.Filter.NotMasked())
+
+        for dep in args.spec:
+            # Normalize user provided spec
+            ds = paludis.parse_user_package_dep_spec(dep, env, paludis.UserPackageDepSpecOptions())
+            # Where we have to look for package?
+            ebuilds = []
+            if args.installed:
+                # Look into installed packages
+                for pkg in installed.package_ids(str(ds.package), []):
+                    path = pkg.fs_location_key().parse_value()
+                    ebuilds.append(os.path.join(path, '{}.ebuild'.format(os.path.basename(path))))
+            else:
+                # Look for packages that can be installed (and not masked)
+                gen = paludis.Generator.Matches(ds, paludis.MatchPackageOptions())
+                fg = paludis.FilteredGenerator(gen, fltr)
+                s = paludis.Selection.BestVersionOnly(fg)
+                found_smth = False
+                for pkg in env[s]:
+                    ebuild = pkg.fs_location_key().parse_value()
+                    if ebuild:
+                        ebuilds.append(ebuild)
+                        found_smth = True
+
+                if not found_smth:
+                    log.eerror('Package not found or masked: {pkg}'.format(pkg=dep))
+
+        if ebuilds:
+            for e in ebuilds:
+                print(e)
+
+    except paludis.BaseException as e:
+        log.eerror(str(e))
+
+
+if __name__ == '__main__':
+    main()
