@@ -17,6 +17,10 @@ endif()
 if(NOT XMLLINT_EXECUTABLE)
   message(FATAL_ERROR "xmllint executable required for this package")
 endif()
+find_package(PythonInterp)
+if(NOT PYTHONINTERP_FOUND)
+    message(STATUS "Python scripts will not be installed")
+endif()
 
 # Define install destination dirs
 # ATTENTION Define CMAKE_SIZEOF_VOID_P to some not important value
@@ -73,12 +77,13 @@ install(
     DESTINATION ${PH_DATAROOTDIR}/filesystem-manager
   )
 install(
-    PROGRAMS get-ebuild-for
-    DESTINATION ${PH_BINDIR}
-  )
-install(
     FILES README.md
     DESTINATION ${PH_DOCSDIR}
   )
 
-# kate: hl cmake;
+if(PYTHONINTERP_FOUND)
+    install(
+        PROGRAMS get-ebuild-for
+        DESTINATION ${PH_BINDIR}
+      )
+endif()
