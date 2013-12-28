@@ -1,0 +1,44 @@
+#/usr/bin/env python
+#
+# Get path to the ebuild by package specification
+#
+# Copyright (c) 2013 Alex Turbov <i.zaufi@gmail.com>
+#
+
+import paludis
+import portage.output
+import sys
+
+
+def main():
+    log = portage.output.EOutput()
+
+    if len(sys.argv) < 2:
+        log.eerror('Missed package spec(s)')
+        return
+
+    try:
+        env = paludis.EnvironmentFactory.instance.create('')
+        fltr = paludis.Filter.And(paludis.Filter.SupportsInstallAction(), paludis.Filter.NotMasked())
+
+        for dep in sys.argv[1:]:
+            ds = paludis.parse_user_package_dep_spec(dep, env, paludis.UserPackageDepSpecOptions())
+            gen = paludis.Generator.Matches(ds,paludis.MatchPackageOptions())
+            fg = paludis.FilteredGenerator(gen, fltr)
+            s = paludis.Selection.BestVersionOnly(fg)
+            found_smth = False
+            for pkg in env[s]:
+                ebuild = pkg.fs_location_key().parse_value()
+                if ebuild:
+                    print('{}'.format(ebuild))
+                    found_smth = True
+
+            if not found_smth:
+                log.eerror('Package not found or masked: {pkg}'.format(pkg=dep))
+
+    except paludis.BaseException as e:
+        log.eerror(str(e))
+
+
+if __name__ == '__main__':
+    main()

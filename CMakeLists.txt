@@ -18,15 +18,22 @@ if(NOT XMLLINT_EXECUTABLE)
   message(FATAL_ERROR "xmllint executable required for this package")
 endif()
 
+# Define install destination dirs
+# ATTENTION Define CMAKE_SIZEOF_VOID_P to some not important value
+# to suppress a warning from GNUInstallDirs...
+set(CMAKE_SIZEOF_VOID_P 8)
+include(GNUInstallDirs)
+
 # Setup package paths
-# TODO Nowadays all paths are hardcoded!
-# And I see no reason to make it configurable...
+set(PH_PREFIX         "${CMAKE_INSTALL_PREFIX}")
+set(PH_BINDIR         "${CMAKE_INSTALL_FULL_BINDIR}")
+set(PH_LOCALSTATEDIR  "${CMAKE_INSTALL_FULL_LOCALSTATEDIR}")
+set(PH_DATAROOTDIR    "${CMAKE_INSTALL_FULL_DATAROOTDIR}/paludis-hooks")
+set(PH_DOCSDIR        "${CMAKE_INSTALL_FULL_DOCDIR}")
+# NOTE Hardcoded nowadays! Dunno is there any reason to detect it...
 set(PH_PALUDISCONFDIR "/etc/paludis")
 set(PH_HOOKSDIR       "/usr/share/paludis/hooks")
 set(PH_HOOKSCONFDIR   "${PH_PALUDISCONFDIR}/hooks/configs")
-set(PH_LOCALSTATEDIR  "/var")
-set(PH_DATAROOTDIR    "/usr/share/paludis-hooks")
-set(PH_DOCSDIR        "/usr/share/doc/paludis-hooks")
 
 # Autopatch hook
 configure_file(auto-patch/auto-patch.bash.in auto-patch/auto-patch.bash @ONLY)
@@ -54,19 +61,23 @@ install(
     DESTINATION ${PH_HOOKSCONFDIR}
   )
 install(
-    FILES ${CMAKE_SOURCE_DIR}/filesystem-manager/filesystem-manager.xsl
+    FILES filesystem-manager/filesystem-manager.xsl
     DESTINATION ${PH_DATAROOTDIR}/filesystem-manager
   )
 install(
-    FILES ${CMAKE_SOURCE_DIR}/filesystem-manager/filesystem-manager.dtd
+    FILES filesystem-manager/filesystem-manager.dtd
     DESTINATION ${PH_DATAROOTDIR}/filesystem-manager
   )
 install(
-    DIRECTORY ${CMAKE_SOURCE_DIR}/filesystem-manager/commands
+    DIRECTORY filesystem-manager/commands
     DESTINATION ${PH_DATAROOTDIR}/filesystem-manager
   )
 install(
-    FILES ${CMAKE_SOURCE_DIR}/README.md
+    PROGRAMS get-ebuild-for
+    DESTINATION ${PH_BINDIR}
+  )
+install(
+    FILES README.md
     DESTINATION ${PH_DOCSDIR}
   )
 
