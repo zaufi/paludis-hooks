@@ -1,4 +1,8 @@
 #
+# A bunch of helper functions to investigate some troubles
+#
+
+#
 # Get full ebuild path for package spec
 #
 function ebuild-for()

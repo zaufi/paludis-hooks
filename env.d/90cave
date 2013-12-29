@@ -2,8 +2,10 @@
 # Configuration options for paludis addons
 #
 
+# Options for profile.d/ based stuff
+# (ATTENTION Not for `cave` itself!)
 CAVE_SEARCH_INDEX=/var/cache/paludis/csi
 CAVE_RESUME_FILE_OPT=/tmp/cave.resume
 
 # Options for pkg-meta-diff
-PKG_META_DIFF_OPTIONS='-u --color=always'
+PKG_META_DIFF_OPTIONS='-u'

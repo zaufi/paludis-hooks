@@ -42,7 +42,7 @@ endif()
 set(PH_HOOKSCONFDIR   "${PH_PALUDISCONFDIR}/hooks/configs")
 set(PH_PALUDISCONFDIR "${PH_SYSCONFDIR}/paludis")
 set(PH_PROFILEDIR     "${PH_SYSCONFDIR}/profile.d")
-set(PH_CONFDIR        "${PH_SYSCONFDIR}/conf.d")
+set(PH_ENVDIR        "${PH_SYSCONFDIR}/env.d")
 # NOTE Hardcoded nowadays! Dunno is there any reason to detect it...
 set(PH_HOOKSDIR       "/usr/share/paludis/hooks")
 set(PH_COMMANDSDIR    "/usr/libexec/cave/commands")
@@ -89,8 +89,8 @@ install(
     DESTINATION ${PH_PROFILEDIR}
   )
 install(
-    FILES conf.d/cave.conf
-    DESTINATION ${PH_CONFDIR}
+    FILES env.d/90cave
+    DESTINATION ${PH_ENVDIR}
   )
 install(
     FILES README.md
