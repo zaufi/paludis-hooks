@@ -39,8 +39,8 @@ if(${PH_PREFIX} MATCHES "/usr")
 else()
     set(PH_SYSCONFDIR "${CMAKE_INSTALL_FULL_SYSCONFDIR}")
 endif()
-set(PH_HOOKSCONFDIR   "${PH_PALUDISCONFDIR}/hooks/configs")
 set(PH_PALUDISCONFDIR "${PH_SYSCONFDIR}/paludis")
+set(PH_HOOKSCONFDIR   "${PH_PALUDISCONFDIR}/hooks/configs")
 set(PH_PROFILEDIR     "${PH_SYSCONFDIR}/profile.d")
 set(PH_ENVDIR        "${PH_SYSCONFDIR}/env.d")
 # NOTE Hardcoded nowadays! Dunno is there any reason to detect it...
@@ -85,7 +85,7 @@ install(
     DESTINATION ${PH_DATAROOTDIR}/filesystem-manager
   )
 install(
-    FILES profile.d/cave-aliases.sh
+    FILES profile.d/00-make-completion-wrapper.sh profile.d/cave-aliases.sh
     DESTINATION ${PH_PROFILEDIR}
   )
 install(
