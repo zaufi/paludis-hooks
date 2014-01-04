@@ -97,6 +97,8 @@ install(
     FILES
         package.env/no-debug.conf
         package.env/no-lto.conf
+        package.env/extra-optimize.conf
+        package.env/use-bfd-linker.conf
     DESTINATION ${PH_PALUDISCONFDIR}/env.conf.d
   )
 
