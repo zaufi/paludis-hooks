@@ -15,7 +15,8 @@ To apply a patch one have to put it into a directory under `${PATCH_DIR}/stage/c
 where the `stage` is one of the following: `ebuild_compile_post`, `ebuild_compile_pre`,
 `ebuild_configure_post`, `ebuild_configure_pre`, `ebuild_install_pre` or `ebuild_unpack_post`.
 
-BTW, stupid portage, to "implement" the same feature, forces ebuild developers to add a `epatch_user`
+BTW, stupid portage, to "implement" the same feature, forces ebuild developers to add a 
+`[epatch_user](https://www.gentoo.org/doc/en/handbook/handbook-amd64.xml?part=3&chap=6#doc_chap6)`
 call (defined in the `eutils.eclass`) to the `src_unpack` function! What a fraking smart solution! :(
 
 

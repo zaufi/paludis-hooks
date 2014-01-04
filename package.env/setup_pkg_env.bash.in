@@ -1,0 +1,60 @@
+#!/bin/bash
+#
+# Helper functions to use from /etc/paludis/bashrc and
+# package environment control files.
+#
+# Copyright 2014 by Alex Turbov <i.zaufi@gmail.com>
+#
+
+source ${PALUDIS_EBUILD_DIR}/echo_functions.bash
+
+#
+# Add options to the end of a given var
+# $1 - variable to modify
+# $2..$n - options to add
+#
+add-options()
+{
+    local var=$1
+    shift
+    local stmt="$var=\"\$${var} $*\""
+    eval "$stmt"
+}
+
+#
+# Remove options from a given var
+# $1 - variable to modify
+# $2..$n - options to remove
+#
+remove-options()
+{
+    local var=${1}
+    shift
+    local val
+    eval "val=\$${var}"
+    local opt
+    for opt in $*; do
+        val=`sed "s%\W${opt}\b%%g" <<<${val}`
+    done
+    local stmt="${var}=\"${val}\""
+    eval "${stmt}"
+}
+
+setup_pkg_env()
+{
+    [ ! -f @PH_PALUDISCONFDIR@/package_env.conf ] && return
+    # Select configured environments
+    local envs=`grep "^${CATEGORY}/${PN}\s" @PH_PALUDISCONFDIR@/package_env.conf | sed "s,${CATEGORY}/${PN},,"`
+    for conf in $envs; do
+        if [ -f @PH_PALUDISCONFDIR@/env.conf.d/${conf}.conf ]; then
+            source @PH_PALUDISCONFDIR@/env.conf.d/${conf}.conf
+        else
+            ewarn "Ignore undefined environment configuration: ${conf}"
+        fi
+    done
+}
+
+# Do it!
+setup_pkg_env
+
+# kate: hl bash;

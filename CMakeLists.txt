@@ -31,6 +31,7 @@ include(GNUInstallDirs)
 # Setup package paths
 set(PH_PREFIX         "${CMAKE_INSTALL_PREFIX}")
 set(PH_BINDIR         "${CMAKE_INSTALL_FULL_BINDIR}")
+set(PH_LIBEXECDIR     "${CMAKE_INSTALL_FULL_LIBEXECDIR}/paludis-hooks")
 set(PH_DATAROOTDIR    "${CMAKE_INSTALL_FULL_DATAROOTDIR}/paludis-hooks")
 set(PH_DOCSDIR        "${CMAKE_INSTALL_FULL_DOCDIR}")
 if(${PH_PREFIX} MATCHES "/usr")
@@ -60,7 +61,7 @@ install(
     DESTINATION ${PH_HOOKSCONFDIR}
   )
 
-# Symlinks maintainer hook
+# Filesystem manager hook
 set(FILESYSTEM_MANAGER_DTD "${PH_DATAROOTDIR}/filesystem-manager/filesystem-manager.dtd")
 set(FILESYSTEM_MANAGER_XSL "${PH_DATAROOTDIR}/filesystem-manager/filesystem-manager.xsl")
 configure_file(filesystem-manager/filesystem-manager.conf.in filesystem-manager/filesystem-manager.conf @ONLY)
@@ -85,6 +86,21 @@ install(
     DIRECTORY filesystem-manager/commands
     DESTINATION ${PH_DATAROOTDIR}/filesystem-manager
   )
+
+# Package environment configurator
+configure_file(package.env/setup_pkg_env.bash.in package.env/setup_pkg_env.bash @ONLY)
+install(
+    FILES ${CMAKE_BINARY_DIR}/package.env/setup_pkg_env.bash
+    DESTINATION ${PH_LIBEXECDIR}
+  )
+install(
+    FILES
+        package.env/no-debug.conf
+        package.env/no-lto.conf
+    DESTINATION ${PH_PALUDISCONFDIR}/env.conf.d
+  )
+
+# Some other helpers...
 install(
     FILES profile.d/00-make-completion-wrapper.sh profile.d/cave-aliases.sh
     DESTINATION ${PH_PROFILEDIR}
@@ -92,10 +108,6 @@ install(
 install(
     FILES env.d/90cave
     DESTINATION ${PH_ENVDIR}
-  )
-install(
-    FILES README.md
-    DESTINATION ${PH_DOCSDIR}
   )
 
 if(PYTHONINTERP_FOUND)
@@ -108,3 +120,9 @@ if(PYTHONINTERP_FOUND)
         DESTINATION ${PH_PROFILEDIR}
       )
 endif()
+
+# Docs (not much)
+install(
+    FILES README.md
+    DESTINATION ${PH_DOCSDIR}
+  )
