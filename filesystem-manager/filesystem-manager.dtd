@@ -1,15 +1,21 @@
 <!ELEMENT commands (package*)>
 <!ATTLIST commands
-    version NMTOKEN "1.5"
+    version NMTOKEN "2.0"
     xmlns CDATA #FIXED "https://github.com/zaufi/paludis-hooks/#filesystem-management-hook"
     xmlns:smh CDATA #FIXED "https://github.com/zaufi/paludis-hooks/#filesystem-management-hook"
   >
 
-<!ELEMENT package (symlink|rm)+>
+<!ELEMENT package (symlink|rm|if)+>
 <!ATTLIST package
-    descr ID #IMPLIED
+    descr CDATA #IMPLIED
     spec CDATA #REQUIRED
     stop (true|false) "false"
+  >
+
+<!ELEMENT if (symlink|rm|if)+>
+<!ATTLIST if
+    use CDATA #REQUIRED
+    negate (true|false) "false"
   >
 
 <!ELEMENT symlink EMPTY>

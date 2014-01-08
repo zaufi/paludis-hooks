@@ -322,6 +322,28 @@ cmd_rm "<xsl:value-of select="$cd" />" "<xsl:value-of select="@dst" />"
 </xsl:template>
 
 <!--
+    Matching `if` nodes
+  -->
+<xsl:template match="fsmh:if[@use][@negate='false']">
+# Check use flags: <xsl:value-of select="@use" />
+if cmd_use "<xsl:value-of select="@use" />"; then
+    einfo "'<xsl:value-of select="@use" />' found in USE flags!"
+    <!-- Execute nested code -->
+    <xsl:apply-templates select="*" />
+fi
+</xsl:template>
+<xsl:template match="fsmh:if[@use][@negate='true']">
+# Check use flags: <xsl:value-of select="@use" />
+if cmd_use "<xsl:value-of select="@use" />"; then
+    true
+else
+    einfo "'<xsl:value-of select="@use" />' not found in USE flags!"
+    <!-- Execute nested code -->
+    <xsl:apply-templates select="*" />
+fi
+</xsl:template>
+
+<!--
     SPAM if debug turned ON
   -->
 <xsl:template name="debug">

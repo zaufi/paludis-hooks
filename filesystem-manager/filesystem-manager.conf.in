@@ -3,7 +3,7 @@
 <?xml-stylesheet type="text/xsl" href="@FILESYSTEM_MANAGER_XSL@"?>
 
 <commands
-    version="1.5"
+    version="2.0"
     xmlns:smh="https://github.com/zaufi/paludis-hooks/#filesystem-management-hook"
     xmlns="https://github.com/zaufi/paludis-hooks/#filesystem-management-hook"
   >
