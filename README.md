@@ -24,7 +24,7 @@ Filesystem Manager
 ------------------
 
 This plugin can be used to make some manipulations in a package's image (right after `make install`)
-and before it will be actually installed into the system. Particularly it used to make a _permanent_
+and before it will be actually merged into the system. Particularly it used to make a _permanent_
 symlinks to a documentation for some packages I use in my work, so even the package will be updated,
 bookmarks and history in my browser (I use it to view particular HTML docs) will be Ok.
 
@@ -78,6 +78,8 @@ TODO
 * Add ability to find target objects (files, dirs, whatever) by introducing smth
   like `find` item and iterate over results applying some other actions (ls, rm, & etc...)
 * Implement commands as **real** plugins... need to think about how to update DTD then.
+* Add a command to remove __everything__ from `/usr/share/doc` of any package unless
+  `USE=doc` specified
 
 Changelog
 =========

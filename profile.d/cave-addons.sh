@@ -7,32 +7,43 @@
 #
 function ebuild-for()
 {
-    cave print-ebuild-path $*
+    cave print-ebuild-path $* || exit 1
 }
 
-function _pkg_meta_diff_impl()
+function _pkg_ebuilds_diff()
 {
     local op="$1"
     local pkg="$2"
+    if [ -z "${pkg}" ]; then
+        return
+    fi
     local i
     for i in `ebuild-for -i "${pkg}"`; do
         p=`ebuild-for "${op}\`basename \"${i}\" .ebuild\`"`
-        diff ${PKG_META_DIFF_OPTIONS} "${i}" "${p}"
+        if [ -n "${p}" ]; then
+            diff ${PKG_META_DIFF_OPTIONS} "${i}" "${p}"
+        else
+            return
+        fi
     done
 }
 
 #
 # Show difference between installed package and the same in the portage tree
 #
+# TODO Better name?
+#
 function pkg-meta-diff()
 {
-    _pkg_meta_diff_impl '=' $*
+    _pkg_ebuilds_diff '=' $*
 }
 
 #
 # Show difference between installed ebuild and the next best available version
 #
-function pkg-next-diff()
+# TODO Better name?
+#
+function pkg-ebuild-diff()
 {
-    _pkg_meta_diff_impl '>' $*
+    _pkg_ebuilds_diff '>' $*
 }
