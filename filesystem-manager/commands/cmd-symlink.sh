@@ -13,6 +13,11 @@ function cmd_symlink()
     local src="$2"
     local dst="$3"
 
+    if [ -z "${D}" ]; then
+        eerror "Package image dir is undefined! Skip any actions..."
+        return
+    fi
+
     if [ -d "${D}/$cd" ]; then
         ebegin "Making the symlink $src --> $dst"
         cd "${D}/$cd" \

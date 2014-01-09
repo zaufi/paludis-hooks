@@ -14,6 +14,16 @@ function cmd_rm_reverse()
 {
     local cd="$1"
     local dst="$2"
+
+    if [ -z "${D}" ]; then
+        eerror "Package image dir is undefined! Skip any actions..."
+        return
+    fi
+    if [ -z "${T}" ]; then
+        eerror "Package temp dir is undefined! Skip any actions..."
+        return
+    fi
+
     if [ -d "${D}/${cd}" ]; then
         cd "${D}/${cd}"
         eval find ${dst} 2>/dev/null | sed 's,^\./,,' | sort > ${T}/rm_except.lst

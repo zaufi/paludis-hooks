@@ -12,6 +12,12 @@ function cmd_rm()
 {
     local cd="$1"
     local dst="$2"
+
+    if [ -z "${D}" ]; then
+        eerror "Package image dir is undefined! Skip any actions..."
+        return
+    fi
+
     if [ -d "${D}/${cd}" ]; then
         cd "${D}/${cd}"
         rm -vrf ${dst} 2>/dev/null && schedule_a_warning_after_all
