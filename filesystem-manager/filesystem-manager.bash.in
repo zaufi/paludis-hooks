@@ -56,8 +56,8 @@ function verify_dir()
 {
     if [ -n "${D}" ]; then
         # Make sure we have smth real in `D'!
-        local p1=`realpath "${1}"`
-        local p2=`realpath "${D}/$1"`
+        local p1=`realpath -mq "${1}"`
+        local p2=`realpath -mq "${D}/$1"`
         if [ "${p1}" != "${p2}" ]; then
             return 0
         fi
