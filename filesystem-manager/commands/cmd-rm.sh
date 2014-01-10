@@ -13,7 +13,7 @@ function cmd_rm()
     local cd="$1"
     local dst="$2"
 
-    if verify_dir "${cd}"; then
+    if ! verify_dir "${cd}"; then
         eerror "Package image dir is undefined! Skip any actions..."
         return
     fi
