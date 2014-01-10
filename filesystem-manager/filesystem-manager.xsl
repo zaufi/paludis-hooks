@@ -5,7 +5,7 @@
   >
 <!--
     Transform a config file into a shell script
-    Copyright (c), 2010-2012 by Alex Turbov <i.zaufi@gmail.com>
+    Copyright (c), 2010-2014 by Alex Turbov <i.zaufi@gmail.com>
   -->
 
 <xsl:output method="text" encoding="UTF-8"/>

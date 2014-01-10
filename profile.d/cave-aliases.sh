@@ -18,23 +18,23 @@ alias system-up='cave resolve ${CAVE_RESUME_FILE_OPT} -c -km -Km -Cs -P "*/*" -S
 #
 # Reuse cave bash completer to generate compltions for just introduced aliases
 #
-make-completion-wrapper _cave _cs cave search
+make_completion_wrapper _cave _cs cave search
 complete -o bashdefault -o default -F _cs cs
-make-completion-wrapper _cave _cm cave manage-search-index
+make_completion_wrapper _cave _cm cave manage-search-index
 complete -o bashdefault -o default -F _cm cm
-make-completion-wrapper _cave _cc cave contents
+make_completion_wrapper _cave _cc cave contents
 complete -o bashdefault -o default -F _cc cc
-make-completion-wrapper _cave _cr cave resolve
+make_completion_wrapper _cave _cr cave resolve
 complete -o bashdefault -o default -F _cr cr
-make-completion-wrapper _cave _crz cave resolve
+make_completion_wrapper _cave _crz cave resolve
 complete -o bashdefault -o default -F _crz crz
-make-completion-wrapper _cave _cw cave show
+make_completion_wrapper _cave _cw cave show
 complete -o bashdefault -o default -F _cw cw
-make-completion-wrapper _cave _co cave owner
+make_completion_wrapper _cave _co cave owner
 complete -o bashdefault -o default -F _co co
-make-completion-wrapper _cave _cu cave uninstall
+make_completion_wrapper _cave _cu cave uninstall
 complete -o bashdefault -o default -F _cu cu
-make-completion-wrapper _cave _cy cave sync
+make_completion_wrapper _cave _cy cave sync
 complete -o bashdefault -o default -F _cy cy
-make-completion-wrapper _cave _cz cave resume
+make_completion_wrapper _cave _cz cave resume
 complete -o bashdefault -o default -F _cz cz

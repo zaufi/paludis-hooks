@@ -5,7 +5,7 @@
 #
 # Get full ebuild path for package spec
 #
-function ebuild-for()
+function ebuild_for()
 {
     cave print-ebuild-path $* || exit 1
 }
@@ -18,8 +18,8 @@ function _pkg_ebuilds_diff()
         return
     fi
     local i
-    for i in `ebuild-for -i "${pkg}"`; do
-        p=`ebuild-for "${op}\`basename \"${i}\" .ebuild\`"`
+    for i in `ebuild_for -i "${pkg}"`; do
+        p=`ebuild_for "${op}\`basename \"${i}\" .ebuild\`"`
         if [ -n "${p}" ]; then
             diff ${PKG_META_DIFF_OPTIONS} "${i}" "${p}"
         else
@@ -33,7 +33,7 @@ function _pkg_ebuilds_diff()
 #
 # TODO Better name?
 #
-function pkg-meta-diff()
+function pkg_meta_diff()
 {
     _pkg_ebuilds_diff '=' $*
 }
@@ -43,7 +43,7 @@ function pkg-meta-diff()
 #
 # TODO Better name?
 #
-function pkg-ebuild-diff()
+function pkg_ebuild_diff()
 {
     _pkg_ebuilds_diff '>' $*
 }

@@ -19,7 +19,7 @@ function cmd_symlink()
     fi
 
     if [ -d "${D}/$cd" ]; then
-        ebegin "Making the symlink $src --> $dst"
+        ebegin "Making the symlink [$cd]: $src --> $dst"
         cd "${D}/$cd" \
           && ln -s $src $dst \
           && schedule_a_warning_after_all \

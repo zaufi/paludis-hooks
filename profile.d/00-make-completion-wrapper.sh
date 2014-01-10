@@ -2,7 +2,7 @@
 # Helper function to generate completion wrappers for aliased commands
 #
 
-function make-completion-wrapper()
+function make_completion_wrapper()
 {
     local function_name="$2"
     local arg_count=$(($#-3))
