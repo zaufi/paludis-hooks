@@ -13,7 +13,7 @@ function cmd_symlink()
     local src="$2"
     local dst="$3"
 
-    if [ -z "${D}" ]; then
+    if verify_dir "${cd}"; then
         eerror "Package image dir is undefined! Skip any actions..."
         return
     fi

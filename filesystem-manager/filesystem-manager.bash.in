@@ -20,7 +20,7 @@ if [ -n "${FSMH_DO_NOTHING}" ]; then
 fi
 
 if [ x"${PALUDIS_HOOK_DEBUG}" = 'xyes' ]; then
-    env | sort > /tmp/env.log
+    env | sort > /tmp/paludis-fsm-hook-env.log
 fi
 
 if [ ! -f ${CONFIG_FILE} ]; then
@@ -37,7 +37,7 @@ fi
 rememberfile="${T}/.filesystem_manager_was_here_${PALUDIS_PID}"
 export rememberfile
 
-issue_a_warning()
+function issue_a_warning()
 {
     ewarn "WARNING: ${CATEGORY}/${PF} package installation was altered by the filesystem manager hook."
     ewarn "WARNING: Before filing a bug, remove all configured rules, reinstall, and try again..."
@@ -52,6 +52,19 @@ function schedule_a_warning_after_all()
 }
 export -f schedule_a_warning_after_all
 
+function verify_dir()
+{
+    if [ -n "${D}" ]; then
+        # Make sure we have smth real in `D'!
+        local p1=`realpath "${1}"`
+        local p2=`realpath "${D}/$1"`
+        if [ "${p1}" != "${p2}" ]; then
+            return 0
+        fi
+    fi
+    return 1
+}
+export -f verify_dir
 
 result=0
 case "${HOOK}" in
