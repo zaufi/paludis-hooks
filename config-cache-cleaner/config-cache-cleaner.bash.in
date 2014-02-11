@@ -68,7 +68,7 @@ try_clean_cache_file()
             local -r old_cache_timestamp=`cat "${_ccc_rememberfile}"`
             local -r new_cache_timestamp=`stat -c '%Y' "${_tccf_cache_file}"`
             if [ "${old_cache_timestamp}" -lt "${new_cache_timestamp}" ]; then
-                einfo "Clean up the autoconf cache file: ${_tccf_cache_file}"
+                einfo "Clean up the autoconf cache file [`whoami`]: ${_tccf_cache_file}"
                 # TODO Make variables to remove configurable?
                 egrep -v 'ac_cv_env_(C[XP]{2}?|LD)FLAGS_(set|value)' "${_tccf_cache_file}" >"${T}"/config.cache \
                   && mv "${T}"/config.cache "${_tccf_cache_file}"
