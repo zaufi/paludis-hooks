@@ -51,11 +51,12 @@ try_clean_cache_file()
     if [ -e "${_ccc_rememberfile}" ]; then
         local _tgct_cache_file
         if _try_get_cache_file _tccf_cache_file; then
-        # Check if cache file has changed since configuration stage
-        local -r old_cache_timestamp=`cat "${_ccc_rememberfile}"`
-        local -r new_cache_timestamp=`stat -c '%Y' "${_tccf_cache_file}"`
-        if (( old_cache_timestamp < new_cache_timestamp )); then
-            einfo "Clean autoconf cache file: ${_tccf_cache_file}"
+            # Check if cache file has changed since configuration stage
+            local -r old_cache_timestamp=`cat "${_ccc_rememberfile}"`
+            local -r new_cache_timestamp=`stat -c '%Y' "${_tccf_cache_file}"`
+            if [ "${old_cache_timestamp}" -lt "${new_cache_timestamp}" ]; then
+                einfo "Clean autoconf cache file: ${_tccf_cache_file}"
+            fi
         fi
     fi
 }
