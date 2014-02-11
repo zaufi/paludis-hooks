@@ -43,6 +43,8 @@ try_get_cache_timestamp()
     if _try_get_cache_file _tgct_cache_file; then
         # Remember timestamp of the cache file
         stat -c '%Y' "${_tgct_cache_file}" >"${_ccc_rememberfile}"
+    else
+        echo '0' >"${_ccc_rememberfile}"
     fi
 }
 
