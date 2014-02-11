@@ -49,18 +49,15 @@ try_get_cache_timestamp()
 try_clean_cache_file()
 {
     if [ -e "${_ccc_rememberfile}" ]; then
-        local _tccf_cache_file
+        local _tgct_cache_file
         if _try_get_cache_file _tccf_cache_file; then
             # Check if cache file has changed since configuration stage
             local -r old_cache_timestamp=`cat "${_ccc_rememberfile}"`
             local -r new_cache_timestamp=`stat -c '%Y' "${_tccf_cache_file}"`
             if [ "${old_cache_timestamp}" -lt "${new_cache_timestamp}" ]; then
                 einfo "Clean autoconf cache file: ${_tccf_cache_file}"
-                local _tgct_sed_options
-                for i in ac_cv_env_{C,CXX,CPP,LD}FLAGS_{set,value}; do
-                    _tgct_sed_options="${_tgct_sed_options} -e 's,$i=.*,$i,'"
-                done
-                sed -i ${_tgct_sed_options} "${_tccf_cache_file}"
+                egrep -v 'ac_cv_env_(C[XP]{2}?|LD)FLAGS_(set|value)' "${_tccf_cache_file}" >"${T}"/config.cache \
+                  && mv "${T}"/config.cache "${_tccf_cache_file}"
             fi
         fi
     fi
@@ -71,7 +68,7 @@ case "${HOOK}" in
     ebuild_configure_pre)
         try_get_cache_timestamp
         ;;
-    ebuild_install_post)
+    ebuild_configure_post)
         if [ -e "${rememberfile}" ] ; then
             try_clean_cache_file
         fi
