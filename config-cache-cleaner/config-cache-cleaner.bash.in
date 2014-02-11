@@ -36,7 +36,6 @@ _try_get_cache_file()
             return 0
         elif [ x"${PALUDIS_HOOK_DEBUG}" = 'xyes' ]; then
                 einfo "config.cache file is not present in EXTRA_ECONF"
-            fi
         fi
     fi
     return 1
@@ -56,7 +55,6 @@ try_get_cache_timestamp()
         elif [ x"${PALUDIS_HOOK_DEBUG}" = 'xyes' ]; then
                 echo '0' >"${_ccc_rememberfile}"
                 einfo "Cache file ${_tgct_cache_file} is not present yet"
-            fi
         fi
     fi
 }
