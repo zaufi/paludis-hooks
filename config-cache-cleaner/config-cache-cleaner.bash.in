@@ -35,7 +35,7 @@ _try_get_cache_file()
             fi
             return 0
         elif [ x"${PALUDIS_HOOK_DEBUG}" = 'xyes' ]; then
-                einfo "config.cache file is not present in EXTRA_ECONF"
+            einfo "config.cache file is not present in EXTRA_ECONF"
         fi
     fi
     return 1
@@ -53,8 +53,8 @@ try_get_cache_timestamp()
                 einfo "Cache file ${_tgct_cache_file} modification time: `date --date=@${_tgct_tm}`"
             fi
         elif [ x"${PALUDIS_HOOK_DEBUG}" = 'xyes' ]; then
-                echo '0' >"${_ccc_rememberfile}"
-                einfo "Cache file ${_tgct_cache_file} is not present yet"
+            echo '0' >"${_ccc_rememberfile}"
+            einfo "Cache file ${_tgct_cache_file} is not present yet"
         fi
     fi
 }
@@ -68,7 +68,8 @@ try_clean_cache_file()
             local -r old_cache_timestamp=`cat "${_ccc_rememberfile}"`
             local -r new_cache_timestamp=`stat -c '%Y' "${_tccf_cache_file}"`
             if [ "${old_cache_timestamp}" -lt "${new_cache_timestamp}" ]; then
-                einfo "Clean autoconf cache file: ${_tccf_cache_file}"
+                einfo "Clean up the autoconf cache file: ${_tccf_cache_file}"
+                # TODO Make variables to remove configurable?
                 egrep -v 'ac_cv_env_(C[XP]{2}?|LD)FLAGS_(set|value)' "${_tccf_cache_file}" >"${T}"/config.cache \
                   && mv "${T}"/config.cache "${_tccf_cache_file}"
             fi

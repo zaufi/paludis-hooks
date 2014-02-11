@@ -73,16 +73,18 @@ TODO
 ====
 
 * Add more commands! Like `*zip` smth...
-* Add ability to glob a package IDs. Like `*/*` or `dev-libs/*` (done). Possible w/ smth
-  like `except` items to specify rule exceptions (ORLY?)
 * Add ability to find target objects (files, dirs, whatever) by introducing smth
-  like `find` item and iterate over results applying some other actions (ls, rm, & etc...)
-* Implement commands as **real** plugins... need to think about how to update DTD then.
-* Add a command to remove __everything__ from `/usr/share/doc` of any package unless
-  `USE=doc` specified
+  like `find` item and iterate over results applying some other actions (`ln`, `rm`, & etc...)
+* Implement FSM commands as **real** plugins... need to think about how to update (merge) DTD then.
 
 Changelog
 =========
+
+Version 0.9
+-----------
+* add a `if` command and the only, nowadays, expression type to check presence of some `USE`
+* add `config-cache-clear` hook to remove some harmful cached values from a `config.cache`
+  shared among packages
 
 Version 0.8
 -----------
