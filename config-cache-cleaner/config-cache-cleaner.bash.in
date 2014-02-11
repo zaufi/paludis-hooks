@@ -56,6 +56,8 @@ try_clean_cache_file()
             local -r new_cache_timestamp=`stat -c '%Y' "${_tccf_cache_file}"`
             if [ "${old_cache_timestamp}" -lt "${new_cache_timestamp}" ]; then
                 einfo "Clean autoconf cache file: ${_tccf_cache_file}"
+                egrep -v 'ac_cv_env_(CX{2}?|LD)FLAGS_(set|value)' "${_tccf_cache_file}" >"${T}"/config.cache \
+                  && mv "${T}"/config.cache "${_tccf_cache_file}"
             fi
         fi
     fi
