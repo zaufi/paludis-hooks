@@ -28,10 +28,15 @@ _try_get_cache_file()
         # Check if --cache-file was specified in EXTRA_ECONF
         # TODO It will fail if cache file name (or path) contains spaces
         local -r _tgcf_cache_file=`sed 's,.*--cache-file=\([^\s]\+\).*,\1,' <<<"${EXTRA_ECONF}"`
-        if [ -n "${_tgcf_cache_file}" -a -e "${_tgcf_cache_file}" ]; then
+        if [ -n "${_tgcf_cache_file}" ]; then
             eval "${_tgcf_var}='${_tgcf_cache_file}'"
-            einfo "Found autoconf cache file: ${_tgcf_cache_file}"
+            if [ x"${PALUDIS_HOOK_DEBUG}" = 'xyes' ]; then
+                einfo "Got cache file: ${_tgcf_cache_file}"
+            fi
             return 0
+        elif [ x"${PALUDIS_HOOK_DEBUG}" = 'xyes' ]; then
+                einfo "config.cache file is not present in EXTRA_ECONF"
+            fi
         fi
     fi
     return 1
@@ -41,10 +46,18 @@ try_get_cache_timestamp()
 {
     local _tgct_cache_file
     if _try_get_cache_file _tgct_cache_file; then
-        # Remember timestamp of the cache file
-        stat -c '%Y' "${_tgct_cache_file}" >"${_ccc_rememberfile}"
-    else
-        echo '0' >"${_ccc_rememberfile}"
+        if [ -e "${_tgct_cache_file}" ]; then
+            # Remember timestamp of the cache file
+            stat -c '%Y' "${_tgct_cache_file}" >"${_ccc_rememberfile}"
+            if [ x"${PALUDIS_HOOK_DEBUG}" = 'xyes' ]; then
+                local _tgct_tm=`cat "${_tgct_cache_file}"`
+                einfo "Cache file ${_tgct_cache_file} modification time: `date --date=@${_tgct_tm}`"
+            fi
+        elif [ x"${PALUDIS_HOOK_DEBUG}" = 'xyes' ]; then
+                echo '0' >"${_ccc_rememberfile}"
+                einfo "Cache file ${_tgct_cache_file} is not present yet"
+            fi
+        fi
     fi
 }
 
