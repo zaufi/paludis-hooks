@@ -82,9 +82,7 @@ case "${HOOK}" in
         try_get_cache_timestamp
         ;;
     ebuild_configure_post)
-        if [ -e "${rememberfile}" ] ; then
-            try_clean_cache_file
-        fi
+        try_clean_cache_file
         ;;
 esac
 
