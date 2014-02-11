@@ -1,0 +1,67 @@
+#!/bin/bash
+#
+# Paludis hook script to clean a shared config.cache after a package gets installed.
+#
+# Copyright (c), 2014 by Alex Turbov <i.zaufi@gmail.com>
+#
+# Version: @PH_VERSION@
+#
+
+source ${PALUDIS_EBUILD_DIR}/echo_functions.bash
+
+_ccc_rememberfile="${T}/.config_cache_cleaner_was_here_${PALUDIS_PID}"
+
+_try_get_cache_file()
+{
+    local _tgcf_var="$1"
+    if [ -z "${_tgcf_var}" ]; then
+        return 1
+    fi
+    # Make sure EXTRA_ECONF is here
+    if [ -n "${EXTRA_ECONF}" ]; then
+        # Check if --cache-file was specified in EXTRA_ECONF
+        # TODO It will fail if cache file name (or path) contains spaces
+        local cache_file=$(sed 's,.*--cache-file=\([^\s]\+\).*,\1,' <<<"${EXTRA_ECONF}")
+        if [ -n "${cache_file}" -a -e "${cache_file}" ]; then
+            eval "${_tgcf_var}=${cache_file}"
+            einfo "Found autoconf cache file: ${cache_file}"
+            return 0
+        fi
+    fi
+    return 1
+}
+
+try_get_cache_timestamp()
+{
+    local cache_file
+    if _try_get_cache_file cache_file; then
+        # Remember timestamp of the cache file
+        stat -c '%Y' "${cache_file}" >"${_ccc_rememberfile}"
+    fi
+}
+
+try_clean_cache_file()
+{
+    if [ -e "${_ccc_rememberfile}" ]; then
+        # Check if cache file has changed since configuration stage
+        local old_cache_timestamp=`cat "${_ccc_rememberfile}"`
+        local new_cache_timestamp=`stat -c '%Y' "${cache_file}"`
+        if (( old_cache_timestamp < new_cache_timestamp )); then
+            einfo "Clean autoconf cache file: ${cache_file}"
+        fi
+    fi
+}
+
+case "${HOOK}" in
+    # ATTENTION This script must be symlinked to the following hook dirs:
+    ebuild_configure_pre)
+        try_get_cache_timestamp
+        ;;
+    ebuild_install_post)
+        if [ -e "${rememberfile}" ] ; then
+            try_clean_cache_file
+        fi
+        ;;
+esac
+
+# kate: hl bash;

@@ -34,8 +34,8 @@ if [ "$?" != "0" ]; then
     exit 1                                                  # Nothing to do w/ incorrect config
 fi
 
-rememberfile="${T}/.filesystem_manager_was_here_${PALUDIS_PID}"
-export rememberfile
+_fsm_rememberfile="${T}/.filesystem_manager_was_here_${PALUDIS_PID}"
+export _fsm_rememberfile
 
 function issue_a_warning()
 {
@@ -45,8 +45,8 @@ function issue_a_warning()
 
 function schedule_a_warning_after_all()
 {
-    if [ ! -e ${rememberfile} ]; then
-        touch "${rememberfile}"
+    if [ ! -e ${_fsm_rememberfile} ]; then
+        touch "${_fsm_rememberfile}"
     fi
     return 0
 }
@@ -91,7 +91,7 @@ case "${HOOK}" in
         /bin/sh $tmp_file
         result=$?
 
-        if [ -e "${rememberfile}" ]; then
+        if [ -e "${_fsm_rememberfile}" ]; then
             issue_a_warning
         fi
         ;;
