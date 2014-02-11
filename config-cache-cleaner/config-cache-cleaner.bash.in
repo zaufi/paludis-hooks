@@ -1,6 +1,12 @@
 #!/bin/bash
 #
 # Paludis hook script to clean a shared config.cache after a package gets installed.
+# Clean required cuz some packages wanted to add some other ('cept provided by a package
+# manager) compiler/linker options, so they are goes to a cache file and later lead to
+# a conflict error message (when another autotools based package gets compiled).
+#
+# This hook will remove CFLAGS/CXXFLAGS/LDFLAGS from the cache file, so conflict
+# will not happened.
 #
 # Copyright (c), 2014 by Alex Turbov <i.zaufi@gmail.com>
 #
@@ -13,7 +19,7 @@ _ccc_rememberfile="${T}/.config_cache_cleaner_was_here_${PALUDIS_PID}"
 
 _try_get_cache_file()
 {
-    local _tgcf_var="$1"
+    local -r _tgcf_var="$1"
     if [ -z "${_tgcf_var}" ]; then
         return 1
     fi
@@ -21,10 +27,10 @@ _try_get_cache_file()
     if [ -n "${EXTRA_ECONF}" ]; then
         # Check if --cache-file was specified in EXTRA_ECONF
         # TODO It will fail if cache file name (or path) contains spaces
-        local cache_file=$(sed 's,.*--cache-file=\([^\s]\+\).*,\1,' <<<"${EXTRA_ECONF}")
-        if [ -n "${cache_file}" -a -e "${cache_file}" ]; then
-            eval "${_tgcf_var}=${cache_file}"
-            einfo "Found autoconf cache file: ${cache_file}"
+        local -r _tgcf_cache_file=`sed 's,.*--cache-file=\([^\s]\+\).*,\1,' <<<"${EXTRA_ECONF}"`
+        if [ -n "${_tgcf_cache_file}" -a -e "${_tgcf_cache_file}" ]; then
+            eval "${_tgcf_var}='${_tgcf_cache_file}'"
+            einfo "Found autoconf cache file: ${_tgcf_cache_file}"
             return 0
         fi
     fi
@@ -33,21 +39,23 @@ _try_get_cache_file()
 
 try_get_cache_timestamp()
 {
-    local cache_file
-    if _try_get_cache_file cache_file; then
+    local _tgct_cache_file
+    if _try_get_cache_file _tgct_cache_file; then
         # Remember timestamp of the cache file
-        stat -c '%Y' "${cache_file}" >"${_ccc_rememberfile}"
+        stat -c '%Y' "${_tgct_cache_file}" >"${_ccc_rememberfile}"
     fi
 }
 
 try_clean_cache_file()
 {
     if [ -e "${_ccc_rememberfile}" ]; then
+        local _tgct_cache_file
+        if _try_get_cache_file _tccf_cache_file; then
         # Check if cache file has changed since configuration stage
-        local old_cache_timestamp=`cat "${_ccc_rememberfile}"`
-        local new_cache_timestamp=`stat -c '%Y' "${cache_file}"`
+        local -r old_cache_timestamp=`cat "${_ccc_rememberfile}"`
+        local -r new_cache_timestamp=`stat -c '%Y' "${_tccf_cache_file}"`
         if (( old_cache_timestamp < new_cache_timestamp )); then
-            einfo "Clean autoconf cache file: ${cache_file}"
+            einfo "Clean autoconf cache file: ${_tccf_cache_file}"
         fi
     fi
 }
