@@ -9,8 +9,8 @@
 
 source ${PALUDIS_EBUILD_DIR}/echo_functions.bash
 
+declare -r CONFIG_FILE="@PH_HOOKSCONFDIR@/auto-patch.conf"
 PATCH_DIR="@PH_LOCALSTATEDIR@/db/paludis/autopatches"
-CONFIG_FILE="@PH_HOOKSCONFDIR@/auto-patch.conf"
 
 # Configuration override
 [ -f ${CONFIG_FILE} ] && source ${CONFIG_FILE}
@@ -21,7 +21,7 @@ _ap_rememberfile="${T}/.autopatch_was_here_${PALUDIS_PID}"
 
 issue_a_warning()
 {
-    local tobe="$1"
+    local -r tobe="$1"
     ewarn "WARNING: ${CATEGORY}/${PF} package $tobe installed with additional patches applied by auto-patch hook."
     ewarn "WARNING: Before filing a bug, remove all patches, reinstall, and try again..."
 }
