@@ -156,6 +156,7 @@ try_update_disk_usage_stats()
     if [ "${_tudus_need_update}" = '1' ]; then
         _wdm_disk_usage_stats[${_tcwd_pkg_name}]="${_tudus_total_size}"
         if [ x"${PALUDIS_HOOK_DEBUG}" = 'xyes' ]; then
+            einfo "Storing disk usage stats cache: ${DISK_USAGE_STATS_CACHE}"
             declare -p _wdm_disk_usage_stats
         fi
         # Write stats back to the file
@@ -177,8 +178,10 @@ try_clean_workdir()
 
     local -r _tcwd_pkg_dir=`basename ${PALUDIS_PACKAGE_BUILDDIR}`
     if [ -d "${_wdm_shmbasedir}/${_tcwd_pkg_dir}" ]; then
-        echo "rm -fr \"${_wdm_shmbasedir}/${_tcwd_pkg_dir}\""
-        rm -fr "${_wdm_shmbasedir}/${_tcwd_pkg_dir}"
+        if [ x"${PALUDIS_HOOK_DEBUG}" = 'xyes' ]; then
+            einfo "Going to clean: ${_wdm_shmbasedir}/${_tcwd_pkg_dir}"
+        fi
+        rm -rf "${_wdm_shmbasedir}/${_tcwd_pkg_dir}"
     fi
 }
 
