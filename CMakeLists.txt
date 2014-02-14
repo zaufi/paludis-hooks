@@ -5,7 +5,7 @@
 cmake_minimum_required(VERSION 2.6)
 project(paludis-hooks NONE)
 
-set(PH_VERSION "0.9")
+set(PH_VERSION "1.0")
 
 # seek for xmllint to validate our XML files
 find_program(XMLLINT_EXECUTABLE xmllint)
@@ -46,7 +46,6 @@ set(PH_HOOKSCONFDIR   "${PH_PALUDISCONFDIR}/hooks/configs")
 set(PH_PROFILEDIR     "${PH_SYSCONFDIR}/profile.d")
 set(PH_ENVDIR         "${PH_SYSCONFDIR}/env.d")
 # NOTE Hardcoded nowadays! Dunno is there any reason to detect it...
-set(PH_HOOKSDIR       "/usr/share/paludis/hooks")
 set(PH_COMMANDSDIR    "/usr/libexec/cave/commands")
 
 # Autopatch hook
@@ -54,7 +53,7 @@ configure_file(auto-patch/auto-patch.bash.in auto-patch/auto-patch.bash @ONLY)
 configure_file(auto-patch/auto-patch.conf.in auto-patch/auto-patch.conf @ONLY)
 install(
     PROGRAMS ${CMAKE_BINARY_DIR}/auto-patch/auto-patch.bash
-    DESTINATION ${PH_HOOKSDIR}
+    DESTINATION ${PH_DATAROOTDIR}
   )
 install(
     FILES ${CMAKE_BINARY_DIR}/auto-patch/auto-patch.conf
@@ -69,7 +68,7 @@ configure_file(
   )
 install(
     PROGRAMS ${CMAKE_BINARY_DIR}/config-cache-cleaner/config-cache-cleaner.bash
-    DESTINATION ${PH_HOOKSDIR}
+    DESTINATION ${PH_DATAROOTDIR}
   )
 
 # Filesystem manager hook
@@ -79,7 +78,7 @@ configure_file(filesystem-manager/filesystem-manager.conf.in filesystem-manager/
 configure_file(filesystem-manager/filesystem-manager.bash.in filesystem-manager/filesystem-manager.bash @ONLY)
 install(
     PROGRAMS ${CMAKE_BINARY_DIR}/filesystem-manager/filesystem-manager.bash
-    DESTINATION ${PH_HOOKSDIR}
+    DESTINATION ${PH_DATAROOTDIR}
   )
 install(
     FILES ${CMAKE_BINARY_DIR}/filesystem-manager/filesystem-manager.conf
@@ -121,7 +120,7 @@ configure_file(
   )
 install(
     PROGRAMS ${CMAKE_BINARY_DIR}/workdir-tmpfs/workdir-tmpfs.bash
-    DESTINATION ${PH_HOOKSDIR}
+    DESTINATION ${PH_DATAROOTDIR}
   )
 
 # Some other helpers...
