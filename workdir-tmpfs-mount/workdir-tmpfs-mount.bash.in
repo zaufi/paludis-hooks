@@ -40,7 +40,8 @@ try_prepare_workdir()
         einfo "RAM usage stats for ${P} is not available. Will build the pacakge on disk this time..."
         return 0
     fi
-    local -r _tpwd_pkg_name="${CATEGORY/-/_}_${PN/-/_}"
+
+    local -r _tpwd_pkg_name="${CATEGORY}_${PN}"
     if [ ${_wdm_disk_usage_stats[${_tpwd_pkg_name}]+_} ]; then
         local _tpwd_estimated_size=${_wdm_disk_usage_stats[${_tpwd_pkg_name}]}
         local -r _tpwd_10_percents=$(( _tpwd_estimated_size / 10 ))
@@ -106,7 +107,7 @@ try_update_disk_usage_stats()
         declare -A _wdm_disk_usage_stats
     fi
     # Add or update the usage value
-    local -r _tcwd_pkg_name="${CATEGORY/-/_}_${PN/-/_}"
+    local -r _tcwd_pkg_name="${CATEGORY}_${PN}"
     local _tudus_need_update='0'
     if [ ${_wdm_disk_usage_stats[${_tcwd_pkg_name}]+_} ]; then
         # Update the key
