@@ -24,6 +24,7 @@ try_prepare_workdir()
 {
     # Check if package should be build in tmpfs
     if [ "${WDM_DISABLE_TMPFS_BUILD}" = "yes" ]; then
+        einfo 'Disable RAM based build'
         return 0                                            # No! Do nothing...
     fi
 
