@@ -177,8 +177,8 @@ try_clean_workdir()
 
     local -r _tcwd_pkg_dir=`basename ${PALUDIS_PACKAGE_BUILDDIR}`
     if [ -d "${_wdm_shmbasedir}/${_tcwd_pkg_dir}" ]; then
-        einfo "Going to clean: ${_wdm_shmbasedir}/${_tcwd_pkg_dir}"
-        rm -rf "${_wdm_shmbasedir}/${_tcwd_pkg_dir}"
+        echo "rm -fr \"${_wdm_shmbasedir}/${_tcwd_pkg_dir}\""
+        rm -fr "${_wdm_shmbasedir}/${_tcwd_pkg_dir}"
     fi
 }
 
