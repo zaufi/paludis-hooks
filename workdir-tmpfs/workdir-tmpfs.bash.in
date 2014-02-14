@@ -116,7 +116,7 @@ try_update_disk_usage_stats()
 
     local -r _tudus_total_size=`du -LsB1 "${PALUDIS_PACKAGE_BUILDDIR}" | cut -f1`
     local -r _tudus_total_size_human=`du -Lhs "${PALUDIS_PACKAGE_BUILDDIR}" | cut -f1`
-    einfo "${HOOK}: ${_tudus_total_size_human} RAM used for working directory [${PALUDIS_PACKAGE_BUILDDIR}]"
+    einfo "${_tudus_total_size_human} RAM used for working directory [${PALUDIS_PACKAGE_BUILDDIR}]"
     # Update disk usage stats cache
     if [ -f "${DISK_USAGE_STATS_CACHE}" ]; then
         source "${DISK_USAGE_STATS_CACHE}"
@@ -177,7 +177,7 @@ try_clean_workdir()
 
     local -r _tcwd_pkg_dir=`basename ${PALUDIS_PACKAGE_BUILDDIR}`
     if [ -d "${_wdm_shmbasedir}/${_tcwd_pkg_dir}" ]; then
-        einfo "${HOOK} Going to clean: ${_wdm_shmbasedir}/${_tcwd_pkg_dir}"
+        einfo "Going to clean: ${_wdm_shmbasedir}/${_tcwd_pkg_dir}"
         rm -rf "${_wdm_shmbasedir}/${_tcwd_pkg_dir}"
     fi
 }
