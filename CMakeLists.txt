@@ -115,12 +115,12 @@ install(
 
 # Config Cache Cleaner hook
 configure_file(
-    workdir-tmpfs-mount/workdir-tmpfs-mount.bash.in
-    workdir-tmpfs-mount/workdir-tmpfs-mount.bash
+    workdir-tmpfs/workdir-tmpfs.bash.in
+    workdir-tmpfs/workdir-tmpfs.bash
     @ONLY
   )
 install(
-    PROGRAMS ${CMAKE_BINARY_DIR}/workdir-tmpfs-mount/workdir-tmpfs-mount.bash
+    PROGRAMS ${CMAKE_BINARY_DIR}/workdir-tmpfs/workdir-tmpfs.bash
     DESTINATION ${PH_HOOKSDIR}
   )
 

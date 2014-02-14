@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Paludis hook script to mount build directory into the RAM.
+# Paludis hook script to manage build directory in the RAM.
 #
 # Copyright (c), 2014 by Alex Turbov <i.zaufi@gmail.com>
 #
