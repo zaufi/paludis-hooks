@@ -20,11 +20,26 @@ DISK_USAGE_STATS_CACHE="@PH_LOCALSTATEDIR@/cache/paludis/disk_usage_stats.cache"
 
 _wdm_shmbasedir="/dev/shm"
 
+declare -r _B2H_PROGRAM=`cat <<_EOF
+    {
+        hum[1024**3] = "Gb";
+        hum[1024**2] = "Mb";
+        hum[1024] = "Kb";
+        for (x = 1024**3; x >= 1024; x /= 1024)
+        {
+            if (bytes >= x)
+            {
+                printf "%.2f%s", bytes / x, hum[x];
+                break;
+            }
+        }
+    }
+_EOF`
+
 
 _bytes_to_human()
 {
-    echo "$1" | awk '{ sum=$1 ; hum[1024**3]="Gb";hum[1024**2]="Mb";hum[1024]="Kb"; ' \
-        'for (x=1024**3; x>=1024; x/=1024){ if (sum>=x) { printf "%.2f%s",sum/x,hum[x];break } }}'
+    echo 1 | awk -v bytes="$1" "${_B2H_PROGRAM}"
 }
 
 try_prepare_workdir()
@@ -67,9 +82,10 @@ try_prepare_workdir()
             einfo "${P}: prev=${_wdm_disk_usage_stats[${_tpwd_pkg_name}]}, est=${_tpwd_estimated_size}, avail=${_tpwd_shm_avail}"
         fi
         if (( _tpwd_shm_avail < _tpwd_estimated_size )); then
-            ewarn "Not enough RAM to build this package -- ~" \
-                "$(_bytes_to_human ${_tpwd_estimated_size}) required, $(_bytes_to_human ${_tpwd_shm_avail}) available. " \
-                "Will use disk instead..."
+            einfo "Not enough RAM to build this package --" \
+                "~$(_bytes_to_human ${_tpwd_estimated_size}) required, but $(_bytes_to_human ${_tpwd_shm_avail}) available. "
+            einfo "Will use disk instead..."
+            # TODO Check disk space availabe? ;-)
             return 0
         fi
     else
