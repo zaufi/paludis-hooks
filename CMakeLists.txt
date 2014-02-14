@@ -113,6 +113,17 @@ install(
     DESTINATION ${PH_PALUDISCONFDIR}/env.conf.d
   )
 
+# Config Cache Cleaner hook
+configure_file(
+    workdir-tmpfs-mount/workdir-tmpfs-mount.bash.in
+    workdir-tmpfs-mount/workdir-tmpfs-mount.bash
+    @ONLY
+  )
+install(
+    PROGRAMS ${CMAKE_BINARY_DIR}/workdir-tmpfs-mount/workdir-tmpfs-mount.bash
+    DESTINATION ${PH_HOOKSDIR}
+  )
+
 # Some other helpers...
 install(
     FILES profile.d/00-make-completion-wrapper.sh profile.d/cave-aliases.sh

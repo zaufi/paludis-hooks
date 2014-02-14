@@ -1,0 +1,142 @@
+#!/bin/bash
+#
+# Paludis hook script to mount build directory into the RAM.
+#
+# Copyright (c), 2014 by Alex Turbov <i.zaufi@gmail.com>
+#
+# Version: @PH_VERSION@
+#
+
+source ${PALUDIS_EBUILD_DIR}/echo_functions.bash
+
+_wdm_shmbasedir="/dev/shm"
+_wdm_stats_cache="/var/cache/paludis/disk_usage_stats.cache"
+
+try_prepare_workdir()
+{
+    # Check if package should be build in tmpfs
+    if [ "${WDM_DISABLE_TMPFS_BUILD}" = "yes" ]; then
+        return 0                                            # No! Do nothing...
+    fi
+
+    # Check if package can be build in tmpfs
+    if [ -d "${PALUDIS_PACKAGE_BUILDDIR}" ]; then
+        # TODO Handle errors
+        local -r _tmwd_pwd=`pwd`
+        local -r _tmwd_pkg_dir=`basename ${PALUDIS_PACKAGE_BUILDDIR}`
+        einfo "Moving ${PALUDIS_PACKAGE_BUILDDIR}  --> ${_wdm_shmbasedir}"
+        test -e "${_wdm_shmbasedir}/${_tmwd_pkg_dir}" && rm -rf "${_wdm_shmbasedir}/${_tmwd_pkg_dir}"
+        mv "${PALUDIS_PACKAGE_BUILDDIR}" "${_wdm_shmbasedir}"
+        einfo "Link it back ${_wdm_shmbasedir}/${_tmwd_pkg_dir} --> ${PALUDIS_PACKAGE_BUILDDIR}"
+        ln -sdf "${_wdm_shmbasedir}/${_tmwd_pkg_dir}" "`dirname ${PALUDIS_PACKAGE_BUILDDIR}`"
+        cd "${_tmwd_pwd}"
+    fi
+}
+
+try_update_disk_usage_stats()
+{
+    case "${PALUDIS_PACKAGE_BUILDDIR}" in
+    '' | *-uninstall)
+        return 0                                        # Do nothing for uninstalled package
+        ;;
+    esac
+
+    local -r _tudus_total_size=`du -Lbs "${PALUDIS_PACKAGE_BUILDDIR}" | cut -f1`
+    local -r _tudus_total_size_human=`du -Lhs "${PALUDIS_PACKAGE_BUILDDIR}" | cut -f1`
+    einfo "${HOOK}: ${_tudus_total_size_human} RAM used for working directory [${PALUDIS_PACKAGE_BUILDDIR}]"
+    # Update disk usage stats cache
+    if [ -f "${_wdm_stats_cache}" ]; then
+        source "${_wdm_stats_cache}"
+        if [ x"${PALUDIS_HOOK_DEBUG}" = 'xyes' ]; then
+            einfo "Loading disk usage stats cache from ${_wdm_stats_cache}"
+            set | grep '^_wdm_disk_usage_stats=('
+        fi
+    fi
+    # Make a new associative array if still not declared
+    if [ ! -v _wdm_disk_usage_stats ]; then
+        if [ x"${PALUDIS_HOOK_DEBUG}" = 'xyes' ]; then
+            einfo "Initiate disk usage stats cache"
+        fi
+        declare -A _wdm_disk_usage_stats
+    fi
+    # Add or update the usage value
+    local -r _tcwd_pkg_name="${CATEGORY/-/_}_${PN/-/_}"
+    local _tudus_need_update='0'
+    if [ ${_wdm_disk_usage_stats[${_tcwd_pkg_name}]+_} ]; then
+        # Update the key
+        local -r _tuwd_prev_total_size=${_wdm_disk_usage_stats[${_tcwd_pkg_name}]}
+        if (( _tuwd_prev_total_size <  _tudus_total_size )); then
+            _tudus_need_update='1'
+            if [ x"${PALUDIS_HOOK_DEBUG}" = 'xyes' ]; then
+                einfo "Going to update an entry [${_wdm_stats_cache}]: ${_tcwd_pkg_name} -> ${_tudus_total_size} (${_tuwd_prev_total_size})"
+            fi
+        elif [ "${WDM_FORCE_UPDATE_STATS}" ]; then
+            _tudus_need_update='1'
+            if [ x"${PALUDIS_HOOK_DEBUG}" = 'xyes' ]; then
+                einfo "Going to force-update an entry [${_wdm_stats_cache}]: ${_tcwd_pkg_name} -> ${_tudus_total_size}"
+            fi
+        fi
+    else
+        # Set a new key/value
+        _tudus_need_update='1'
+        if [ x"${PALUDIS_HOOK_DEBUG}" = 'xyes' ]; then
+            einfo "Going to add a new entry [${_wdm_stats_cache}]: ${_tcwd_pkg_name} -> ${_tudus_total_size}"
+        fi
+    fi
+    if [ "${_tudus_need_update}" = '1' ]; then
+        _wdm_disk_usage_stats[${_tcwd_pkg_name}]="${_tudus_total_size}"
+        if [ x"${PALUDIS_HOOK_DEBUG}" = 'xyes' ]; then
+            set | grep '^_wdm_disk_usage_stats=('
+        fi
+        # Write stats back to the file
+        set | grep '^_wdm_disk_usage_stats=(' >"${_wdm_stats_cache}"
+    fi
+    echo "LAST CMD RESULT: $?"
+}
+
+try_clean_workdir()
+{
+    case "${PALUDIS_PACKAGE_BUILDDIR}" in
+    '' | *-uninstall)
+        return 0                                        # Do nothing for uninstalled package
+        ;;
+    esac
+
+    local -r _tcwd_pkg_dir=`basename ${PALUDIS_PACKAGE_BUILDDIR}`
+    if [ -d "${_wdm_shmbasedir}/${_tcwd_pkg_dir}" ]; then
+        einfo "${HOOK} Going to clean: ${_wdm_shmbasedir}/${_tcwd_pkg_dir}"
+        rm -rf "${_wdm_shmbasedir}/${_tcwd_pkg_dir}"
+    fi
+}
+
+try_keep_workdir()
+{
+    # NOTE At this point PALUDIS_PACKAGE_BUILDDIR is not defined!
+    # So we have to assemble it manually. It is also known, that
+    # `pwd` is a paludis build dir...
+    local -r _tkwd_pwd=`pwd`
+    local -r _tkwd_pkg_dir=`sed -e 's,:.*,,' -e 's,/,-,' <<<${TARGET}`
+    local -r PALUDIS_PACKAGE_BUILDDIR="${_tkwd_pwd}/${_tkwd_pkg_dir}"
+    if [ -L "${PALUDIS_PACKAGE_BUILDDIR}" ]; then
+        echo "Moving failed build: ${_wdm_shmbasedir}/${_tkwd_pkg_dir} --> ${PALUDIS_PACKAGE_BUILDDIR}"
+        rm "${PALUDIS_PACKAGE_BUILDDIR}" && mv "${_wdm_shmbasedir}/${_tkwd_pkg_dir}" "${_tkwd_pwd}"
+    fi
+}
+
+case "${HOOK}" in
+    # ATTENTION This script must be symlinked to the following hook dirs:
+    ebuild_init_post)
+        try_prepare_workdir
+        ;;
+    ebuild_tidyup_pre)
+        try_update_disk_usage_stats
+        ;;
+    ebuild_tidyup_post)
+        try_clean_workdir
+        ;;
+    *_fail)
+        try_keep_workdir
+        ;;
+esac
+
+# kate: hl bash;

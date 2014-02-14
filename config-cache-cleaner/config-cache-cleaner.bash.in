@@ -47,9 +47,8 @@ try_get_cache_timestamp()
     if _try_get_cache_file _tgct_cache_file; then
         if [ -e "${_tgct_cache_file}" ]; then
             # Remember timestamp of the cache file
-            stat -c '%Y' "${_tgct_cache_file}" >"${_ccc_rememberfile}"
+            local -r _tgct_tm=`stat -c '%Y' "${_tgct_cache_file}" | tee "${_ccc_rememberfile}"`
             if [ x"${PALUDIS_HOOK_DEBUG}" = 'xyes' ]; then
-                local _tgct_tm=`cat "${_tgct_cache_file}"`
                 einfo "Cache file ${_tgct_cache_file} modification time: `date --date=@${_tgct_tm}`"
             fi
         elif [ x"${PALUDIS_HOOK_DEBUG}" = 'xyes' ]; then
