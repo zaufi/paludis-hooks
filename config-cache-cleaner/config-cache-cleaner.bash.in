@@ -15,8 +15,6 @@
 
 source ${PALUDIS_EBUILD_DIR}/echo_functions.bash
 
-_ccc_rememberfile="${T}/.config_cache_cleaner_was_here_${PALUDIS_PID}"
-
 _try_get_cache_file()
 {
     local -r _tgcf_var="$1"
@@ -41,40 +39,18 @@ _try_get_cache_file()
     return 1
 }
 
-try_get_cache_timestamp()
-{
-    local _tgct_cache_file
-    if _try_get_cache_file _tgct_cache_file; then
-        if [ -e "${_tgct_cache_file}" ]; then
-            # Remember timestamp of the cache file
-            local -r _tgct_tm=`stat -c '%Y' "${_tgct_cache_file}" | tee "${_ccc_rememberfile}"`
-            if [ x"${PALUDIS_HOOK_DEBUG}" = 'xyes' ]; then
-                einfo "Cache file ${_tgct_cache_file} modification time: `date --date=@${_tgct_tm}`"
-            fi
-        elif [ x"${PALUDIS_HOOK_DEBUG}" = 'xyes' ]; then
-            echo '0' >"${_ccc_rememberfile}"
-            einfo "Cache file ${_tgct_cache_file} is not present yet"
-        fi
-    fi
-}
-
 try_clean_cache_file()
 {
-    if [ -e "${_ccc_rememberfile}" ]; then
-        local _tgct_cache_file
-        if _try_get_cache_file _tccf_cache_file; then
-            # Check if cache file has changed since configuration stage
-            local -r old_cache_timestamp=`cat "${_ccc_rememberfile}"`
-            local -r new_cache_timestamp=`stat -c '%Y' "${_tccf_cache_file}"`
-            if [ "${old_cache_timestamp}" -lt "${new_cache_timestamp}" ]; then
-                einfo "Clean up the autoconf cache file [`whoami`]: ${_tccf_cache_file}"
-                # ATTENTION Remove any cached environment variables
-                # Some ebuilds modify various exported vars and being saved
-                # it leads to other packages fail to build...
-                # TODO Make variables to remove configurable?
-                grep -v '^ac_cv_env_' "${_tccf_cache_file}" >"${T}"/config.cache \
-                  && mv "${T}"/config.cache "${_tccf_cache_file}"
-            fi
+    local _tccf_cache_file
+    if _try_get_cache_file _tccf_cache_file; then
+        if [ -w "${_tccf_cache_file}" ]; then
+            einfo "Clean up the autoconf cache file [`whoami`]: ${_tccf_cache_file}"
+            # ATTENTION Remove any cached environment variables
+            # Some ebuilds modify various exported vars and being saved
+            # it leads to other packages fail to build...
+            # TODO Make variables to remove configurable?
+            grep -v '^ac_cv_env_' "${_tccf_cache_file}" >"${T}"/config.cache \
+                && mv "${T}"/config.cache "${_tccf_cache_file}"
         fi
     fi
 }
@@ -82,9 +58,6 @@ try_clean_cache_file()
 case "${HOOK}" in
     # ATTENTION This script must be symlinked to the following hook dirs:
     ebuild_configure_pre)
-        try_get_cache_timestamp
-        ;;
-    ebuild_configure_post)
         try_clean_cache_file
         ;;
 esac
