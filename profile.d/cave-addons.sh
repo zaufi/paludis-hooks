@@ -15,7 +15,7 @@ function ebuild_for()
 #
 function show_ebuild_for()
 {
-    less ebuild_for $*
+    less `ebuild_for $*`
 }
 
 function _pkg_ebuilds_diff()
