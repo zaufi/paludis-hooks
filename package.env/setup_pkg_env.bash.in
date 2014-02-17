@@ -28,16 +28,21 @@ add-options()
 #
 remove-options()
 {
-    local var=${1}
+    local -r _ro_var="$1"
     shift
-    local val
-    eval "val=\$${var}"
-    local opt
-    for opt in $*; do
-        val=`sed "s%\W${opt}\b%%g" <<<${val}`
+    local -a _ro_new_value
+    local _ro_opt
+    local _ro_del_value
+
+    # Iterate over options in a variable
+    for _ro_opt in ${!_ro_var}; do
+        # Iterate over options to remove passed as function parameters
+        for _ro_del_value in "$@"; do
+            [[ ${_ro_opt} == ${_ro_del_value} ]] && continue 2
+        done
+        _ro_new_value+=( "${_ro_opt}" )
     done
-    local stmt="${var}=\"${val}\""
-    eval "${stmt}"
+    eval "${_ro_var}=\"${_ro_new_value}\""
 }
 
 setup_pkg_env()
