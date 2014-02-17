@@ -10,6 +10,14 @@ function ebuild_for()
     cave print-ebuild-path $* || exit 1
 }
 
+#
+# Display ebuild contents for package spec
+#
+function show_ebuild_for()
+{
+    less ebuild_for $*
+}
+
 function _pkg_ebuilds_diff()
 {
     local op="$1"
