@@ -42,7 +42,7 @@ remove-options()
         done
         _ro_new_value+=( "${_ro_opt}" )
     done
-    eval "${_ro_var}=\"${_ro_new_value}\""
+    eval "${_ro_var}=\"${_ro_new_value[@]}\""
 }
 
 setup_pkg_env()
