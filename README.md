@@ -1,73 +1,15 @@
 What is this?
 =============
 
-Here is a set of my hooks (plugins) for plaudis I wrote and use few years already.
+Here is a set of my hooks (plugins) for [plaudis](http://paludis.exherbo.org) I wrote and use few years already.
 
-
-Autopatch
----------
-
-This plugin used to apply a patch to some package w/o necessity to (re)write an ebuild for it.
-Particularly it helps me to test some patches before report a bug to gentoo's bugzilla and/or write
-a separate ebuild (to my overlay).
-
-To apply a patch one have to put it into a directory under `${PATCH_DIR}/stage/category/pkg-ver/`,
-where the `stage` is one of the following: `ebuild_compile_post`, `ebuild_compile_pre`,
-`ebuild_configure_post`, `ebuild_configure_pre`, `ebuild_install_pre` or `ebuild_unpack_post`.
-
-BTW, stupid portage, to "implement" the same feature, forces ebuild developers to add a 
-`[epatch_user](https://www.gentoo.org/doc/en/handbook/handbook-amd64.xml?part=3&chap=6#doc_chap6)`
-call (defined in the `eutils.eclass`) to the `src_unpack` function! What a fraking smart solution! :(
-
-
-Filesystem Manager
-------------------
-
-This plugin can be used to make some manipulations in a package's image (right after `make install`)
-and before it will be actually merged into the system. Particularly it used to make a _permanent_
-symlinks to a documentation for some packages I use in my work, so even the package will be updated,
-bookmarks and history in my browser (I use it to view particular HTML docs) will be Ok.
-
-Every action required to take place described in terms of XML items of configuration file
-`/etc/paludis/hooks/configs/filesystem-manager.conf`.
-
-Here is a few items possible nowadays, but I have plans to extend this list in future
-(when it become necessary):
-
-* `symlink` -- used to create a symlink and has attributes:
-    * `cd` -- change to this directory before making a symlink
-    * `src` -- source for the symlink
-    * `dst` -- destination of the symlink
-* `rm` -- used to remove smth from the image, so it will not be installed at all.
-    * `dst` -- what to remove
-    * `reverse` -- optional attribute to specify that command should remove **everything** except
-      selected target(s)
-
-### Examples
-
-I have `*/* -nls` in my `/etc/paludis/use.conf`, but some packages just don't have that USE flag,
-but install localizations anyway (yep, cuz ebuild authors just lazy ppl... most of the time).
-So `app-admin/localpurge` was "invented" to cleanup unused locales (ALL in my case). But `localepurge`
-will remove `*.mo` files after install, so when uninstall a package, some files will be marked as _gone_.
-One simple rule will do the job better:
-
-    <package spec="*/*" descr="locale-cleaner">
-        <rm cd="/usr/share/locale/" dst="*/LC_MESSAGES/*.mo" />
-    </package>
-
-Because manipulations (deleting `*.mo` files) will be done **before** install, all that files even
-won't be counted by package manager. And I'm not telling about that you don't need to run any tool periodically
-(or via cron) -- all your packages will be already clean w/o any manual actions :)
-
-Translations is a part of the "problem": some packages (like `alsa-utils`) want to install translated manual pages
-as well. To remove them (everything except English) one may use the following rule:
-
-    <package spec="*/*" descr="man-pages-cleaner">
-        <rm cd="/usr/share/man/" dst="man{0p,1,1p,2,3,3p,4,5,6,7,8}" reverse="true" />
-    </package>
-
-Note attribute `reverse` tells to the hook that everything except specified items (directories actually)
-should be removed.
+Briefly this package consists of:
+* __Autopatch__ hook -- an easy way to apply patches
+* __Filesystem Manager__ hook -- a better way to avoid installation of some files than `INSTALL_MASK` +
+  some other interesting usage practices w/o direct analogues in the portage
+* A smart way to build packages in a RAM disk with `workdir-tmpfs` hook
+* A helper hook to reuse configuration tests (GNU Autotools) when build packages (speedup `./configure` execution)
+* A bunch of helper functions usable in a daily work w/ paludis
 
 TODO
 ====
@@ -79,6 +21,13 @@ TODO
 
 Changelog
 =========
+
+Version 1.0
+-----------
+* add a hook to clean a "shared" autotools' `config.cache` before build (see rationale and the hook
+  description of a project's homepage)
+* add a hook to make it possble to build packages (smoothly) in a RAM (disk)
+* little refactorings in some other hooks
 
 Version 0.9
 -----------
