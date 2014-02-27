@@ -12,6 +12,7 @@ alias co='cave owner'
 alias cu='cave uninstall'
 alias cy='cave sync'
 alias cz='cave resume -Cs ${CAVE_RESUME_FILE_OPT}'
+alias cfl='cave fix-linkage'
 alias world-up='cave resolve ${CAVE_RESUME_FILE_OPT} -c -km -Km -Cs -P "*/*" -Si -Rn world'
 alias system-up='cave resolve ${CAVE_RESUME_FILE_OPT} -c -km -Km -Cs -P "*/*" -Si -Rn system'
 
