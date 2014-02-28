@@ -49,7 +49,7 @@ setup_pkg_env()
 {
     [ ! -f @PH_PALUDISCONFDIR@/package_env.conf ] && return
     # Select configured environments
-    local envs=`grep "^${CATEGORY}/${PN}\s" @PH_PALUDISCONFDIR@/package_env.conf | sed "s,${CATEGORY}/${PN},,"`
+    local envs=`for i in \`egrep "^${CATEGORY}/(${PN}|\*)(:[^\s]+)?\s" @PH_PALUDISCONFDIR@/package_env.conf | sed 's,[^ ]\+\s,,'\`; do echo "${i}"; done | sort -u`
     for conf in $envs; do
         if [ -f @PH_PALUDISCONFDIR@/env.conf.d/${conf}.conf ]; then
             source @PH_PALUDISCONFDIR@/env.conf.d/${conf}.conf

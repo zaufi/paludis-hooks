@@ -5,7 +5,7 @@
 cmake_minimum_required(VERSION 2.6)
 project(paludis-hooks NONE)
 
-set(PH_VERSION "1.0")
+set(PH_VERSION "1.1")
 
 # seek for xmllint to validate our XML files
 find_program(XMLLINT_EXECUTABLE xmllint)
