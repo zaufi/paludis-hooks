@@ -163,8 +163,13 @@ try_update_disk_usage_stats()
         local -r _tudus_cache_dir=`dirname "${DISK_USAGE_STATS_CACHE}"`
         if [ ! -d "${_tudus_cache_dir}" ]; then
             mkdir -p "${_tudus_cache_dir}"
+            # TODO Handle `mkdir` errors
         fi
-        declare -p _wdm_disk_usage_stats >"${DISK_USAGE_STATS_CACHE}"
+        if [ -w "${DISK_USAGE_STATS_CACHE}" ]; then
+            declare -p _wdm_disk_usage_stats >"${DISK_USAGE_STATS_CACHE}"
+        else
+            ewarn "Cache file is not writeable: ${DISK_USAGE_STATS_CACHE}"
+        fi
     fi
 }
 
