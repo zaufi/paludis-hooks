@@ -8,7 +8,6 @@ Briefly this package consists of:
 * __Filesystem Manager__ hook -- a better way to avoid installation of some files than `INSTALL_MASK` +
   some other interesting usage practices w/o direct analogues in the portage
 * A smart way to build packages in a RAM disk with `workdir-tmpfs` hook
-* A helper hook to reuse configuration tests (GNU Autotools) when build packages (speedup `./configure` execution)
 * A bunch of helper functions usable in a daily work w/ paludis
 
 TODO
