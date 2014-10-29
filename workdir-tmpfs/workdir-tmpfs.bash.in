@@ -59,12 +59,8 @@ try_prepare_workdir()
             declare -p _wdm_disk_usage_stats
         fi
     fi
-    if [ ! -v _wdm_disk_usage_stats ]; then
-        einfo "RAM usage stats for ${P} is not available. Will build the pacakge on a disk this time..."
-        return 0
-    fi
 
-    local -r _tpwd_pkg_name="${CATEGORY}/${PN}"
+    local -r _tpwd_pkg_name="${CATEGORY}/${PN}:${SLOT}"
     if [ ${_wdm_disk_usage_stats[${_tpwd_pkg_name}]+_} ]; then
         local _tpwd_estimated_size=${_wdm_disk_usage_stats[${_tpwd_pkg_name}]}
         local -r _tpwd_10_percents=$(( _tpwd_estimated_size / 10 ))
@@ -114,8 +110,15 @@ try_update_disk_usage_stats()
         ;;
     esac
 
+    env >>/tmp/${PV}.env
+
     local -r _tudus_total_size=`du -LsB1 "${PALUDIS_PACKAGE_BUILDDIR}" 2>/dev/null | cut -f1`
     local -r _tudus_total_size_human=`du -Lhs "${PALUDIS_PACKAGE_BUILDDIR}" 2>/dev/null | cut -f1`
+    if [ "${_tudus_total_size_human}" = '0' ]; then
+        # NOTE "pretend" phase do not generate any content,
+        # so no need to update anything
+        return 0
+    fi
     einfo "${_tudus_total_size_human} used for working directory [${PALUDIS_PACKAGE_BUILDDIR}]"
     # Update disk usage stats cache
     if [ -f "${DISK_USAGE_STATS_CACHE}" ]; then
@@ -130,12 +133,12 @@ try_update_disk_usage_stats()
         declare -A _wdm_disk_usage_stats
     fi
     # Add or update the usage value
-    local -r _tcwd_pkg_name="${CATEGORY}/${PN}"
+    local -r _tcwd_pkg_name="${CATEGORY}/${PN}:${SLOT}"
     local _tudus_need_update='0'
     if [ ${_wdm_disk_usage_stats[${_tcwd_pkg_name}]+_} ]; then
         # Update the key
         local -r _tuwd_prev_total_size=${_wdm_disk_usage_stats[${_tcwd_pkg_name}]}
-        if (( _tuwd_prev_total_size <  _tudus_total_size )); then
+        if (( _tuwd_prev_total_size < _tudus_total_size )); then
             _tudus_need_update='1'
             if [ x"${PALUDIS_HOOK_DEBUG}" = 'xyes' ]; then
                 einfo "Going to update an entry: ${_tcwd_pkg_name} -> ${_tudus_total_size} (${_tuwd_prev_total_size})"
@@ -165,10 +168,9 @@ try_update_disk_usage_stats()
             mkdir -p "${_tudus_cache_dir}"
             # TODO Handle `mkdir` errors
         fi
-        if [ -w "${DISK_USAGE_STATS_CACHE}" ]; then
-            declare -p _wdm_disk_usage_stats >"${DISK_USAGE_STATS_CACHE}"
-        else
-            ewarn "Cache file is not writeable: ${DISK_USAGE_STATS_CACHE}"
+        declare -p _wdm_disk_usage_stats >"${DISK_USAGE_STATS_CACHE}" 2>/dev/null
+        if [ "$?" != '0' ]; then
+            ewarn "Unable to update cache file: ${DISK_USAGE_STATS_CACHE}. Check permissions!"
         fi
     fi
 }

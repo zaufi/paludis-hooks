@@ -60,17 +60,6 @@ install(
     DESTINATION ${PH_HOOKSCONFDIR}
   )
 
-# Config Cache Cleaner hook
-configure_file(
-    config-cache-cleaner/config-cache-cleaner.bash.in
-    config-cache-cleaner/config-cache-cleaner.bash
-    @ONLY
-  )
-install(
-    PROGRAMS ${CMAKE_BINARY_DIR}/config-cache-cleaner/config-cache-cleaner.bash
-    DESTINATION ${PH_DATAROOTDIR}
-  )
-
 # Filesystem manager hook
 set(FILESYSTEM_MANAGER_DTD "${PH_DATAROOTDIR}/filesystem-manager/filesystem-manager.dtd")
 set(FILESYSTEM_MANAGER_XSL "${PH_DATAROOTDIR}/filesystem-manager/filesystem-manager.xsl")
