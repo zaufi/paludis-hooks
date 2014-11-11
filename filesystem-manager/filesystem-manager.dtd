@@ -18,7 +18,7 @@
     negate (true|false) "false"
   >
 
-<!ELEMENT symlink EMPTY>
+<!ELEMENT symlink (item*)>
 <!ATTLIST symlink
     cd CDATA #REQUIRED
     src CDATA #REQUIRED

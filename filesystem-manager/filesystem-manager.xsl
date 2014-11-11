@@ -292,6 +292,39 @@ cmd_symlink \
 </xsl:template>
 
 <!--
+    Matching `symlink` nodes w/ only `cd' attribute
+  -->
+<xsl:template match="fsmh:symlink[@cd][not(@src)][not(@dst)]">
+# Symlink a bunch of items in <xsl:value-of select="@cd" />
+<xsl:variable name="cd" select="@cd" />
+<xsl:if test="count(fsmh:item/@src) &gt; 0 and count(fsmh:item/@dst) &gt; 0">
+    <xsl:for-each select="fsmh:item[@src][@dst]">
+cmd_symlink \
+    "<xsl:value-of select="$cd" />" \
+    "<xsl:value-of select="@src" />" \
+    "<xsl:value-of select="@dst" />"
+    </xsl:for-each>
+</xsl:if>
+</xsl:template>
+
+<!--
+    Matching `symlink` nodes w/ `cd' and `src' attribute
+  -->
+<xsl:template match="fsmh:symlink[@cd][@src][not(@dst)]">
+# Symlink a bunch of items in <xsl:value-of select="@cd" /> to <xsl:value-of select="@src" />
+<xsl:variable name="cd" select="@cd" />
+<xsl:variable name="src" select="@src" />
+<xsl:if test="count(fsmh:item/@dst) &gt; 0">
+    <xsl:for-each select="fsmh:item[@dst]">
+cmd_symlink \
+    "<xsl:value-of select="$cd" />" \
+    "<xsl:value-of select="$src" />" \
+    "<xsl:value-of select="@dst" />"
+    </xsl:for-each>
+</xsl:if>
+</xsl:template>
+
+<!--
     Matching `rm` nodes w/ all parameters given to remove everything
     except target(s) specified
   -->
