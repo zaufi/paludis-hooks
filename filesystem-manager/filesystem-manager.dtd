@@ -21,8 +21,8 @@
 <!ELEMENT symlink (item*)>
 <!ATTLIST symlink
     cd CDATA #REQUIRED
-    src CDATA #REQUIRED
-    dst CDATA #REQUIRED
+    src CDATA #IMPLIED
+    dst CDATA #IMPLIED
   >
 
 <!ELEMENT rm (item*)>
