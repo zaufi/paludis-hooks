@@ -105,7 +105,7 @@ try_prepare_workdir()
 try_update_disk_usage_stats()
 {
     case "${PALUDIS_PACKAGE_BUILDDIR}" in
-    '' | *-uninstall)
+    '' | *-uninstall | *-pretend)
         return 0                                        # Do nothing for uninstalled package
         ;;
     esac
