@@ -101,15 +101,17 @@ install(
     DESTINATION ${PH_PALUDISCONFDIR}/env.conf.d
   )
 
-# Config Cache Cleaner hook
-configure_file(
-    workdir-tmpfs/workdir-tmpfs.bash.in
-    workdir-tmpfs/workdir-tmpfs.bash
-    @ONLY
-  )
+# In Memory Build hook
+configure_file(workdir-tmpfs/workdir-tmpfs.bash.in workdir-tmpfs/workdir-tmpfs.bash @ONLY)
+configure_file(workdir-tmpfs/workdir-tmpfs.conf.in workdir-tmpfs/workdir-tmpfs.conf @ONLY)
+
 install(
     PROGRAMS ${CMAKE_BINARY_DIR}/workdir-tmpfs/workdir-tmpfs.bash
     DESTINATION ${PH_DATAROOTDIR}
+  )
+install(
+    FILES ${CMAKE_BINARY_DIR}/workdir-tmpfs/workdir-tmpfs.conf
+    DESTINATION ${PH_HOOKSCONFDIR}/workdir-tmpfs.conf
   )
 
 # Some other helpers...

@@ -1,0 +1,15 @@
+# Use in memory builds (default 'true').
+# Any other value than 'true' considered as 'false'.
+IN_MEMORY_BUILD_ENABLED=true
+
+# Location of disk usage statistics file.
+# This file used to "predict" how much memory required
+# (and will be checked for availability) to build a package
+# in memory.
+DISK_USAGE_STATS_CACHE=@PH_LOCALSTATEDIR@/cache/paludis/disk_usage_stats.cache
+
+# TODO Documentation
+MIN_RESERVED_SPACE=10485760
+
+# TODO Documentation
+MAX_RESERVED_SPACE=104857600

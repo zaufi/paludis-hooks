@@ -11,12 +11,19 @@ source ${PALUDIS_EBUILD_DIR}/echo_functions.bash
 
 declare -r CONFIG_FILE="@PH_HOOKSCONFDIR@/workdir-tmpfs.conf"
 
+# Preset defaults
 MIN_RESERVED_SPACE=$(( 1024 * 1024 * 10 ))
 MAX_RESERVED_SPACE=$(( 1024 * 1024 * 100 ))
 DISK_USAGE_STATS_CACHE="@PH_LOCALSTATEDIR@/cache/paludis/disk_usage_stats.cache"
+IN_MEMORY_BUILD_ENABLED=true
 
 # Configuration override
 [ -f ${CONFIG_FILE} ] && source ${CONFIG_FILE}
+
+# Check if hook enabled
+if [ "${IN_MEMORY_BUILD_ENABLED}" != 'true' ]; then
+    exit 0
+fi
 
 _wdm_shmbasedir="/dev/shm"
 
