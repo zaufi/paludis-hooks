@@ -19,6 +19,7 @@ if [ -n "${FSMH_DO_NOTHING}" ]; then
     exit 0
 fi
 
+# Output environment to log, if debug enabled
 if [ x"${PALUDIS_HOOK_DEBUG}" = 'xyes' ]; then
     env | sort > /tmp/paludis-fsm-hook-env.log
 fi

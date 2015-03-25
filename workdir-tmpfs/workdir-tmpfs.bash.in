@@ -22,7 +22,13 @@ IN_MEMORY_BUILD_ENABLED=true
 
 # Check if hook enabled
 if [ "${IN_MEMORY_BUILD_ENABLED}" != 'true' ]; then
+    ewarn "In-memory-build hook disabled"
     exit 0
+fi
+
+# Output environment to log, if debug enabled
+if [ x"${PALUDIS_HOOK_DEBUG}" = 'xyes' ]; then
+    env | sort >> /tmp/paludis-wdm-hook-env.log
 fi
 
 _wdm_shmbasedir="/dev/shm"
@@ -49,13 +55,22 @@ _bytes_to_human()
     echo 1 | awk -v bytes="$1" "${_B2H_PROGRAM}"
 }
 
+_aux_check_action()
+{
+    case "${PALUDIS_PACKAGE_BUILDDIR}" in
+    '' | *-uninstall | *-pretend)
+        # Do nothing for uninstalled package and pretend action
+        if [ x"${PALUDIS_HOOK_DEBUG}" = 'xyes' ]; then
+            einfo "${1}: Do nothing for uninstall/pretend action!"
+        fi
+        exit 0
+        ;;
+    esac
+}
+
 try_prepare_workdir()
 {
-    # Check if package should be build in tmpfs
-    if [ "${WDM_DISABLE_TMPFS_BUILD}" = "yes" ]; then
-        einfo 'RAM based build has been disabled'
-        return 0                                            # No! Do nothing...
-    fi
+    _aux_check_action "PrepareWorkdir"                      # Make sure we can proceed
 
     # Check if package can be build in tmpfs
     # 0) try to get estimated size required to build package
@@ -111,11 +126,7 @@ try_prepare_workdir()
 
 try_update_disk_usage_stats()
 {
-    case "${PALUDIS_PACKAGE_BUILDDIR}" in
-    '' | *-uninstall | *-pretend)
-        return 0                                        # Do nothing for uninstalled package
-        ;;
-    esac
+    _aux_check_action "UpdateUsageStats"                    # Make sure we can proceed
 
     local -r _tudus_total_size=`du -LsB1 "${PALUDIS_PACKAGE_BUILDDIR}" 2>/dev/null | cut -f1`
     local -r _tudus_total_size_human=`du -Lhs "${PALUDIS_PACKAGE_BUILDDIR}" 2>/dev/null | cut -f1`
@@ -182,11 +193,7 @@ try_update_disk_usage_stats()
 
 try_clean_workdir()
 {
-    case "${PALUDIS_PACKAGE_BUILDDIR}" in
-    '' | *-uninstall)
-        return 0                                        # Do nothing for uninstalled package
-        ;;
-    esac
+    _aux_check_action "Clean"                               # Make sure we can proceed
 
     local -r _tcwd_pkg_dir=`basename ${PALUDIS_PACKAGE_BUILDDIR}`
     if [ -d "${_wdm_shmbasedir}/${_tcwd_pkg_dir}" ]; then
