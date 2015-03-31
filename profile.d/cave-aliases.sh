@@ -2,8 +2,8 @@
 # Short aliases for various `cave` (sub)commands
 #
 
-alias cs='cave search --index ${CAVE_SEARCH_INDEX}'
-alias cm='cave manage-search-index --create ${CAVE_SEARCH_INDEX}'
+alias cs='cave search --index ${CAVE_SEARCH_INDEX_FILE}'
+alias cm='cave manage-search-index --create ${CAVE_SEARCH_INDEX_FILE}'
 alias cc='cave contents'
 alias cr='cave resolve'
 alias crz='cave resolve ${CAVE_RESUME_FILE_OPT}'

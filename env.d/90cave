@@ -4,11 +4,11 @@
 
 # Options for profile.d/ based stuff
 # (ATTENTION Not for `cave` itself!)
-CAVE_SEARCH_INDEX=/var/cache/paludis/csi
-CAVE_RESUME_FILE_OPT=/tmp/cave.resume
+CAVE_SEARCH_INDEX_FILE=/var/cache/paludis/csi
+CAVE_RESUME_FILE_OPT='--resume-file /tmp/cave.resume'
 
 # Here is options for vairous `cave` subcommands
-CAVE_FIX_LINKAGE_OPTIONS=" -- --resume-file ${CAVE_RESUME_FILE_OPT}"
+CAVE_FIX_LINKAGE_OPTIONS=" -- ${CAVE_RESUME_FILE_OPT}"
 
 # Options for pkg-meta-diff
 PKG_META_DIFF_OPTIONS='-u'

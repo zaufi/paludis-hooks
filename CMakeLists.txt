@@ -110,7 +110,7 @@ install(
     DESTINATION ${PH_DATAROOTDIR}
   )
 install(
-    FILES ${CMAKE_BINARY_DIR}/workdir-tmpfs/workdir-tmpfs.conf
+    FILES ${CMAKE_BINARY_DIR}/workdir-tmpfs.conf
     DESTINATION ${PH_HOOKSCONFDIR}/workdir-tmpfs.conf
   )
 
