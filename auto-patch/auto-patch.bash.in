@@ -13,7 +13,7 @@ declare -r CONFIG_FILE="@PH_HOOKSCONFDIR@/auto-patch.conf"
 PATCH_DIR="@PH_LOCALSTATEDIR@/db/paludis/autopatches"
 
 # Configuration override
-[ -f ${CONFIG_FILE} ] && source ${CONFIG_FILE}
+[[ -f ${CONFIG_FILE} ]] && source ${CONFIG_FILE}
 
 PATCH_DIR_FULL="${PATCH_DIR}/${HOOK}/${CATEGORY}/${PF}"
 
@@ -28,18 +28,22 @@ issue_a_warning()
 
 try_to_apply_patches()
 {
-    if [ -n "${PALUDIS_HOOK_DEBUG}" ]; then
+    if [[ -n ${PALUDIS_HOOK_DEBUG} ]]; then
         einfo "Check ${PATCH_DIR_FULL}"
     fi
-    if [ -d "${PATCH_DIR_FULL}" ] ; then
-        cd ${S}
-        for i in `ls ${PATCH_DIR_FULL}/*.patch` ; do
-            # TODO 'epatch' will be available ONLY if current ebuild inherit eutils.eclass
-            # Need to do smth w/ this... :( It seems I have to copy-n-paste it here... :(
-            epatch ${i} || die
-            touch ${_ap_rememberfile}
+    if [[ -d ${PATCH_DIR_FULL} ]] ; then
+        cd "${S}" || die "Failed to cd into ${S}!"
+        for i in "${PATCH_DIR_FULL}"/*.patch ; do
+            if declare -f epatch >/dev/null ; then
+                epatch ${i}
+            else
+                # sane default if no epatch is there
+                einfo "Applying ${i} ..."
+                patch -p1 -i "${i}" || die "Failed to apply ${i}!"
+            fi
+            touch "${_ap_rememberfile}" || die "Failed to touch ${_ap_rememberfile}!"
         done
-        if [ -e "${_ap_rememberfile}" ]; then
+        if [[ -e ${_ap_rememberfile} ]]; then
             issue_a_warning "will be"
         else
             einfo "No patches in for this package."
@@ -58,7 +62,7 @@ case "${HOOK}" in
         try_to_apply_patches
         ;;
     install_all_post)
-        if [ -e "${_ap_rememberfile}" ] ; then
+        if [[ -e ${_ap_rememberfile} ]] ; then
             issue_a_warning "was"
         fi
         ;;
