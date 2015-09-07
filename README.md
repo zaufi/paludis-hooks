@@ -4,7 +4,7 @@ What is this?
 Here is a set of my hooks (plugins) for [plaudis](http://paludis.exherbo.org) I wrote and use few years already.
 
 Briefly this package consists of:
-* __Autopatch__ hook -- an easy way to apply patches
+* __Autopatch__ hook -- an easy way to apply patches ([here](https://github.com/zaufi/paludis-autopatches) is my set of patches)
 * __Filesystem Manager__ hook -- a better way to avoid installation of some files than `INSTALL_MASK` +
   some other interesting usage practices w/o direct analogues in the portage
 * A smart way to build packages in a RAM disk with `workdir-tmpfs` hook
@@ -23,6 +23,12 @@ TODO
 
 Changelog
 =========
+
+Version 1.1
+-----------
+
+* Few improvements to `auto-patch` (thans to Julian Ospald)
+* Remove autoconf cache hook.. that was a bad idea! ;-)
 
 Version 1.0
 -----------
