@@ -53,9 +53,9 @@ setup_pkg_env()
     for conf in $envs; do
         if [ -f @PH_PALUDISCONFDIR@/env.conf.d/${conf}.conf ]; then
             source @PH_PALUDISCONFDIR@/env.conf.d/${conf}.conf
-        else
-            ewarn "Ignore undefined environment configuration: ${conf}"
         fi
+        # NOTE Silently ignore undefined environment.
+        # To avoid any output from bashrc, as supposed by [docs](http://paludis.exherbo.org/configuration/bashrc.html)
     done
 }
 
