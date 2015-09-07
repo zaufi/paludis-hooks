@@ -33,7 +33,7 @@ try_to_apply_patches()
     fi
     if [ -d "${PATCH_DIR_FULL}" ] ; then
         cd ${S}
-        for i in `ls ${PATCH_DIR_FULL}/*.patch` ; do
+        for i in "${PATCH_DIR_FULL}"/*.patch ; do
             # TODO 'epatch' will be available ONLY if current ebuild inherit eutils.eclass
             # Need to do smth w/ this... :( It seems I have to copy-n-paste it here... :(
             epatch ${i} || die
