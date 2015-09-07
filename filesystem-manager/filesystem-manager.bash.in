@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Paludis hook script to so some manipulations right after a package
+# Paludis hook script to do some manipulations right after a package
 # installed self into an image directory and before actual installing
 # into a system will take place.
 #
