@@ -9,6 +9,7 @@ Briefly this package consists of:
   some other interesting usage practices w/o direct analogues in the portage
 * A smart way to build packages in a RAM disk with `workdir-tmpfs` hook
 * A bunch of helper functions usable in a daily work w/ paludis
+* A hook to organize compiler/linker options into various sets and apply to packages
 
 TODO
 ====
