@@ -47,12 +47,12 @@ remove-options()
 
 setup_pkg_env()
 {
-    [ ! -f @PH_PALUDISCONFDIR@/package_env.conf ] && return
+    [ ! -f $PALUDIS_CONFIG_DIR/package_env.conf ] && return
     # Select configured environments
-    local envs=`for i in \`egrep "^${CATEGORY}/(${PN}|\*)(:[^\s]+)?\s" @PH_PALUDISCONFDIR@/package_env.conf | sed 's,[^ ]\+\s,,'\`; do echo "${i}"; done | sort -u`
+    local envs=`for i in \`egrep "^${CATEGORY}/(${PN}|\*)(:[^\s]+)?\s" $PALUDIS_CONFIG_DIR/package_env.conf | sed 's,[^ ]\+\s,,'\`; do echo "${i}"; done | sort -u`
     for conf in $envs; do
-        if [ -f @PH_PALUDISCONFDIR@/env.conf.d/${conf}.conf ]; then
-            source @PH_PALUDISCONFDIR@/env.conf.d/${conf}.conf
+        if [ -f $PALUDIS_CONFIG_DIR/env.conf.d/${conf}.conf ]; then
+            source $PALUDIS_CONFIG_DIR/env.conf.d/${conf}.conf
         fi
         # NOTE Silently ignore undefined environment.
         # To avoid any output from bashrc, as supposed by [docs](http://paludis.exherbo.org/configuration/bashrc.html)
