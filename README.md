@@ -27,7 +27,7 @@ Changelog
 Version 1.1
 -----------
 
-* Few improvements to `auto-patch` (thans to Julian Ospald)
+* Few improvements to `auto-patch` (thanks to Julian Ospald)
 * Remove autoconf cache hook.. that was a bad idea! ;-)
 
 Version 1.0
