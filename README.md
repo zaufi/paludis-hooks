@@ -24,6 +24,11 @@ TODO
 Changelog
 =========
 
+Version 1.2
+-----------
+
+* Add a runtime option to filesystem management hook to suppress a warning
+
 Version 1.1
 -----------
 

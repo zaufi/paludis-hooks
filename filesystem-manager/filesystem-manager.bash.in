@@ -4,7 +4,7 @@
 # installed self into an image directory and before actual installing
 # into a system will take place.
 #
-# Copyright (c), 2010-2012 by Alex Turbov <i.zaufi@gmail.com>
+# Copyright (c), 2010-2016 by Alex Turbov <i.zaufi@gmail.com>
 #
 # Version: @PH_VERSION@
 #
@@ -14,7 +14,7 @@ source ${PALUDIS_EBUILD_DIR}/echo_functions.bash
 CONFIG_FILE="@PH_HOOKSCONFDIR@/filesystem-manager.conf"
 TEMPLATE_FILE="@PH_DATAROOTDIR@/filesystem-manager/filesystem-manager.xsl"
 
-if [ -n "${FSMH_DO_NOTHING}" ]; then
+if [ -n "${PALUDIS_FILESYSTEM_HOOK_DO_NOTHING}" ]; then
     einfo "Filesystem Manager Hook: Do not process any actions due explicit request"
     exit 0
 fi
@@ -40,8 +40,10 @@ export _fsm_rememberfile
 
 function issue_a_warning()
 {
-    ewarn "WARNING: ${CATEGORY}/${PF} package installation was altered by the filesystem manager hook."
-    ewarn "WARNING: Before filing a bug, remove all configured rules, reinstall, and try again..."
+    if [ x"${PALUDIS_FILESYSTEM_HOOK_NO_WARNING}" != 'xyes' ]; then
+        ewarn "WARNING: ${CATEGORY}/${PF} package installation was altered by the filesystem manager hook."
+        ewarn "WARNING: Before filing a bug, remove all configured rules, reinstall, and try again..."
+    fi
 }
 
 function schedule_a_warning_after_all()
