@@ -94,10 +94,14 @@ install(
   )
 install(
     FILES
+        package.env/extra-optimize.conf
+        package.env/lto.conf
         package.env/no-debug.conf
         package.env/no-lto.conf
-        package.env/extra-optimize.conf
         package.env/use-bfd-linker.conf
+        package.env/use-gold-linker.conf
+        package.env/use-latest-gcc.conf
+        package.env/use-modern-c++.conf
     DESTINATION ${PH_PALUDISCONFDIR}/env.conf.d
   )
 
