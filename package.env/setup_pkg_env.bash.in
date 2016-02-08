@@ -9,6 +9,58 @@
 source ${PALUDIS_EBUILD_DIR}/echo_functions.bash
 
 #
+# Get current GCC version
+#
+gcc-get-version()
+{
+    local gcc_bin=${CC:-gcc}
+    ${gcc_bin} --version | head -n 1 | sed 's,.* \([0-9]\.[0-9]\.[0-9]\)$,\1,'
+}
+
+#
+# Get a number of CPUs available
+#
+get_cpu_available()
+{
+    grep -c ^processor /proc/cpuinfo
+}
+
+#BEGIN Helper functions named after toolchain-funcs.eclass
+#
+# Helper function to build a full path to requested GCC utility
+# based on current GCC (found in `PATH`) or `CC` environment variable.
+#
+# $1 -- program name
+#
+_tc-getPROG()
+{
+    local prog="${1}"
+    echo /usr/${CHOST}/gcc-bin/$(gcc-get-version)/gcc-${prog}
+}
+#
+# Get a full path to GCC's `ar` wrapper
+#
+tc-getAR()
+{
+    _tc-getPROG ar
+}
+#
+# Get a full path to GCC's `nm` wrapper
+#
+tc-getNM()
+{
+    _tc-getPROG nm
+}
+#
+# Get a full path to GCC's `ranlib` wrapper
+#
+tc-getRANLIB()
+{
+    _tc-getPROG ranlib
+}
+#END Helper functions named after toolchain-funcs.eclass
+
+#
 # Add options to the end of a given var
 # $1 - variable to modify
 # $2..$n - options to add
@@ -59,45 +111,9 @@ setup_pkg_env()
         # To avoid any output from bashrc, as supposed by [docs](http://paludis.exherbo.org/configuration/bashrc.html)
     done
 }
+
 # Do it!
 setup_pkg_env
 
-#BEGIN Helper functions named after toolchain-funcs.eclass
-#
-# Get current GCC version
-#
-gcc-get-version()
-{
-    local gcc_bin=${CC:-gcc}
-    ${gcc_bin} --version | head -n 1 | sed 's,.* \([0-9]\.[0-9]\.[0-9]\)$,\1,'
-}
-
-#
-# Helper function to build a full path to requested GCC utility
-# based on current GCC (found in `PATH`) or `CC` environment variable.
-#
-# $1 -- program name
-#
-_tc-getPROG()
-{
-    local prog="${1}"
-    echo /usr/${CHOST}/gcc-bin/$(gcc-get-version)/gcc-${prog}
-}
-
-tc-getAR()
-{
-    _tc-getPROG ar
-}
-
-tc-getNM()
-{
-    _tc-getPROG nm
-}
-
-tc-getRANLIB()
-{
-    _tc-getPROG ranlib
-}
-
-#END Helper functions named after toolchain-funcs.eclass
 # kate: hl bash;
+
