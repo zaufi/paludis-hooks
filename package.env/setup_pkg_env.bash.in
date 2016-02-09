@@ -7,6 +7,9 @@
 #
 
 source ${PALUDIS_EBUILD_DIR}/echo_functions.bash
+# Bring flag-o-matic.eclass into the scope, so env files may use functions from it to manupulate compiler/linker flags
+inherit flag-o-matic
+
 
 #
 # Get current GCC version
@@ -102,7 +105,7 @@ phenv-filter-var()
 #
 setup_pkg_env()
 {
-    [ ! -f ${PALUDIS_CONFIG_DIR}/package_env.conf ] && return
+    [ ! -f ${PALUDIS_CONFIG_DIR}/package_env.conf -o x"${EBUILD_PHASE}" = 'xinitmisc' ] && return
     # Select configured environments
     # NOTE It is important to apply them in the same order! (even duplicates)
     local envs=`for i in \`egrep "^${CATEGORY}/(${PN}|\*)(:[^\s]+)?\s" ${PALUDIS_CONFIG_DIR}/package_env.conf | sed 's,[^ ]\+\s,,'\`; do echo "${i}"; done`
@@ -117,8 +120,5 @@ setup_pkg_env()
 
 # Do it!
 setup_pkg_env
-
-# Bring flag-o-matic.eclass into the scope, so env files may use functions from it to manupulate compiler/linker flags
-inherit flag-o-matic
 
 # kate: hl bash;
