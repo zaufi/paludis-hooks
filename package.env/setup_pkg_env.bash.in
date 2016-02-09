@@ -11,7 +11,7 @@ source ${PALUDIS_EBUILD_DIR}/echo_functions.bash
 #
 # Get current GCC version
 #
-gcc-get-version()
+phenv-get-gcc-version()
 {
     local gcc_bin=${CC:-gcc}
     ${gcc_bin} --version | head -n 1 | sed 's,.* \([0-9]\.[0-9]\.[0-9]\)$,\1,'
@@ -20,7 +20,7 @@ gcc-get-version()
 #
 # Get a number of CPUs available
 #
-get_cpu_available()
+phenv-get-cpu-available()
 {
     grep -c ^processor /proc/cpuinfo
 }
@@ -32,80 +32,46 @@ get_cpu_available()
 #
 # $1 -- program name
 #
-_tc-getPROG()
+_phenv-getPROG()
 {
     local prog="${1}"
-    echo /usr/${CHOST}/gcc-bin/$(gcc-get-version)/gcc-${prog}
+    echo /usr/${CHOST}/gcc-bin/$(phenv-get-gcc-version)/gcc-${prog}
 }
 #
 # Get a full path to GCC's `ar` wrapper
 #
-tc-getAR()
+phenv-getAR()
 {
-    _tc-getPROG ar
+    _phenv-getPROG ar
 }
 #
 # Get a full path to GCC's `nm` wrapper
 #
-tc-getNM()
+phenv-getNM()
 {
-    _tc-getPROG nm
+    _phenv-getPROG nm
 }
 #
 # Get a full path to GCC's `ranlib` wrapper
 #
-tc-getRANLIB()
+phenv-getRANLIB()
 {
-    _tc-getPROG ranlib
+    _phenv-getPROG ranlib
 }
 #END Helper functions named after toolchain-funcs.eclass
 
 #
-# Add options to the end of a given var
-# $1 - variable to modify
-# $2..$n - options to add
+# The main function to be used from ${PALUDIS_CONFIG_DIR}/bashrc
 #
-add-options()
-{
-    local var=$1
-    shift
-    local stmt="$var=\"\$${var} $*\""
-    eval "$stmt"
-}
-
-#
-# Remove options from a given var
-# $1 - variable to modify
-# $2..$n - options to remove
-#
-remove-options()
-{
-    local -r _ro_var="$1"
-    shift
-    local -a _ro_new_value
-    local _ro_opt
-    local _ro_del_value
-
-    # Iterate over options in a variable
-    for _ro_opt in ${!_ro_var}; do
-        # Iterate over options to remove passed as function parameters
-        for _ro_del_value in "$@"; do
-            [[ ${_ro_opt} == ${_ro_del_value} ]] && continue 2
-        done
-        _ro_new_value+=( "${_ro_opt}" )
-    done
-    eval "${_ro_var}=\"${_ro_new_value[@]}\""
-}
-
 setup_pkg_env()
 {
-    [ ! -f @PH_PALUDISCONFDIR@/package_env.conf ] && return
+    [ ! -f ${PALUDIS_CONFIG_DIR}/package_env.conf ] && return
     # Select configured environments
     # NOTE It is important to apply them in the same order! (even duplicates)
-    local envs=`for i in \`egrep "^${CATEGORY}/(${PN}|\*)(:[^\s]+)?\s" @PH_PALUDISCONFDIR@/package_env.conf | sed 's,[^ ]\+\s,,'\`; do echo "${i}"; done`
+    local envs=`for i in \`egrep "^${CATEGORY}/(${PN}|\*)(:[^\s]+)?\s" ${PALUDIS_CONFIG_DIR}/package_env.conf | sed 's,[^ ]\+\s,,'\`; do echo "${i}"; done`
     for conf in $envs; do
-        if [ -f @PH_PALUDISCONFDIR@/env.conf.d/${conf}.conf ]; then
-            source @PH_PALUDISCONFDIR@/env.conf.d/${conf}.conf
+        if [ -f ${PALUDIS_CONFIG_DIR}/env.conf.d/${conf}.conf ]; then
+            source ${PALUDIS_CONFIG_DIR}/env.conf.d/${conf}.conf
         fi
         # NOTE Silently ignore undefined environment.
         # To avoid any output from bashrc, as supposed by [docs](http://paludis.exherbo.org/configuration/bashrc.html)
@@ -115,5 +81,7 @@ setup_pkg_env()
 # Do it!
 setup_pkg_env
 
-# kate: hl bash;
+# Bring flag-o-matic.eclass into the scope, so env files may use functions from it to manupulate compiler/linker flags
+inherit flag-o-matic
 
+# kate: hl bash;
