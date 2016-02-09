@@ -26,35 +26,33 @@ issue_a_warning()
 
 try_to_apply_patches()
 {
-	local check
-	for check in "${PATCH_DIR}/${HOOK}"/${CATEGORY}/{${P}-${PR},${P},${PN}}{,:${SLOT}}; do
-		if [[ -d ${check} ]] ; then
-			# activate nullglob if it isn't already
-			local saved_opt=$(shopt nullglob &> /dev/null && echo "yes" || echo "no")
-			[[ ${saved_opt} == no ]] && shopt -s nullglob
+    local check
+    for check in "${PATCH_DIR}/${HOOK}"/${CATEGORY}/{${P}-${PR},${P},${PN}}{,:${SLOT}}; do
+        if [[ -d ${check} ]] ; then
+            # activate nullglob if it isn't already
+            local saved_opt=$(shopt nullglob &> /dev/null && echo "yes" || echo "no")
+            [[ ${saved_opt} == no ]] && shopt -s nullglob
 
-			cd "${S}" || die "Failed to cd into ${S}!"
-			for i in "${check}"/*.patch ; do
-				if declare -f epatch >/dev/null ; then
-					epatch ${i}
-				else
-					# sane default if no epatch is there
-					einfo "Applying ${i} ..."
-					patch -p1 -i "${i}" || die "Failed to apply ${i}!"
-				fi
-				touch "${_ap_rememberfile}" || die "Failed to touch ${_ap_rememberfile}!"
-			done
+            cd "${S}" || die "Failed to cd into ${S}!"
+            for i in "${check}"/*.patch ; do
+                if [[ ! declare -f epatch >/dev/null ]]; then
+                    # TODO EAPI=6 has `eapply` and `epatch` could be deprecated soon...
+                    inherit eutils
+                fi
+                epatch ${i}
+                touch "${_ap_rememberfile}" || die "Failed to touch ${_ap_rememberfile}!"
+            done
 
-			# make sure nullglob is set to what it was before this function was called
-			[[ ${saved_opt} == no ]] && shopt -u nullglob
+            # make sure nullglob is set to what it was before this function was called
+            [[ ${saved_opt} == no ]] && shopt -u nullglob
 
-			if [[ -e ${_ap_rememberfile} ]]; then
-				issue_a_warning "will be"
-			else
-				einfo "No patches in for this package."
-			fi
-		fi
-	done
+            if [[ -e ${_ap_rememberfile} ]]; then
+                issue_a_warning "will be"
+            else
+                einfo "No patches in for this package."
+            fi
+        fi
+    done
 }
 
 case "${HOOK}" in
