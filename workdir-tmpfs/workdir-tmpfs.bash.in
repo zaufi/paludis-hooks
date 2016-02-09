@@ -107,7 +107,7 @@ try_prepare_workdir()
             return 0
         fi
     else
-        einfo "RAM usage stats for ${P} is not available. Will build the pacakge on disk this time..."
+        einfo "RAM usage stats for ${P} is not available. Will build the package on disk this time..."
         return 0
     fi
 

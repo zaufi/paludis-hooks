@@ -17,7 +17,7 @@ alias world-up='cave resolve ${CAVE_RESUME_FILE_OPT} -c -km -Km -Cs -P "*/*" -Si
 alias system-up='cave resolve ${CAVE_RESUME_FILE_OPT} -c -km -Km -Cs -P "*/*" -Si -si -Rn system'
 
 #
-# Reuse cave bash completer to generate compltions for just introduced aliases
+# Reuse cave bash completer to generate completions for just introduced aliases
 #
 make_completion_wrapper _cave _cs cave search
 complete -o bashdefault -o default -F _cs cs

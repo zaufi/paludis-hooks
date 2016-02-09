@@ -1,7 +1,7 @@
 What is this?
 =============
 
-Here is a set of my hooks (plugins) for [plaudis](http://paludis.exherbo.org) I wrote and use few years already.
+Here is a set of my hooks (plugins) for [paludis](http://paludis.exherbo.org) I wrote and use few years already.
 
 Briefly this package consists of:
 * __Autopatch__ hook -- an easy way to apply patches ([here](https://github.com/zaufi/paludis-autopatches) is my set of patches)
