@@ -65,7 +65,7 @@ phenv-getRANLIB()
 # $1 - variable to modify
 # $2..$n - options to add
 #
-phenv-add-options()
+phenv-append-var()
 {
     local var=$1
     shift
@@ -78,7 +78,7 @@ phenv-add-options()
 # $1 - variable to modify
 # $2..$n - options to remove
 #
-phenv-remove-options()
+phenv-filter-var()
 {
     local -r _ro_var="$1"
     shift

@@ -94,9 +94,15 @@ install(
   )
 install(
     FILES
+        package.env/default-deps-trk.conf
+        package.env/default-silent-rules.conf
         package.env/extra-optimize.conf
         package.env/lto.conf
+        package.env/max-debug.conf
         package.env/no-debug.conf
+        package.env/no-modern-c++.conf
+        package.env/no-gnu-tls.conf
+        package.env/no-gc-sections.conf
         package.env/no-lto.conf
         package.env/use-bfd-linker.conf
         package.env/use-gold-linker.conf
