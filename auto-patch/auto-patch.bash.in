@@ -35,7 +35,7 @@ try_to_apply_patches()
 
             cd "${S}" || die "Failed to cd into ${S}!"
             for i in "${check}"/*.patch ; do
-                if [[ ! declare -f epatch >/dev/null ]]; then
+                if ! declare -f epatch >/dev/null ; then
                     # TODO EAPI=6 has `eapply` and `epatch` could be deprecated soon...
                     inherit eutils
                 fi
