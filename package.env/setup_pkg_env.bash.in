@@ -8,11 +8,6 @@
 
 source ${PALUDIS_EBUILD_DIR}/echo_functions.bash
 
-# Do nothing on sync action...
-# TODO What other actions possible?
-# TODO Make sure the rest will run only on real build of some package.
-[ x"${PALUDIS_ACTION}" = 'xsync' ] && exit 0
-
 # Bring flag-o-matic.eclass into the scope, so env files may use functions from it to manupulate compiler/linker flags
 inherit flag-o-matic
 
@@ -124,7 +119,9 @@ setup_pkg_env()
     done
 }
 
-# Do it!
-setup_pkg_env
+# Do nothing on sync action...
+# TODO What other actions possible?
+# TODO Make sure the rest will run only on real build of some package.
+[ x"${PALUDIS_ACTION}" != 'xsync' ] && setup_pkg_env
 
 # kate: hl bash;
