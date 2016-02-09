@@ -61,6 +61,43 @@ phenv-getRANLIB()
 #END Helper functions named after toolchain-funcs.eclass
 
 #
+# Add options to the end of a given var
+# $1 - variable to modify
+# $2..$n - options to add
+#
+phenv-add-options()
+{
+    local var=$1
+    shift
+    local stmt="$var=\"\$${var} $*\""
+    eval "$stmt"
+}
+
+#
+# Remove options from a given var
+# $1 - variable to modify
+# $2..$n - options to remove
+#
+phenv-remove-options()
+{
+    local -r _ro_var="$1"
+    shift
+    local -a _ro_new_value
+    local _ro_opt
+    local _ro_del_value
+
+    # Iterate over options in a variable
+    for _ro_opt in ${!_ro_var}; do
+        # Iterate over options to remove passed as function parameters
+        for _ro_del_value in "$@"; do
+            [[ ${_ro_opt} == ${_ro_del_value} ]] && continue 2
+        done
+        _ro_new_value+=( "${_ro_opt}" )
+    done
+    eval "${_ro_var}=\"${_ro_new_value[@]}\""
+}
+
+#
 # The main function to be used from ${PALUDIS_CONFIG_DIR}/bashrc
 #
 setup_pkg_env()
