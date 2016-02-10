@@ -1,3 +1,4 @@
+# vim:ts=4:expandtab:
 # "Build" script for my paludis-hooks package
 # Copyright 2012-2013 by Alex Turbov <i.zaufi@gmail.com>
 #
@@ -46,83 +47,93 @@ set(PH_HOOKSCONFDIR   "${PH_PALUDISCONFDIR}/hooks/configs")
 set(PH_PROFILEDIR     "${PH_SYSCONFDIR}/profile.d")
 set(PH_ENVDIR         "${PH_SYSCONFDIR}/env.d")
 # NOTE Hardcoded nowadays! Dunno is there any reason to detect it...
-set(PH_COMMANDSDIR    "/usr/libexec/cave/commands")
+#set(PH_COMMANDSDIR    "/usr/libexec/cave/commands")
+# The reason is: testing installation in temporary image dir for example
+set(PH_COMMANDSDIR    "${CMAKE_INSTALL_FULL_LIBEXECDIR}/cave/commands")
 
 # Autopatch hook
-configure_file(auto-patch/auto-patch.bash.in auto-patch/auto-patch.bash @ONLY)
-configure_file(auto-patch/auto-patch.conf.in auto-patch/auto-patch.conf @ONLY)
-install(
-    PROGRAMS ${CMAKE_BINARY_DIR}/auto-patch/auto-patch.bash
-    DESTINATION ${PH_DATAROOTDIR}
-  )
-install(
-    FILES ${CMAKE_BINARY_DIR}/auto-patch/auto-patch.conf
-    DESTINATION ${PH_HOOKSCONFDIR}
-  )
+if(WITH_AUTOPATCH)
+    configure_file(auto-patch/auto-patch.bash.in auto-patch/auto-patch.bash @ONLY)
+    configure_file(auto-patch/auto-patch.conf.in auto-patch/auto-patch.conf @ONLY)
+    install(
+        PROGRAMS ${CMAKE_BINARY_DIR}/auto-patch/auto-patch.bash
+        DESTINATION ${PH_DATAROOTDIR}
+        )
+    install(
+        FILES ${CMAKE_BINARY_DIR}/auto-patch/auto-patch.conf
+        DESTINATION ${PH_HOOKSCONFDIR}
+        )
+endif()
 
 # Filesystem manager hook
-set(FILESYSTEM_MANAGER_DTD "${PH_DATAROOTDIR}/filesystem-manager/filesystem-manager.dtd")
-set(FILESYSTEM_MANAGER_XSL "${PH_DATAROOTDIR}/filesystem-manager/filesystem-manager.xsl")
-configure_file(filesystem-manager/filesystem-manager.conf.in filesystem-manager/filesystem-manager.conf @ONLY)
-configure_file(filesystem-manager/filesystem-manager.bash.in filesystem-manager/filesystem-manager.bash @ONLY)
-install(
-    PROGRAMS ${CMAKE_BINARY_DIR}/filesystem-manager/filesystem-manager.bash
-    DESTINATION ${PH_DATAROOTDIR}
-  )
-install(
-    FILES ${CMAKE_BINARY_DIR}/filesystem-manager/filesystem-manager.conf
-    DESTINATION ${PH_HOOKSCONFDIR}
-  )
-install(
-    FILES filesystem-manager/filesystem-manager.xsl
-    DESTINATION ${PH_DATAROOTDIR}/filesystem-manager
-  )
-install(
-    FILES filesystem-manager/filesystem-manager.dtd
-    DESTINATION ${PH_DATAROOTDIR}/filesystem-manager
-  )
-install(
-    DIRECTORY filesystem-manager/commands
-    DESTINATION ${PH_DATAROOTDIR}/filesystem-manager
-  )
+if(WITH_FS_MANAGER)
+    set(FILESYSTEM_MANAGER_DTD "${PH_DATAROOTDIR}/filesystem-manager/filesystem-manager.dtd")
+    set(FILESYSTEM_MANAGER_XSL "${PH_DATAROOTDIR}/filesystem-manager/filesystem-manager.xsl")
+    configure_file(filesystem-manager/filesystem-manager.conf.in filesystem-manager/filesystem-manager.conf @ONLY)
+    configure_file(filesystem-manager/filesystem-manager.bash.in filesystem-manager/filesystem-manager.bash @ONLY)
+    install(
+        PROGRAMS ${CMAKE_BINARY_DIR}/filesystem-manager/filesystem-manager.bash
+        DESTINATION ${PH_DATAROOTDIR}
+        )
+    install(
+        FILES ${CMAKE_BINARY_DIR}/filesystem-manager/filesystem-manager.conf
+        DESTINATION ${PH_HOOKSCONFDIR}
+        )
+    install(
+        FILES filesystem-manager/filesystem-manager.xsl
+        DESTINATION ${PH_DATAROOTDIR}/filesystem-manager
+        )
+    install(
+        FILES filesystem-manager/filesystem-manager.dtd
+        DESTINATION ${PH_DATAROOTDIR}/filesystem-manager
+        )
+    install(
+        DIRECTORY filesystem-manager/commands
+        DESTINATION ${PH_DATAROOTDIR}/filesystem-manager
+        )
+endif()
 
 # Package environment configurator
-configure_file(package.env/setup_pkg_env.bash.in package.env/setup_pkg_env.bash @ONLY)
-install(
-    FILES ${CMAKE_BINARY_DIR}/package.env/setup_pkg_env.bash
-    DESTINATION ${PH_LIBEXECDIR}
-  )
-install(
-    FILES
-        package.env/default-deps-trk.conf
-        package.env/default-silent-rules.conf
-        package.env/extra-optimize.conf
-        package.env/lto.conf
-        package.env/max-debug.conf
-        package.env/no-debug.conf
-        package.env/no-modern-c++.conf
-        package.env/no-gnu-tls.conf
-        package.env/no-gc-sections.conf
-        package.env/no-lto.conf
-        package.env/use-bfd-linker.conf
-        package.env/use-gold-linker.conf
-        package.env/use-latest-gcc.conf
-        package.env/use-modern-c++.conf
-    DESTINATION ${PH_PALUDISCONFDIR}/env.conf.d
-  )
+if(WITH_PACKAGE_ENV)
+    configure_file(package.env/setup_pkg_env.bash.in package.env/setup_pkg_env.bash @ONLY)
+    install(
+        FILES ${CMAKE_BINARY_DIR}/package.env/setup_pkg_env.bash
+        DESTINATION ${PH_LIBEXECDIR}
+      )
+    install(
+        FILES
+            package.env/default-deps-trk.conf
+            package.env/default-silent-rules.conf
+            package.env/extra-optimize.conf
+            package.env/lto.conf
+            package.env/max-debug.conf
+            package.env/no-debug.conf
+            package.env/no-modern-c++.conf
+            package.env/no-gnu-tls.conf
+            package.env/no-gc-sections.conf
+            package.env/no-lto.conf
+            package.env/use-bfd-linker.conf
+            package.env/use-gold-linker.conf
+            package.env/use-latest-gcc.conf
+            package.env/use-modern-c++.conf
+        DESTINATION ${PH_PALUDISCONFDIR}/env.conf.d
+      )
+endif()
 
 # In Memory Build hook
-configure_file(workdir-tmpfs/workdir-tmpfs.bash.in workdir-tmpfs/workdir-tmpfs.bash @ONLY)
-configure_file(workdir-tmpfs/workdir-tmpfs.conf.in workdir-tmpfs/workdir-tmpfs.conf @ONLY)
+if(WITH_WORKDIR_TMPFS)
+    configure_file(workdir-tmpfs/workdir-tmpfs.bash.in workdir-tmpfs/workdir-tmpfs.bash @ONLY)
+    configure_file(workdir-tmpfs/workdir-tmpfs.conf.in workdir-tmpfs/workdir-tmpfs.conf @ONLY)
 
-install(
-    PROGRAMS ${CMAKE_BINARY_DIR}/workdir-tmpfs/workdir-tmpfs.bash
-    DESTINATION ${PH_DATAROOTDIR}
-  )
-install(
-    FILES ${CMAKE_BINARY_DIR}/workdir-tmpfs/workdir-tmpfs.conf
-    DESTINATION ${PH_HOOKSCONFDIR}
-  )
+    install(
+        PROGRAMS ${CMAKE_BINARY_DIR}/workdir-tmpfs/workdir-tmpfs.bash
+        DESTINATION ${PH_DATAROOTDIR}
+      )
+    install(
+        FILES ${CMAKE_BINARY_DIR}/workdir-tmpfs/workdir-tmpfs.conf
+        DESTINATION ${PH_HOOKSCONFDIR}
+      )
+endif()
 
 # Some other helpers...
 install(
