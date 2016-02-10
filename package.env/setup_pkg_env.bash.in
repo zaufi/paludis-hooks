@@ -8,8 +8,10 @@
 
 source ${PALUDIS_EBUILD_DIR}/echo_functions.bash
 
-# Bring flag-o-matic.eclass into the scope, so env files may use functions from it to manupulate compiler/linker flags
-inherit flag-o-matic
+if [ x"${PALUDIS_ACTION}" != 'xsync' ]; then
+    # Bring flag-o-matic.eclass into the scope, so env files may use functions from it to manupulate compiler/linker flags
+    inherit flag-o-matic
+fi
 
 
 #
