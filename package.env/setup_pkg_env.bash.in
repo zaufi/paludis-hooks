@@ -19,8 +19,9 @@ fi
 #
 phenv-get-gcc-version()
 {
-    local gcc_bin=${CC:-gcc}
-    ${gcc_bin} --version | head -n 1 | sed 's,.* \([0-9]\.[0-9]\.[0-9]\)$,\1,'
+    local gcc_bin="${CC:-gcc}"
+    set -- `"${gcc_bin}" -E -P - <<<"__GNUC__ __GNUC_MINOR__ __GNUC_PATCHLEVEL__"`
+    echo $1.$2.$3
 }
 
 #
