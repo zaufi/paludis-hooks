@@ -122,9 +122,15 @@ setup_pkg_env()
     done
 }
 
-# Do nothing on sync action...
+# Do nothing on sync or fetch action.
+#
+# NOTE When `WORKDIR` is defined -- we are ready to really build the package!
+# (i.e. fetch has completed)
+#
 # TODO What other actions possible?
+#
 # TODO Make sure the rest will run only on real build of some package.
-[ x"${PALUDIS_ACTION}" != 'xsync' ] && setup_pkg_env
+#
+[ x"${PALUDIS_ACTION}" != 'xsync' -a -n "${WORKDIR}" ] && setup_pkg_env
 
 # kate: hl bash;
