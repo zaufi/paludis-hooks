@@ -14,6 +14,33 @@ Briefly this package consists of:
 CONFIGURATION DETAILS
 =====================
 
+Autopatch
+---------
+
+The only one option for this hook is location of patches tree which defined in
+`/etc/paludis/hooks/configs/auto-patch.conf`
+`.patch` files should be placed under this directory with such hierarchy:
+```
+autopatches
+├── hook_name1
+│   └── cate-gory
+│       └── package_name
+│           └── fix_some_crap.patch
+├── hook_name2
+│   ├── cate-gory
+│   │   └── package-ver
+│   │       └── version-specific.patch
+│   ├── cate-gory
+│   │   └── package-ver_r1
+│   │       └── some-cve-hotfix.patch
+│   └── cate-gory
+│       └── any_spec:SLOT
+│           └── slot-specific.patch
+```
+and so on.
+Supported hooks for autopatch are:
+`ebuild_install_pre, install_all_post, ebuild_configure_post, ebuild_compile_post, ebuild_configure_pre, ebuild_compile_pre, ebuild_unpack_post`.
+
 Filesystem Manager
 ------------------
 
