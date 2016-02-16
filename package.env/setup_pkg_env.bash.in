@@ -8,7 +8,12 @@
 
 source ${PALUDIS_EBUILD_DIR}/echo_functions.bash
 
-if [ x"${PALUDIS_ACTION}" != 'xsync' ]; then
+# Do nothing on sync or fetch action.
+#
+# NOTE When `WORKDIR` is defined -- we are ready to really build the package!
+# (i.e. fetch has completed)
+#
+if [ x"${PALUDIS_ACTION}" != 'xsync' -a -n "${WORKDIR}" ]; then
     # Bring flag-o-matic.eclass into the scope, so env files may use functions from it to manupulate compiler/linker flags
     inherit flag-o-matic
 fi
