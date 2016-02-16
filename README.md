@@ -54,6 +54,27 @@ This hook is also controlled by this paludis bashrc variables:
   * `PALUDIS_FILESYSTEM_HOOK_DO_NOTHING="yes"` disables all actions of this hook.
   * `PALUDIS_FILESYSTEM_HOOK_NO_WARNING="yes"` mutes annoying warning about altered packages.
 
+package.env
+-----------
+
+For using this hook add to paludis bashrc line:
+
+`[ -e /usr/libexec/paludis-hooks/setup_pkg_env.bash ] && source
+/usr/libexec/paludis-hooks/setup_pkg_env.bash`
+
+and to `/etc/paludis/package_env.conf`:
+
+`category/some_package some_env`
+
+After this paludis will include to loaded from bashrc enviroment all lines from file
+`/etc/paludis/env.conf.d/some_env.conf` when building `category/some_package`.
+
+Workdir-tmpfs
+-------------
+
+Most important parameter in `/etc/paludis/hooks/configs/workdir-tmpfs.conf` is
+`IN_MEMORY_BUILD_ENABLED`.
+
 TODO
 ====
 
