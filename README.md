@@ -17,8 +17,8 @@ CONFIGURATION DETAILS
 Autopatch
 ---------
 
-The only one option for this hook is location of patches tree which defined in
-`/etc/paludis/hooks/configs/auto-patch.conf`
+The only one option in `/etc/paludis/hooks/configs/auto-patch.conf` is location of patches tree
+(default: `/var/paludis/autopatches`).
 `.patch` files should be placed under this directory with such hierarchy:
 ```
 autopatches
@@ -38,21 +38,21 @@ autopatches
 │           └── slot-specific.patch
 ```
 and so on.
+
 Supported hooks for autopatch are:
 `ebuild_install_pre, install_all_post, ebuild_configure_post, ebuild_compile_post, ebuild_configure_pre, ebuild_compile_pre, ebuild_unpack_post`.
 
 Filesystem Manager
 ------------------
 
-`/etc/paludis/hooks/configs/filesystem-manager.conf` is an XML file which format is explained
+`/etc/paludis/hooks/configs/filesystem-manager.conf` is a set of rules in XML which format is explained
 by the comments in it or in more details
-[here](https://github.com/zaufi/paludis-config/blob/hardware/notebook/MSI-GP60-2PE-Leopard/hooks/configs/filesystem-manager.conf)
+[here](https://github.com/zaufi/paludis-config/blob/hardware/notebook/MSI-GP60-2PE-Leopard/hooks/configs/filesystem-manager.conf).
 
 This hook is also controlled by this paludis bashrc variables:
-
-  * `PALUDIS_HOOK_DEBUG=yes` dumps enviroment variables to file `/tmp/paludis-fsm-hook-env.log`
-  * `PALUDIS_FILESYSTEM_HOOK_DO_NOTHING="yes"` disables all actions of this hook
-  * `PALUDIS_FILESYSTEM_HOOK_NO_WARNING="yes"` mutes annoying warning about altered packages
+  * `PALUDIS_HOOK_DEBUG="yes"` dumps enviroment variables to file `/tmp/paludis-fsm-hook-env.log`.
+  * `PALUDIS_FILESYSTEM_HOOK_DO_NOTHING="yes"` disables all actions of this hook.
+  * `PALUDIS_FILESYSTEM_HOOK_NO_WARNING="yes"` mutes annoying warning about altered packages.
 
 TODO
 ====
