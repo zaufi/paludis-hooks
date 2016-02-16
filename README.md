@@ -11,7 +11,7 @@ Briefly this package consists of:
 * A bunch of helper functions usable in a daily work w/ paludis
 * A hook to organize compiler/linker options into various sets and apply to packages
 
-CONFIGURATION DETAILS
+Configuration details
 =====================
 
 Autopatch
