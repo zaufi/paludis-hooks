@@ -11,6 +11,22 @@ Briefly this package consists of:
 * A bunch of helper functions usable in a daily work w/ paludis
 * A hook to organize compiler/linker options into various sets and apply to packages
 
+CONFIGURATION DETAILS
+=====================
+
+Filesystem Manager
+------------------
+
+`/etc/paludis/hooks/configs/filesystem-manager.conf` is an XML file which format is explained
+by the comments in it or in more details
+[here](https://github.com/zaufi/paludis-config/blob/hardware/notebook/MSI-GP60-2PE-Leopard/hooks/configs/filesystem-manager.conf)
+
+This hook is also controlled by this paludis bashrc variables:
+
+  * `PALUDIS_HOOK_DEBUG=yes` dumps enviroment variables to file `/tmp/paludis-fsm-hook-env.log`
+  * `PALUDIS_FILESYSTEM_HOOK_DO_NOTHING="yes"` disables all actions of this hook
+  * `PALUDIS_FILESYSTEM_HOOK_NO_WARNING="yes"` mutes annoying warning about altered packages
+
 TODO
 ====
 
