@@ -112,6 +112,7 @@ if(WITH_PACKAGE_ENV)
             package.env/no-gnu-tls.conf
             package.env/no-gc-sections.conf
             package.env/no-lto.conf
+            package.env/spam.conf
             package.env/use-bfd-linker.conf
             package.env/use-gold-linker.conf
             package.env/use-latest-gcc.conf
