@@ -29,7 +29,7 @@
 <!ATTLIST rm
     cd CDATA #REQUIRED
     dst CDATA #IMPLIED
-    reverse (true|false) "false"
+    negate (true|false) "false"
   >
 
 <!ELEMENT item EMPTY>

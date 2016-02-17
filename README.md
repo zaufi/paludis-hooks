@@ -92,6 +92,11 @@ Version 1.2
 -----------
 
 * Add a runtime option to filesystem management hook to suppress a warning
+* Rename `reverse` attribute of Filesystem Manager config to `negate`
+* Better docs and a bunch of fixes (thanks to Kapshuna Alexander, @kapsh)
+* Fix for issue #11
+* A bunch of improvements in environment manager: now it is possible to use
+  functions from `flag-o-matic.eclss` to manage compiler/linker options
 
 Version 1.1
 -----------

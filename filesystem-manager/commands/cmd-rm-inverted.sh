@@ -10,7 +10,7 @@
 # @param cd  -- directory to change to, before remove
 # @param dst -- targets what must stay
 #
-function cmd_rm_reverse()
+function cmd_rm_inverted()
 {
     local cd="$1"
     local dst="$2"
