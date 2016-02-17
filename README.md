@@ -86,7 +86,6 @@ TODO
 * Add ability to find target objects (files, dirs, whatever) by introducing smth
   like `find` item and iterate over results applying some other actions (`ln`, `rm`, & etc...)
 * Implement FSM commands as **real** plugins... need to think about how to update (merge) DTD then.
-* Add option to `auto-patch` hook turn WARNINGs (about modified package) off
 * Predefine some useful entities? Like `&docdir;` for `/usr/share/doc`
 
 Changelog
