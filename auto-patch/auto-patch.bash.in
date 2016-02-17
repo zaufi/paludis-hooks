@@ -65,12 +65,12 @@ try_to_apply_patches()
 
 case "${HOOK}" in
     # ATTENTION This script must be symlinked to the following hook dirs:
-    ebuild_compile_post         | \
-    ebuild_compile_pre          | \
-    ebuild_configure_post       | \
-    ebuild_configure_pre        | \
-    ebuild_install_pre          | \
-    ebuild_unpack_post          )
+    ebuild_compile_post   | \
+    ebuild_compile_pre    | \
+    ebuild_configure_post | \
+    ebuild_configure_pre  | \
+    ebuild_install_pre    | \
+    ebuild_unpack_post    )
         try_to_apply_patches
         ;;
     install_all_post)
