@@ -15,13 +15,21 @@ PATCH_DIR="@PH_LOCALSTATEDIR@/db/paludis/autopatches"
 # Configuration override
 [[ -f ${CONFIG_FILE} ]] && source ${CONFIG_FILE}
 
+
+if [[ "x${PALUDIS_AUTOPATCH_HOOK_DO_NOTHING}" = 'xyes' ]]; then
+	einfo "Autopatch Hook: Do not apply any patches due explicit request"
+	exit 0
+fi
+
 _ap_rememberfile="${T}/.autopatch_was_here_${PALUDIS_PID}"
 
 issue_a_warning()
 {
-    local -r tobe="$1"
-    ewarn "WARNING: ${CATEGORY}/${PF} package $tobe installed with additional patches applied by auto-patch hook."
-    ewarn "WARNING: Before filing a bug, remove all patches, reinstall, and try again..."
+	if [[ x"${PALUDIS_AUTOPATCH_HOOK_NO_WARNING}" != 'xyes' ]]; then
+		local -r tobe="$1"
+		ewarn "WARNING: ${CATEGORY}/${PF} package $tobe installed with additional patches applied by auto-patch hook."
+		ewarn "WARNING: Before filing a bug, remove all patches, reinstall, and try again..."
+	fi
 }
 
 try_to_apply_patches()

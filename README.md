@@ -42,6 +42,10 @@ and so on.
 Supported hooks for autopatch are:
 `ebuild_install_pre, install_all_post, ebuild_configure_post, ebuild_compile_post, ebuild_configure_pre, ebuild_compile_pre, ebuild_unpack_post`.
 
+This hook is also controlled by this variables in paludis bashrc:
+  * `PALUDIS_AUTOPATCH_HOOK_DO_NOTHING="yes"` disables all actions of this hook.
+  * `PALUDIS_AUTOPATCH_HOOK_NO_WARNING="yes"` mutes annoying warnings about altered packages.
+
 Filesystem Manager
 ------------------
 
@@ -49,10 +53,10 @@ Filesystem Manager
 by the comments in it or in more details
 [here](https://github.com/zaufi/paludis-config/blob/hardware/notebook/MSI-GP60-2PE-Leopard/hooks/configs/filesystem-manager.conf).
 
-This hook is also controlled by this paludis bashrc variables:
+This hook is also controlled by this variables in paludis bashrc:
   * `PALUDIS_HOOK_DEBUG="yes"` dumps enviroment variables to file `/tmp/paludis-fsm-hook-env.log`.
   * `PALUDIS_FILESYSTEM_HOOK_DO_NOTHING="yes"` disables all actions of this hook.
-  * `PALUDIS_FILESYSTEM_HOOK_NO_WARNING="yes"` mutes annoying warning about altered packages.
+  * `PALUDIS_FILESYSTEM_HOOK_NO_WARNING="yes"` mutes annoying warnings about altered packages.
 
 package.env
 -----------
