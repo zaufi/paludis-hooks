@@ -2,15 +2,15 @@
 #
 # Paludis hook script to apply patch (w/o modifying corresponding ebuild file).
 #
-# Copyright (c), 2010-2012 by Alex Turbov <i.zaufi@gmail.com>
+# Copyright (c), 2010-2016 by Alex Turbov <i.zaufi@gmail.com>
 #
-# Version: @PH_VERSION@
+# Version: @PROJECT_VERSION@
 #
 
 source ${PALUDIS_EBUILD_DIR}/echo_functions.bash
 
-declare -r CONFIG_FILE="@PH_HOOKSCONFDIR@/auto-patch.conf"
-PATCH_DIR="@PH_LOCALSTATEDIR@/db/paludis/autopatches"
+declare -r CONFIG_FILE="@CMAKE_INSTALL_FULL_SYSCONFDIR@/paludis/hooks/configs/auto-patch.conf"
+PATCH_DIR="@CMAKE_INSTALL_FULL_LOCALSTATEDIR@/db/paludis/autopatches"
 
 # Configuration override
 [[ -f ${CONFIG_FILE} ]] && source ${CONFIG_FILE}

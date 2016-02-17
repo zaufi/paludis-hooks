@@ -24,7 +24,7 @@
     <package spec="dev-python/python-docs">
         <symlink cd="/usr/share/doc" src="${PF}/html" dst="python-${SLOT}" />
     </package>
-   -->
+    -->
 
     <!-- Remove any translations from all packages! I use only English and USE=-nls
         app-admin/localepurge doesn't needed anymore! ;-)

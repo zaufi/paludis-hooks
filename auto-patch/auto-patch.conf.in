@@ -8,4 +8,4 @@
 # Home directory for the patches.
 # Put the patches in ${PATCH_DIR}/hook/cat/pkg-ver/ subdirectory
 # NOTE Uncomment the following line to override default location
-# PATCH_DIR="@PH_LOCALSTATEDIR@/paludis/autopatches"
+# PATCH_DIR="@CMAKE_INSTALL_FULL_LOCALSTATEDIR@/paludis/autopatches"

@@ -1,12 +1,10 @@
 # vim:ts=4:expandtab:
 # "Build" script for my paludis-hooks package
-# Copyright 2012-2013 by Alex Turbov <i.zaufi@gmail.com>
+# Copyright 2012-2016 by Alex Turbov <i.zaufi@gmail.com>
 #
 
-cmake_minimum_required(VERSION 2.6)
-project(paludis-hooks NONE)
-
-set(PH_VERSION "1.1")
+cmake_minimum_required(VERSION 3.4)
+project(paludis-hooks VERSION 1.3 LANGUAGES NONE)
 
 # seek for xmllint to validate our XML files
 find_program(XMLLINT_EXECUTABLE xmllint)
@@ -29,67 +27,47 @@ endif()
 set(CMAKE_SIZEOF_VOID_P 8)
 include(GNUInstallDirs)
 
-# Setup package paths
-set(PH_PREFIX         "${CMAKE_INSTALL_PREFIX}")
-set(PH_BINDIR         "${CMAKE_INSTALL_FULL_BINDIR}")
-set(PH_LIBEXECDIR     "${CMAKE_INSTALL_FULL_LIBEXECDIR}/paludis-hooks")
-set(PH_DATAROOTDIR    "${CMAKE_INSTALL_FULL_DATAROOTDIR}/paludis-hooks")
-set(PH_DOCSDIR        "${CMAKE_INSTALL_FULL_DOCDIR}")
-if(${PH_PREFIX} MATCHES "/usr")
-    set(PH_SYSCONFDIR    "/etc")
-    set(PH_LOCALSTATEDIR "/var")
-else()
-    set(PH_SYSCONFDIR    "${CMAKE_INSTALL_FULL_SYSCONFDIR}")
-    set(PH_LOCALSTATEDIR "${CMAKE_INSTALL_FULL_LOCALSTATEDIR}")
-endif()
-set(PH_PALUDISCONFDIR "${PH_SYSCONFDIR}/paludis")
-set(PH_HOOKSCONFDIR   "${PH_PALUDISCONFDIR}/hooks/configs")
-set(PH_PROFILEDIR     "${PH_SYSCONFDIR}/profile.d")
-set(PH_ENVDIR         "${PH_SYSCONFDIR}/env.d")
-# NOTE Hardcoded nowadays! Dunno is there any reason to detect it...
-#set(PH_COMMANDSDIR    "/usr/libexec/cave/commands")
-# The reason is: testing installation in temporary image dir for example
-set(PH_COMMANDSDIR    "${CMAKE_INSTALL_FULL_LIBEXECDIR}/cave/commands")
+option(WITH_AUTOPATCH "Install autopatch hook" ON)
+option(WITH_FS_MANAGER "Install filesystem manager hook" ON)
+option(WITH_PACKAGE_ENV "Install per package environment manager" ON)
 
 # Autopatch hook
 if(WITH_AUTOPATCH)
     configure_file(auto-patch/auto-patch.bash.in auto-patch/auto-patch.bash @ONLY)
     configure_file(auto-patch/auto-patch.conf.in auto-patch/auto-patch.conf @ONLY)
     install(
-        PROGRAMS ${CMAKE_BINARY_DIR}/auto-patch/auto-patch.bash
-        DESTINATION ${PH_DATAROOTDIR}
+        PROGRAMS "${CMAKE_BINARY_DIR}/auto-patch/auto-patch.bash"
+        DESTINATION "${CMAKE_INSTALL_FULL_DATAROOTDIR}/paludis-hooks"
         )
     install(
-        FILES ${CMAKE_BINARY_DIR}/auto-patch/auto-patch.conf
-        DESTINATION ${PH_HOOKSCONFDIR}
+        FILES "${CMAKE_BINARY_DIR}/auto-patch/auto-patch.conf"
+        DESTINATION "${CMAKE_INSTALL_FULL_SYSCONFDIR}/paludis/hooks/configs"
         )
 endif()
 
 # Filesystem manager hook
 if(WITH_FS_MANAGER)
-    set(FILESYSTEM_MANAGER_DTD "${PH_DATAROOTDIR}/filesystem-manager/filesystem-manager.dtd")
-    set(FILESYSTEM_MANAGER_XSL "${PH_DATAROOTDIR}/filesystem-manager/filesystem-manager.xsl")
+    set(FILESYSTEM_MANAGER_DTD "${CMAKE_INSTALL_FULL_DATAROOTDIR}/paludis-hooks/filesystem-manager/filesystem-manager.dtd")
+    set(FILESYSTEM_MANAGER_XSL "${CMAKE_INSTALL_FULL_DATAROOTDIR}/paludis-hooks/filesystem-manager/filesystem-manager.xsl")
     configure_file(filesystem-manager/filesystem-manager.conf.in filesystem-manager/filesystem-manager.conf @ONLY)
     configure_file(filesystem-manager/filesystem-manager.bash.in filesystem-manager/filesystem-manager.bash @ONLY)
     install(
-        PROGRAMS ${CMAKE_BINARY_DIR}/filesystem-manager/filesystem-manager.bash
-        DESTINATION ${PH_DATAROOTDIR}
+        PROGRAMS "${CMAKE_BINARY_DIR}/filesystem-manager/filesystem-manager.bash"
+        DESTINATION "${CMAKE_INSTALL_FULL_DATAROOTDIR}/paludis-hooks"
         )
     install(
-        FILES ${CMAKE_BINARY_DIR}/filesystem-manager/filesystem-manager.conf
-        DESTINATION ${PH_HOOKSCONFDIR}
+        FILES "${CMAKE_BINARY_DIR}/filesystem-manager/filesystem-manager.conf"
+        DESTINATION "${CMAKE_INSTALL_FULL_SYSCONFDIR}/paludis/hooks/configs"
         )
     install(
-        FILES filesystem-manager/filesystem-manager.xsl
-        DESTINATION ${PH_DATAROOTDIR}/filesystem-manager
-        )
-    install(
-        FILES filesystem-manager/filesystem-manager.dtd
-        DESTINATION ${PH_DATAROOTDIR}/filesystem-manager
+        FILES
+            filesystem-manager/filesystem-manager.xsl
+            filesystem-manager/filesystem-manager.dtd
+        DESTINATION "${CMAKE_INSTALL_FULL_DATAROOTDIR}/paludis-hooks/filesystem-manager"
         )
     install(
         DIRECTORY filesystem-manager/commands
-        DESTINATION ${PH_DATAROOTDIR}/filesystem-manager
+        DESTINATION "${CMAKE_INSTALL_FULL_DATAROOTDIR}/paludis-hooks/filesystem-manager"
         )
 endif()
 
@@ -97,8 +75,8 @@ endif()
 if(WITH_PACKAGE_ENV)
     configure_file(package.env/setup_pkg_env.bash.in package.env/setup_pkg_env.bash @ONLY)
     install(
-        FILES ${CMAKE_BINARY_DIR}/package.env/setup_pkg_env.bash
-        DESTINATION ${PH_LIBEXECDIR}
+        FILES "${CMAKE_BINARY_DIR}/package.env/setup_pkg_env.bash"
+        DESTINATION "${CMAKE_INSTALL_FULL_LIBEXECDIR}/paludis-hooks"
       )
     install(
         FILES
@@ -117,7 +95,7 @@ if(WITH_PACKAGE_ENV)
             package.env/use-gold-linker.conf
             package.env/use-latest-gcc.conf
             package.env/use-modern-c++.conf
-        DESTINATION ${PH_PALUDISCONFDIR}/env.conf.d
+        DESTINATION "${CMAKE_INSTALL_FULL_SYSCONFDIR}/paludis/env.conf.d"
       )
 endif()
 
@@ -127,38 +105,38 @@ if(WITH_WORKDIR_TMPFS)
     configure_file(workdir-tmpfs/workdir-tmpfs.conf.in workdir-tmpfs/workdir-tmpfs.conf @ONLY)
 
     install(
-        PROGRAMS ${CMAKE_BINARY_DIR}/workdir-tmpfs/workdir-tmpfs.bash
-        DESTINATION ${PH_DATAROOTDIR}
+        PROGRAMS "${CMAKE_BINARY_DIR}/workdir-tmpfs/workdir-tmpfs.bash"
+        DESTINATION "${CMAKE_INSTALL_FULL_DATAROOTDIR}/paludis-hooks"
       )
     install(
-        FILES ${CMAKE_BINARY_DIR}/workdir-tmpfs/workdir-tmpfs.conf
-        DESTINATION ${PH_HOOKSCONFDIR}
+        FILES "${CMAKE_BINARY_DIR}/workdir-tmpfs/workdir-tmpfs.conf"
+        DESTINATION "${CMAKE_INSTALL_FULL_SYSCONFDIR}/paludis/hooks/configs"
       )
 endif()
 
 # Some other helpers...
 install(
     FILES profile.d/00-make-completion-wrapper.sh profile.d/cave-aliases.sh
-    DESTINATION ${PH_PROFILEDIR}
+    DESTINATION "${CMAKE_INSTALL_FULL_SYSCONFDIR}/profile.d"
   )
 install(
     FILES env.d/90cave
-    DESTINATION ${PH_ENVDIR}
+    DESTINATION "${CMAKE_INSTALL_FULL_SYSCONFDIR}/env.d"
   )
 
 if(PYTHONINTERP_FOUND)
     install(
         PROGRAMS print-ebuild-path
-        DESTINATION ${PH_COMMANDSDIR}
+        DESTINATION "${CMAKE_INSTALL_FULL_LIBEXECDIR}/cave/commands"
       )
     install(
         FILES profile.d/cave-addons.sh
-        DESTINATION ${PH_PROFILEDIR}
+        DESTINATION "${CMAKE_INSTALL_FULL_SYSCONFDIR}/profile.d"
       )
 endif()
 
 # Docs (not much)
 install(
     FILES README.md
-    DESTINATION ${PH_DOCSDIR}
+    DESTINATION "${CMAKE_INSTALL_FULL_DOCDIR}"
   )
