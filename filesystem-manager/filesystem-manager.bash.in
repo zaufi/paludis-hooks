@@ -14,7 +14,7 @@ source ${PALUDIS_EBUILD_DIR}/echo_functions.bash
 CONFIG_FILE="@CMAKE_INSTALL_FULL_SYSCONFDIR@/paludis/hooks/configs/filesystem-manager.conf"
 TEMPLATE_FILE="@CMAKE_INSTALL_FULL_DATAROOTDIR@/paludis-hooks/filesystem-manager/filesystem-manager.xsl"
 
-if [ -n "${PALUDIS_FILESYSTEM_HOOK_DO_NOTHING}" ]; then
+if [[ "x${PALUDIS_FILESYSTEM_HOOK_DO_NOTHING}" = 'xyes' ]]; then
     einfo "Filesystem Manager Hook: Do not process any actions due explicit request"
     exit 0
 fi
