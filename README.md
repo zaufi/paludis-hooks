@@ -89,6 +89,8 @@ TODO
 * Predefine some useful entities? Like `&docdir;` for `/usr/share/doc`
 * Add option to ignore SLOT when build certain packages w/ `wokrdir-tmpfs` hook -- i.e.
   when it is known apriory that required size doesn't change much (like `gentoo-sources`)
+* Add element to inject USE=doc for packages where it is not defined, so it'll be possible
+  to continue processing and avoid rules duplication in FMS hook
 
 Changelog
 =========
