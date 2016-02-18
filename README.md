@@ -87,6 +87,8 @@ TODO
   like `find` item and iterate over results applying some other actions (`ln`, `rm`, & etc...)
 * Implement FSM commands as **real** plugins... need to think about how to update (merge) DTD then.
 * Predefine some useful entities? Like `&docdir;` for `/usr/share/doc`
+* Add option to ignore SLOT when build certain packages w/ `wokrdir-tmpfs` hook -- i.e.
+  when it is known apriory that required size doesn't change much (like `gentoo-sources`)
 
 Changelog
 =========
