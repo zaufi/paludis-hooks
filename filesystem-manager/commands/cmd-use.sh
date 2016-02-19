@@ -30,7 +30,7 @@ function cmd_use()
 #
 # @param list of USE modifications
 #
-function pretend-use()
+function cmd_pretend_use()
 {
     for use in $*; do
         # Ok, need to add a given USE (if latter still not here)

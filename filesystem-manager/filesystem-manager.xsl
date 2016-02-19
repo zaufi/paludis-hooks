@@ -270,7 +270,7 @@ done
 
     <!-- Modify USE if pretend-use attribute is here -->
     <xsl:if test="@pretend-use">
-        pretend-use <xsl:value-of select="@pretend-use" />
+        cmd_pretend_use <xsl:value-of select="@pretend-use" />
     </xsl:if>
 
     <!-- Render script for given package -->
