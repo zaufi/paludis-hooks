@@ -84,7 +84,8 @@ TODO
 
 * Add more commands! Like `*zip` smth...
 * Add ability to find target objects (files, dirs, whatever) by introducing smth
-  like `find` item and iterate over results applying some other actions (`ln`, `rm`, & etc...)
+  like `find` item and iterate over results applying some other actions (`ln`, `rm`, & etc...).
+  For example `dev-python/PyQt5` have a lot of useless `README` files in every `examples/*` directory
 * Implement FSM commands as **real** plugins... need to think about how to update (merge) DTD then.
 * Predefine some useful entities? Like `&docdir;` for `/usr/share/doc`
 * Add option to ignore SLOT when build certain packages w/ `wokrdir-tmpfs` hook -- i.e.
@@ -93,6 +94,7 @@ TODO
   to continue processing and avoid rules duplication in FMS hook. (alsmost done)
 * Most of packages which docs I want, have the only rule to `symlink` `${P}` to `${PF}`.
   It would be nice to have a rule for `*/*` doing that if `USE=doc` enabled
+* Add `mv` command to place `dev-python/PyQt5` or `app-text/doxygen` docs to the right place
 
 Changelog
 =========
