@@ -10,6 +10,7 @@
     descr CDATA #IMPLIED
     spec CDATA #REQUIRED
     stop (true|false) "false"
+    pretend-use CDATA #IMPLIED
   >
 
 <!ELEMENT if (symlink|rm|if)*>

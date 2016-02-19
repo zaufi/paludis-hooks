@@ -209,6 +209,11 @@ done
                 <xsl:with-param name="priority" select="$priority" />
             </xsl:call-template>
         </xsl:when>
+        <xsl:when test="$priority = -1">
+            <xsl:call-template name="debug">
+                <xsl:with-param name="message">==== Recursion terminated ===</xsl:with-param>
+            </xsl:call-template>
+        </xsl:when>
         <xsl:otherwise>
             <xsl:message terminate="yes">*** ERROR: unexpected priority</xsl:message>
         </xsl:otherwise>
@@ -239,7 +244,7 @@ done
                 <xsl:with-param name="priority" select="$priority" />
             </xsl:apply-templates>
         </xsl:when>
-        <xsl:when test="count($packages-set) = 0 and $priority &gt; 0">
+        <xsl:when test="count($packages-set) = 0 and $priority != -1">
             <xsl:call-template name="debug">
                 <xsl:with-param name="message">==== ... nothing matched: trying lower priority ... </xsl:with-param>
             </xsl:call-template>
@@ -263,11 +268,20 @@ done
     einfo &quot;Filesystem Management Hook: Apply actions<xsl:if test="@descr"> '<xsl:value-of
         select="@descr" />'</xsl:if> for <xsl:value-of select="@spec" />&quot;
 
+    <!-- Modify USE if pretend-use attribute is here -->
+    <xsl:if test="@pretend-use">
+        pretend-use <xsl:value-of select="@pretend-use" />
+    </xsl:if>
+
     <!-- Render script for given package -->
     <xsl:apply-templates select="*" />
 
+    <xsl:call-template name="debug">
+        <xsl:with-param name="message">==== other items: <xsl:value-of select="*" /> </xsl:with-param>
+    </xsl:call-template>
+
     <!-- Continue if no `stop' attribute -->
-    <xsl:if test="@stop != 'true' and $priority &gt; 0">
+    <xsl:if test="@stop != 'true' and $priority &gt; -1">
         <xsl:call-template name="debug">
             <xsl:with-param name="message">==== continue matching packages w/ lower priority ... </xsl:with-param>
         </xsl:call-template>

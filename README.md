@@ -90,7 +90,7 @@ TODO
 * Add option to ignore SLOT when build certain packages w/ `wokrdir-tmpfs` hook -- i.e.
   when it is known apriory that required size doesn't change much (like `gentoo-sources`)
 * Add element to inject USE=doc for packages where it is not defined, so it'll be possible
-  to continue processing and avoid rules duplication in FMS hook
+  to continue processing and avoid rules duplication in FMS hook. (alsmost done)
 
 Changelog
 =========
@@ -104,6 +104,7 @@ Version 1.2
 * Fix for issue #11
 * A bunch of improvements in environment manager: now it is possible to use
   functions from `flag-o-matic.eclss` to manage compiler/linker options
+* Add `pretend-use` attribute to `package` element.
 
 Version 1.1
 -----------
