@@ -91,6 +91,8 @@ TODO
   when it is known apriory that required size doesn't change much (like `gentoo-sources`)
 * Add element to inject USE=doc for packages where it is not defined, so it'll be possible
   to continue processing and avoid rules duplication in FMS hook. (alsmost done)
+* Most of packages which docs I want, have the only rule to `symlink` `${P}` to `${PF}`.
+  It would be nice to have a rule for `*/*` doing that if `USE=doc` enabled
 
 Changelog
 =========
