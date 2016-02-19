@@ -373,7 +373,7 @@ cmd_rm "<xsl:value-of select="$cd" />" "<xsl:value-of select="@dst" />"
   -->
 <xsl:template match="fsmh:mv[@cd][@dst][@src]">
 # Move <xsl:value-of select="@src" /> to <xsl:value-of select="@dst" /> @ <xsl:value-of select="@cd" />
-cmd_mv "<xsl:value-of select="@cd" />" "<xsl:value-of select="@src" />" "<xsl:value-of select="@dst" />"
+cmd_mv "<xsl:value-of select="@cd" />" "<xsl:value-of select="@dst" />" "<xsl:value-of select="@src" />"
 </xsl:template>
 
 <!--

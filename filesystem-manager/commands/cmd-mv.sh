@@ -28,7 +28,9 @@ function cmd_mv()
 
     if [ -d "${D}/${cd}" ]; then
         cd "${D}/${cd}"
-        mv -vf "$@" ${dst} 2>/dev/null && schedule_a_warning_after_all
+        ebegin "Moving [$cd]: $* --> $dst"
+        mv -f "$@" ${dst} 2>/dev/null && schedule_a_warning_after_all
+        eend $?
         cd - >/dev/null
         # Walk through whole image and try to remove possible empty dirs
         # ATTENTION According EAPI it is incorrect to install empty directories!
