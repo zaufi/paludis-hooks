@@ -5,7 +5,7 @@
     xmlns:smh CDATA #FIXED "https://github.com/zaufi/paludis-hooks/#filesystem-management-hook"
   >
 
-<!ELEMENT package (symlink|rm|if)*>
+<!ELEMENT package (symlink|rm|mv|if)*>
 <!ATTLIST package
     descr CDATA #IMPLIED
     spec CDATA #REQUIRED
@@ -13,7 +13,7 @@
     pretend-use CDATA #IMPLIED
   >
 
-<!ELEMENT if (symlink|rm|if)*>
+<!ELEMENT if (symlink|rm|mv|if)*>
 <!ATTLIST if
     use CDATA #REQUIRED
     negate (true|false) "false"
@@ -31,6 +31,13 @@
     cd CDATA #REQUIRED
     dst CDATA #IMPLIED
     negate (true|false) "false"
+  >
+
+<!ELEMENT mv EMPTY>
+<!ATTLIST mv
+    cd CDATA #IMPLIED
+    src CDATA #IMPLIED
+    dst CDATA #IMPLIED
   >
 
 <!ELEMENT item EMPTY>

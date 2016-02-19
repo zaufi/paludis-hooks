@@ -88,13 +88,10 @@ TODO
   For example `dev-python/PyQt5` have a lot of useless `README` files in every `examples/*` directory
 * Implement FSM commands as **real** plugins... need to think about how to update (merge) DTD then.
 * Predefine some useful entities? Like `&docdir;` for `/usr/share/doc`
-* Add option to ignore SLOT when build certain packages w/ `wokrdir-tmpfs` hook -- i.e.
+* Add option to ignore `SLOT` when build certain packages w/ `wokrdir-tmpfs` hook -- i.e.
   when it is known apriory that required size doesn't change much (like `gentoo-sources`)
-* Add element to inject USE=doc for packages where it is not defined, so it'll be possible
+* Add element to inject `USE=doc` for packages where it is not defined, so it'll be possible
   to continue processing and avoid rules duplication in FMS hook. (alsmost done)
-* Most of packages which docs I want, have the only rule to `symlink` `${P}` to `${PF}`.
-  It would be nice to have a rule for `*/*` doing that if `USE=doc` enabled
-* Add `mv` command to place `dev-python/PyQt5` or `app-text/doxygen` docs to the right place
 
 Changelog
 =========
@@ -108,7 +105,8 @@ Version 1.2
 * Fix for issue #11
 * A bunch of improvements in environment manager: now it is possible to use
   functions from `flag-o-matic.eclss` to manage compiler/linker options
-* Add `pretend-use` attribute to `package` element.
+* Add `pretend-use` attribute to `package` element of Filesystem Manager hoost config
+* Introduce `mv` element in Filesystem Manager hoost config
 
 Version 1.1
 -----------

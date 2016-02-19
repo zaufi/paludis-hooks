@@ -265,8 +265,8 @@ done
     </xsl:call-template>
 
     <!-- Show some SPAM (in stript's runtime) -->
-    einfo &quot;Filesystem Management Hook: Apply actions<xsl:if test="@descr"> '<xsl:value-of
-        select="@descr" />'</xsl:if> for <xsl:value-of select="@spec" />&quot;
+    einfo "Filesystem Management Hook: Apply actions<xsl:if test="@descr"> '<xsl:value-of
+        select="@descr" />'</xsl:if> for <xsl:value-of select="@spec" />"
 
     <!-- Modify USE if pretend-use attribute is here -->
     <xsl:if test="@pretend-use">
@@ -366,6 +366,14 @@ cmd_rm "<xsl:value-of select="@cd" />" "<xsl:value-of select="@dst" />"
 cmd_rm "<xsl:value-of select="$cd" />" "<xsl:value-of select="@dst" />"
     </xsl:for-each>
 </xsl:if>
+</xsl:template>
+
+<!--
+    Matching `mv` nodes w/ all parameters given to move specified target(s)
+  -->
+<xsl:template match="fsmh:mv[@cd][@dst][@src]">
+# Move <xsl:value-of select="@src" /> to <xsl:value-of select="@dst" /> @ <xsl:value-of select="@cd" />
+cmd_mv "<xsl:value-of select="@cd" />" "<xsl:value-of select="@src" />" "<xsl:value-of select="@dst" />"
 </xsl:template>
 
 <!--

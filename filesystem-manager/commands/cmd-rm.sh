@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 # Plugin to implement an `rm` command of the config file
 #

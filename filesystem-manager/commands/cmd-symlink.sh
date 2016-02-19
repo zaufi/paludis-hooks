@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 # Plugin to implement a `symlink` command of the config file
 #
