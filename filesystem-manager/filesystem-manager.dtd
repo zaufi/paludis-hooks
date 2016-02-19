@@ -38,6 +38,7 @@
     cd CDATA #IMPLIED
     src CDATA #IMPLIED
     dst CDATA #IMPLIED
+    mkdstdir (true|false) "false"
   >
 
 <!ELEMENT item EMPTY>

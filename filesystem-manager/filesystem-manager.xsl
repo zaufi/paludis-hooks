@@ -371,9 +371,9 @@ cmd_rm "<xsl:value-of select="$cd" />" "<xsl:value-of select="@dst" />"
 <!--
     Matching `mv` nodes w/ all parameters given to move specified target(s)
   -->
-<xsl:template match="fsmh:mv[@cd][@dst][@src]">
+<xsl:template match="fsmh:mv[@cd][@dst][@src][@mkdstdir]">
 # Move <xsl:value-of select="@src" /> to <xsl:value-of select="@dst" /> @ <xsl:value-of select="@cd" />
-cmd_mv "<xsl:value-of select="@cd" />" "<xsl:value-of select="@dst" />" "<xsl:value-of select="@src" />"
+cmd_mv "<xsl:value-of select="@cd" />" "<xsl:value-of select="@dst" />" "<xsl:value-of select="@mkdstdir" />" "<xsl:value-of select="@src" />"
 </xsl:template>
 
 <!--

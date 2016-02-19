@@ -8,12 +8,14 @@
 #
 # @param cd  -- directory to change to, before remove
 # @param dst -- destination: directory or new file name
+# @param mkdst -- assert that destination is a directory and must be created if absent yet
 # @param src... -- what to move (possible w/ wildcards)
 function cmd_mv()
 {
     local cd="$1"
-    local dst="$2"
-    shift 2
+    local mkdst="$2"
+    local dst="$3"
+    shift 3
 
     if ! verify_dir "${cd}"; then
         eerror "Package image dir is undefined! Skip any actions..."
@@ -28,8 +30,12 @@ function cmd_mv()
 
     if [ -d "${D}/${cd}" ]; then
         cd "${D}/${cd}"
+        # If asked, make sure destination exists
+        if [ x"${mkdst}" = 'xtrue' -a ! -d "${dst}" ]; then
+            mkdir -p "${dst}"
+        fi
         ebegin "Moving [$cd]: $* --> $dst"
-        mv -f "$@" ${dst} 2>/dev/null && schedule_a_warning_after_all
+        mv -vf "$@" ${dst} 2>/dev/null && schedule_a_warning_after_all
         eend $?
         cd - >/dev/null
         # Walk through whole image and try to remove possible empty dirs
