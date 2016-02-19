@@ -244,7 +244,7 @@ done
                 <xsl:with-param name="priority" select="$priority" />
             </xsl:apply-templates>
         </xsl:when>
-        <xsl:when test="count($packages-set) = 0 and $priority != -1">
+        <xsl:when test="count($packages-set) = 0 and $priority &gt; -1">
             <xsl:call-template name="debug">
                 <xsl:with-param name="message">==== ... nothing matched: trying lower priority ... </xsl:with-param>
             </xsl:call-template>
