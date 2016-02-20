@@ -14,7 +14,7 @@ function cmd_mv()
 {
     local cd="$1"
     local mkdst="$2"
-    local dst="$3"
+    local st="$3"
     shift 3
 
     if ! verify_dir "${cd}"; then
