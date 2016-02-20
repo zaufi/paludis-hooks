@@ -27,6 +27,9 @@ endif()
 set(CMAKE_SIZEOF_VOID_P 8)
 include(GNUInstallDirs)
 
+# Foe tests
+include(CTest)
+
 option(WITH_AUTOPATCH "Install autopatch hook" ON)
 option(WITH_FS_MANAGER "Install filesystem manager hook" ON)
 option(WITH_PACKAGE_ENV "Install per package environment manager" ON)
@@ -47,28 +50,7 @@ endif()
 
 # Filesystem manager hook
 if(WITH_FS_MANAGER)
-    set(FILESYSTEM_MANAGER_DTD "${CMAKE_INSTALL_FULL_DATAROOTDIR}/paludis-hooks/filesystem-manager/filesystem-manager.dtd")
-    set(FILESYSTEM_MANAGER_XSL "${CMAKE_INSTALL_FULL_DATAROOTDIR}/paludis-hooks/filesystem-manager/filesystem-manager.xsl")
-    configure_file(filesystem-manager/filesystem-manager.conf.in filesystem-manager/filesystem-manager.conf @ONLY)
-    configure_file(filesystem-manager/filesystem-manager.bash.in filesystem-manager/filesystem-manager.bash @ONLY)
-    install(
-        PROGRAMS "${CMAKE_BINARY_DIR}/filesystem-manager/filesystem-manager.bash"
-        DESTINATION "${CMAKE_INSTALL_FULL_DATAROOTDIR}/paludis-hooks"
-        )
-    install(
-        FILES "${CMAKE_BINARY_DIR}/filesystem-manager/filesystem-manager.conf"
-        DESTINATION "${CMAKE_INSTALL_FULL_SYSCONFDIR}/paludis/hooks/configs"
-        )
-    install(
-        FILES
-            filesystem-manager/filesystem-manager.xsl
-            filesystem-manager/filesystem-manager.dtd
-        DESTINATION "${CMAKE_INSTALL_FULL_DATAROOTDIR}/paludis-hooks/filesystem-manager"
-        )
-    install(
-        DIRECTORY filesystem-manager/commands
-        DESTINATION "${CMAKE_INSTALL_FULL_DATAROOTDIR}/paludis-hooks/filesystem-manager"
-        )
+    add_subdirectory(filesystem-manager)
 endif()
 
 # Package environment configurator
