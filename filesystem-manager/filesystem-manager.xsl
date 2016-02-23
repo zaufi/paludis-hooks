@@ -30,7 +30,7 @@
 </xsl:call-template>#!/bin/sh
 #
 # ATTENTION: This script produced by filesystem-manager paludis hook
-# on installing <xsl:value-of select="$PN" /> package
+# on installing <xsl:value-of select="concat($CATEGORY,'/',$PN,'-',$PV,'-',$PR,':',$SLOT,'::',$REPOSITORY)" /> package
 #
 source ${PALUDIS_EBUILD_DIR}/echo_functions.bash
 for cmd in /usr/share/paludis-hooks/filesystem-manager/commands/*.sh; do
@@ -39,7 +39,7 @@ done
 
 <!-- Initiate package spec pattern matching starting from highest priority -->
 <xsl:call-template name="dispatch-by-priority">
-    <xsl:with-param name="priority" select="number(17)" />
+    <xsl:with-param name="priority" select="number(24)" />
 </xsl:call-template>
 
 <xsl:call-template name="debug">
@@ -53,23 +53,30 @@ done
 
     p   spec
     ..................................
-    16  cat/package-ver-rv:slot::repo
-    15  cat/package-ver-rv:slot
-    14  cat/package-ver-rv::repo
-    13  cat/package-ver-rv
-    12  cat/package:slot::repo
-    11  cat/package:slot
-    10  cat/package::repo
-    9   cat/package
-    8   package-ver-rv:slot::repo
-    7   package-ver-rv:slot
-    6   package-ver-rv:repo
-    5   package-ver-rv
-    4   package:slot::repo
-    3   package:slot
-    2   package:repo
-    1   cat/*
-    0   */*
+    24  cat/package-ver-rv:slot::repo
+    23  cat/package-ver-rv:slot
+    22  cat/package-ver-rv::repo
+    21  cat/package-ver-rv
+    20  cat/package:slot::repo
+    19  cat/package:slot
+    18  cat/package::repo
+    17  cat/package
+    16  package-ver-rv:slot::repo
+    15  package-ver-rv:slot
+    14  package-ver-rv:repo
+    13  package-ver-rv
+    12  package:slot::repo
+    11  package:slot
+    10  package:repo
+    9   package
+    8   cat/*:slot::repo
+    7   cat/*:slot
+    6   cat/*::repo
+    5   cat/*
+    4   */*:slot::repo
+    3   */*:slot
+    2   */*::repo
+    1   */*
   -->
 <xsl:template name="dispatch-by-priority">
     <xsl:param name="priority" />
@@ -79,28 +86,28 @@ done
     </xsl:call-template>
 
     <xsl:choose>
-        <xsl:when test="$priority = 17">
+        <xsl:when test="$priority = 24">
             <xsl:call-template name="handle-spec">
                 <xsl:with-param name="packages-set"
                     select="/fsmh:commands/fsmh:package[@spec = concat($CATEGORY,'/',$PF,':',$SLOT,'::',$REPOSITORY)]" />
                 <xsl:with-param name="priority" select="$priority" />
             </xsl:call-template>
         </xsl:when>
-        <xsl:when test="$priority = 16">
+    <xsl:when test="$priority = 23">
             <xsl:call-template name="handle-spec">
                 <xsl:with-param name="packages-set"
                     select="/fsmh:commands/fsmh:package[@spec = concat($CATEGORY,'/',$PF,':',$SLOT)]" />
                 <xsl:with-param name="priority" select="$priority" />
             </xsl:call-template>
         </xsl:when>
-        <xsl:when test="$priority = 15">
+        <xsl:when test="$priority = 22">
             <xsl:call-template name="handle-spec">
                 <xsl:with-param name="packages-set"
                     select="/fsmh:commands/fsmh:package[@spec = concat($CATEGORY,'/',$PF,'::',$REPOSITORY)]" />
                 <xsl:with-param name="priority" select="$priority" />
             </xsl:call-template>
         </xsl:when>
-        <xsl:when test="$priority = 14">
+        <xsl:when test="$priority = 21">
             <xsl:call-template name="handle-spec">
                 <xsl:with-param name="packages-set"
                     select="/fsmh:commands/fsmh:package[@spec = concat($CATEGORY,'/',$PF)]" />
@@ -108,57 +115,28 @@ done
             </xsl:call-template>
         </xsl:when>
 
-        <xsl:when test="$priority = 13">
-            <xsl:call-template name="handle-spec">
-                <xsl:with-param name="packages-set"
-                    select="/fsmh:commands/fsmh:package[@spec = concat($PF,':',$SLOT,'::',$REPOSITORY)]" />
-                <xsl:with-param name="priority" select="$priority" />
-            </xsl:call-template>
-        </xsl:when>
-        <xsl:when test="$priority = 12">
-            <xsl:call-template name="handle-spec">
-                <xsl:with-param name="packages-set"
-                    select="/fsmh:commands/fsmh:package[@spec = concat($PF,':',$SLOT)]" />
-                <xsl:with-param name="priority" select="$priority" />
-            </xsl:call-template>
-        </xsl:when>
-        <xsl:when test="$priority = 11">
-            <xsl:call-template name="handle-spec">
-                <xsl:with-param name="packages-set"
-                    select="/fsmh:commands/fsmh:package[@spec = concat($PF,'::',$REPOSITORY)]" />
-                <xsl:with-param name="priority" select="$priority" />
-            </xsl:call-template>
-        </xsl:when>
-        <xsl:when test="$priority = 10">
-            <xsl:call-template name="handle-spec">
-                <xsl:with-param name="packages-set"
-                    select="/fsmh:commands/fsmh:package[@spec = $PF]" />
-                <xsl:with-param name="priority" select="$priority" />
-            </xsl:call-template>
-        </xsl:when>
-
-        <xsl:when test="$priority = 9">
+        <xsl:when test="$priority = 20">
             <xsl:call-template name="handle-spec">
                 <xsl:with-param name="packages-set"
                     select="/fsmh:commands/fsmh:package[@spec = concat($CATEGORY,'/',$PN,':',$SLOT,'::',$REPOSITORY)]" />
                 <xsl:with-param name="priority" select="$priority" />
             </xsl:call-template>
         </xsl:when>
-        <xsl:when test="$priority = 8">
+        <xsl:when test="$priority = 19">
             <xsl:call-template name="handle-spec">
                 <xsl:with-param name="packages-set"
                     select="/fsmh:commands/fsmh:package[@spec = concat($CATEGORY,'/',$PN,':',$SLOT)]" />
                 <xsl:with-param name="priority" select="$priority" />
             </xsl:call-template>
         </xsl:when>
-        <xsl:when test="$priority = 7">
+        <xsl:when test="$priority = 18">
             <xsl:call-template name="handle-spec">
                 <xsl:with-param name="packages-set"
                     select="/fsmh:commands/fsmh:package[@spec = concat($CATEGORY,'/',$PN,'::',$REPOSITORY)]" />
                 <xsl:with-param name="priority" select="$priority" />
             </xsl:call-template>
         </xsl:when>
-        <xsl:when test="$priority = 6">
+        <xsl:when test="$priority = 17">
             <xsl:call-template name="handle-spec">
                 <xsl:with-param name="packages-set"
                     select="/fsmh:commands/fsmh:package[@spec = concat($CATEGORY,'/',$PN)]" />
@@ -166,28 +144,57 @@ done
             </xsl:call-template>
         </xsl:when>
 
-        <xsl:when test="$priority = 5">
+        <xsl:when test="$priority = 16">
+            <xsl:call-template name="handle-spec">
+                <xsl:with-param name="packages-set"
+                    select="/fsmh:commands/fsmh:package[@spec = concat($PF,':',$SLOT,'::',$REPOSITORY)]" />
+                <xsl:with-param name="priority" select="$priority" />
+            </xsl:call-template>
+        </xsl:when>
+        <xsl:when test="$priority = 15">
+            <xsl:call-template name="handle-spec">
+                <xsl:with-param name="packages-set"
+                    select="/fsmh:commands/fsmh:package[@spec = concat($PF,':',$SLOT)]" />
+                <xsl:with-param name="priority" select="$priority" />
+            </xsl:call-template>
+        </xsl:when>
+        <xsl:when test="$priority = 14">
+            <xsl:call-template name="handle-spec">
+                <xsl:with-param name="packages-set"
+                    select="/fsmh:commands/fsmh:package[@spec = concat($PF,'::',$REPOSITORY)]" />
+                <xsl:with-param name="priority" select="$priority" />
+            </xsl:call-template>
+        </xsl:when>
+        <xsl:when test="$priority = 13">
+            <xsl:call-template name="handle-spec">
+                <xsl:with-param name="packages-set"
+                    select="/fsmh:commands/fsmh:package[@spec = $PF]" />
+                <xsl:with-param name="priority" select="$priority" />
+            </xsl:call-template>
+        </xsl:when>
+
+        <xsl:when test="$priority = 12">
             <xsl:call-template name="handle-spec">
                 <xsl:with-param name="packages-set"
                     select="/fsmh:commands/fsmh:package[@spec = concat($PN,':',$SLOT,'::',$REPOSITORY)]" />
                 <xsl:with-param name="priority" select="$priority" />
             </xsl:call-template>
         </xsl:when>
-        <xsl:when test="$priority = 4">
+        <xsl:when test="$priority = 11">
             <xsl:call-template name="handle-spec">
                 <xsl:with-param name="packages-set"
                     select="/fsmh:commands/fsmh:package[@spec = concat($PN,':',$SLOT)]" />
                 <xsl:with-param name="priority" select="$priority" />
             </xsl:call-template>
         </xsl:when>
-        <xsl:when test="$priority = 3">
+        <xsl:when test="$priority = 10">
             <xsl:call-template name="handle-spec">
                 <xsl:with-param name="packages-set"
                     select="/fsmh:commands/fsmh:package[@spec = concat($PN,'::',$REPOSITORY)]" />
                 <xsl:with-param name="priority" select="$priority" />
             </xsl:call-template>
         </xsl:when>
-        <xsl:when test="$priority = 2">
+        <xsl:when test="$priority = 9">
             <xsl:call-template name="handle-spec">
                 <xsl:with-param name="packages-set"
                     select="/fsmh:commands/fsmh:package[@spec = $PN]" />
@@ -195,25 +202,70 @@ done
             </xsl:call-template>
         </xsl:when>
 
-        <xsl:when test="$priority = 1">
+        <xsl:when test="$priority = 8">
+            <xsl:call-template name="handle-spec">
+                <xsl:with-param name="packages-set"
+                    select="/fsmh:commands/fsmh:package[@spec = concat($CATEGORY,'/*:',$SLOT,'::',$REPOSITORY)]" />
+                <xsl:with-param name="priority" select="$priority" />
+            </xsl:call-template>
+        </xsl:when>
+        <xsl:when test="$priority = 7">
+            <xsl:call-template name="handle-spec">
+                <xsl:with-param name="packages-set"
+                    select="/fsmh:commands/fsmh:package[@spec = concat($CATEGORY,'/*:',$SLOT)]" />
+                <xsl:with-param name="priority" select="$priority" />
+            </xsl:call-template>
+        </xsl:when>
+        <xsl:when test="$priority = 6">
+            <xsl:call-template name="handle-spec">
+                <xsl:with-param name="packages-set"
+                    select="/fsmh:commands/fsmh:package[@spec = concat($CATEGORY,'/*::',$REPOSITORY)]" />
+                <xsl:with-param name="priority" select="$priority" />
+            </xsl:call-template>
+        </xsl:when>
+        <xsl:when test="$priority = 5">
             <xsl:call-template name="handle-spec">
                 <xsl:with-param name="packages-set"
                     select="/fsmh:commands/fsmh:package[@spec = concat($CATEGORY,'/*')]" />
                 <xsl:with-param name="priority" select="$priority" />
             </xsl:call-template>
         </xsl:when>
-        <xsl:when test="$priority = 0">
+
+        <xsl:when test="$priority = 4">
+            <xsl:call-template name="handle-spec">
+                <xsl:with-param name="packages-set"
+                    select="/fsmh:commands/fsmh:package[@spec = concat('*/*:',$SLOT,'::',$REPOSITORY)]" />
+                <xsl:with-param name="priority" select="$priority" />
+            </xsl:call-template>
+        </xsl:when>
+        <xsl:when test="$priority = 3">
+            <xsl:call-template name="handle-spec">
+                <xsl:with-param name="packages-set"
+                    select="/fsmh:commands/fsmh:package[@spec = concat('*/*:',$SLOT)]" />
+                <xsl:with-param name="priority" select="$priority" />
+            </xsl:call-template>
+        </xsl:when>
+        <xsl:when test="$priority = 2">
+            <xsl:call-template name="handle-spec">
+                <xsl:with-param name="packages-set"
+                    select="/fsmh:commands/fsmh:package[@spec = concat('*/*::',$REPOSITORY)]" />
+                <xsl:with-param name="priority" select="$priority" />
+            </xsl:call-template>
+        </xsl:when>
+        <xsl:when test="$priority = 1">
             <xsl:call-template name="handle-spec">
                 <xsl:with-param name="packages-set"
                     select="/fsmh:commands/fsmh:package[@spec = '*/*']" />
                 <xsl:with-param name="priority" select="$priority" />
             </xsl:call-template>
         </xsl:when>
-        <xsl:when test="$priority = -1">
+
+        <xsl:when test="$priority = 0">
             <xsl:call-template name="debug">
                 <xsl:with-param name="message">==== Recursion terminated ===</xsl:with-param>
             </xsl:call-template>
         </xsl:when>
+
         <xsl:otherwise>
             <xsl:message terminate="yes">*** ERROR: unexpected priority</xsl:message>
         </xsl:otherwise>
@@ -244,7 +296,7 @@ done
                 <xsl:with-param name="priority" select="$priority" />
             </xsl:apply-templates>
         </xsl:when>
-        <xsl:when test="count($packages-set) = 0 and $priority &gt; -1">
+        <xsl:when test="count($packages-set) = 0 and $priority &gt; 0">
             <xsl:call-template name="debug">
                 <xsl:with-param name="message">==== ... nothing matched: trying lower priority ... </xsl:with-param>
             </xsl:call-template>
@@ -281,7 +333,7 @@ done
     </xsl:call-template>
 
     <!-- Continue if no `stop' attribute -->
-    <xsl:if test="@stop != 'true' and $priority &gt; -1">
+    <xsl:if test="@stop != 'true' and $priority &gt; 0">
         <xsl:call-template name="debug">
             <xsl:with-param name="message">==== continue matching packages w/ lower priority ... </xsl:with-param>
         </xsl:call-template>

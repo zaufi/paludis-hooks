@@ -7,15 +7,10 @@ cmake_minimum_required(VERSION 3.4)
 project(paludis-hooks VERSION 1.3 LANGUAGES NONE)
 
 # seek for xmllint to validate our XML files
-find_program(XMLLINT_EXECUTABLE xmllint)
+find_program(XMLLINT_EXECUTABLE xmllint REQUIRED)
 # check if xsltproc is even installed
-find_program(XSLTPROC_EXECUTABLE xsltproc)
-if(NOT XSLTPROC_EXECUTABLE)
-  message(FATAL_ERROR "xsltproc executable required for this package")
-endif()
-if(NOT XMLLINT_EXECUTABLE)
-  message(FATAL_ERROR "xmllint executable required for this package")
-endif()
+find_program(XSLTPROC_EXECUTABLE xsltproc REQUIRED)
+# python interpreter is needed for some optional scripts
 find_package(PythonInterp)
 if(NOT PYTHONINTERP_FOUND)
     message(STATUS "Python scripts will not be installed")
@@ -27,7 +22,7 @@ endif()
 set(CMAKE_SIZEOF_VOID_P 8)
 include(GNUInstallDirs)
 
-# Foe tests
+# For tests
 include(CTest)
 
 option(WITH_AUTOPATCH "Install autopatch hook" ON)

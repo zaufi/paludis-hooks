@@ -22,3 +22,7 @@ install(
     DIRECTORY commands
     DESTINATION "${CMAKE_INSTALL_FULL_DATAROOTDIR}/paludis-hooks/filesystem-manager"
     )
+
+if(BUILD_TESTING)
+    add_subdirectory(test)
+endif()

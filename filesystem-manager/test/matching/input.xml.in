@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE commands SYSTEM "@FILESYSTEM_MANAGER_DTD@">
+<?xml-stylesheet type="text/xsl" href="@FILESYSTEM_MANAGER_XSL@"?>
+
+<commands
+    version="2.0"
+    xmlns:smh="https://github.com/zaufi/paludis-hooks/#filesystem-management-hook"
+    xmlns="https://github.com/zaufi/paludis-hooks/#filesystem-management-hook"
+  >
+    <!--
+        Testing spec matching.
+    -->
+    <package spec="*/*" descr="priority 1" />
+    <package spec="*/*::gentoo" descr="priority 2" />
+    <package spec="*/*:0" descr="priority 3" />
+    <package spec="*/*:0::gentoo" descr="priority 4" />
+
+    <package spec="dev-util/*" descr="priority 5" />
+    <package spec="dev-util/*::gentoo" descr="priority 6" />
+    <package spec="dev-util/*:0" descr="priority 7" />
+    <package spec="dev-util/*:0::gentoo" descr="priority 8" />
+
+    <package spec="cmake" descr="priority 9" />
+    <package spec="cmake::gentoo" descr="priority 10" />
+    <package spec="cmake:0" descr="priority 11" />
+    <package spec="cmake:0::gentoo" descr="priority 12" />
+
+    <package spec="cmake-3.4.3-r1" descr="priority 13" />
+    <package spec="cmake-3.4.3-r1::gentoo" descr="priority 14" />
+    <package spec="cmake-3.4.3-r1:0" descr="priority 15" />
+    <package spec="cmake-3.4.3-r1:0::gentoo" descr="priority 16" />
+
+    <package spec="dev-util/cmake" descr="priority 17" />
+    <package spec="dev-util/cmake::gentoo" descr="priority 18" />
+    <package spec="dev-util/cmake:0" descr="priority 19" />
+    <package spec="dev-util/cmake:0::gentoo" descr="priority 20" />
+
+    <package spec="dev-util/cmake-3.4.3-r1" descr="priority 21" />
+    <package spec="dev-util/cmake-3.4.3-r1::gentoo" descr="priority 22" />
+    <package spec="dev-util/cmake-3.4.3-r1:0" descr="priority 23" />
+    <package spec="dev-util/cmake-3.4.3-r1:0::gentoo" descr="priority 24" />
+</commands>
