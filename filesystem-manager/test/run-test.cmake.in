@@ -4,3 +4,23 @@ include("@_aft_working_directory@/exec-transform.cmake")
 if(NOT GENERATOR_EXIT_CODE STREQUAL "0")
     message(FATAL_ERROR "XSLT transformation failed")
 endif()
+
+# Compare generated putput w/ expected
+if(NOT EXISTS "@_aft_expected_output@")
+    message(FATAL_ERROR "Expected output file not found: @_aft_expected_output@")
+endif()
+
+execute_process(
+    COMMAND @DIFF_EXECUTABLE@ -ub
+        "@_aft_output_test_conf@"
+        "@_aft_expected_output@"
+    WORKING_DIRECTORY "@_aft_working_directory@"
+    OUTPUT_FILE "@_aft_diff_output@"
+    ERROR_FILE "@_aft_diff_output@"
+    RESULT_VARIABLE DIFF_EXIT_CODE
+  )
+
+if(NOT DIFF_EXIT_CODE STREQUAL "0")
+    file(READ "@_aft_output_test_conf@" _diff)
+    message(FATAL_ERROR "Output doesn't match to expected result:\n ${_diff}")
+endif()

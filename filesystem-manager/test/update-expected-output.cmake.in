@@ -1,0 +1,9 @@
+include("@_aft_working_directory@/exec-transform.cmake")
+
+# Analyze result code
+if(NOT GENERATOR_EXIT_CODE STREQUAL "0")
+    message(FATAL_ERROR "XSLT transformation failed")
+endif()
+
+message(STATUS "Moving '@_aft_output_test_conf@' -> '@_aft_expected_output@'")
+file(RENAME "@_aft_output_test_conf@" "@_aft_expected_output@")

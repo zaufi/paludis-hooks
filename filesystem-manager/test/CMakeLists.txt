@@ -24,14 +24,16 @@ macro(add_fsm_test directory)
     set(_aft_input_test_conf "input.xml")
     set(_aft_working_directory "${CMAKE_CURRENT_BINARY_DIR}/${directory}")
     set(_aft_output_test_conf "${_aft_working_directory}/${directory}.output")
+    set(_aft_expected_output "${CMAKE_CURRENT_SOURCE_DIR}/${directory}/expected.output")
 
     configure_file("${directory}/input.xml.in" "${directory}/input.xml")
     configure_file("exec-transform.cmake.in" "${directory}/exec-transform.cmake")
     configure_file("run-test.cmake.in" "${directory}/run-test.cmake")
+    configure_file("update-expected-output.cmake.in" "${directory}/update-expected-output.cmake")
 
     list(
         APPEND ADDITIONAL_MAKE_CLEAN_FILES
-        "${CMAKE_CURRENT_BINARY_DIR}/${directory}/${_aft_output_test_conf}"
+        "${_aft_output_test_conf}"
       )
 
     add_test(
@@ -39,6 +41,15 @@ macro(add_fsm_test directory)
         COMMAND "${CMAKE_COMMAND}" -P "${CMAKE_CURRENT_BINARY_DIR}/${directory}/run-test.cmake"
       )
 
+    add_custom_target(
+        update-${directory}-expectations
+        COMMAND "${CMAKE_COMMAND}" -P "${_aft_working_directory}/update-expected-output.cmake"
+        COMMENT "Update test output expectations at test directory: ${CMAKE_CURRENT_SOURCE_DIR}/${directory}"
+      )
 endmacro()
 
-add_fsm_test(matching)
+if(DIFF_EXECUTABLE)
+    add_fsm_test(matching)
+else()
+    message(STATUS "WARNING: `diff` was not found. Do not add FSM unit tests...")
+endif()

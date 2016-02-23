@@ -10,6 +10,8 @@ project(paludis-hooks VERSION 1.3 LANGUAGES NONE)
 find_program(XMLLINT_EXECUTABLE xmllint REQUIRED)
 # check if xsltproc is even installed
 find_program(XSLTPROC_EXECUTABLE xsltproc REQUIRED)
+# `diff` is needed for some unit tests
+find_program(DIFF_EXECUTABLE diff)
 # python interpreter is needed for some optional scripts
 find_package(PythonInterp)
 if(NOT PYTHONINTERP_FOUND)
