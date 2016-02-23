@@ -50,6 +50,7 @@ endmacro()
 
 if(DIFF_EXECUTABLE)
     add_fsm_test(matching)
+    add_fsm_test(matching-partial)
 else()
     message(STATUS "WARNING: `diff` was not found. Do not add FSM unit tests...")
 endif()

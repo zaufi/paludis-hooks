@@ -1,0 +1,132 @@
+>   Render a shell script for dev-util/cmake-3.4.3-r1:0::gentoo
+>>  Dispatching by priority 24
+==== Matched 1 package nodes w/ priority 24
+>>> Package matched: dev-util/cmake-3.4.3-r1:0::gentoo (priority=24, stop=false)
+==== other items: 
+==== continue matching packages w/ lower priority ... 
+>>  Dispatching by priority 23
+==== Matched 1 package nodes w/ priority 23
+>>> Package matched: dev-util/cmake-3.4.3-r1:0 (priority=23, stop=false)
+==== other items: 
+==== continue matching packages w/ lower priority ... 
+>>  Dispatching by priority 22
+==== Matched 1 package nodes w/ priority 22
+>>> Package matched: dev-util/cmake-3.4.3-r1::gentoo (priority=22, stop=false)
+==== other items: 
+==== continue matching packages w/ lower priority ... 
+>>  Dispatching by priority 21
+==== Matched 1 package nodes w/ priority 21
+>>> Package matched: dev-util/cmake-3.4.3-r1 (priority=21, stop=false)
+==== other items: 
+==== continue matching packages w/ lower priority ... 
+>>  Dispatching by priority 20
+==== Matched 1 package nodes w/ priority 20
+>>> Package matched: dev-util/cmake:0::gentoo (priority=20, stop=false)
+==== other items: 
+==== continue matching packages w/ lower priority ... 
+>>  Dispatching by priority 19
+==== Matched 1 package nodes w/ priority 19
+>>> Package matched: dev-util/cmake:0 (priority=19, stop=false)
+==== other items: 
+==== continue matching packages w/ lower priority ... 
+>>  Dispatching by priority 18
+==== Matched 1 package nodes w/ priority 18
+>>> Package matched: dev-util/cmake::gentoo (priority=18, stop=false)
+==== other items: 
+==== continue matching packages w/ lower priority ... 
+>>  Dispatching by priority 17
+==== Matched 1 package nodes w/ priority 17
+>>> Package matched: dev-util/cmake (priority=17, stop=false)
+==== other items: 
+==== continue matching packages w/ lower priority ... 
+>>  Dispatching by priority 16
+==== Matched 1 package nodes w/ priority 16
+>>> Package matched: cmake-3.4.3-r1:0::gentoo (priority=16, stop=false)
+==== other items: 
+==== continue matching packages w/ lower priority ... 
+>>  Dispatching by priority 15
+==== Matched 1 package nodes w/ priority 15
+>>> Package matched: cmake-3.4.3-r1:0 (priority=15, stop=false)
+==== other items: 
+==== continue matching packages w/ lower priority ... 
+>>  Dispatching by priority 14
+==== Matched 1 package nodes w/ priority 14
+>>> Package matched: cmake-3.4.3-r1::gentoo (priority=14, stop=false)
+==== other items: 
+==== continue matching packages w/ lower priority ... 
+>>  Dispatching by priority 13
+==== Matched 1 package nodes w/ priority 13
+>>> Package matched: cmake-3.4.3-r1 (priority=13, stop=true)
+==== other items: 
+<<< Matching done: cmake-3.4.3-r1 (priority=13)
+<<  Dispatching done 13
+<<< Matching done: cmake-3.4.3-r1::gentoo (priority=14)
+<<  Dispatching done 14
+<<< Matching done: cmake-3.4.3-r1:0 (priority=15)
+<<  Dispatching done 15
+<<< Matching done: cmake-3.4.3-r1:0::gentoo (priority=16)
+<<  Dispatching done 16
+<<< Matching done: dev-util/cmake (priority=17)
+<<  Dispatching done 17
+<<< Matching done: dev-util/cmake::gentoo (priority=18)
+<<  Dispatching done 18
+<<< Matching done: dev-util/cmake:0 (priority=19)
+<<  Dispatching done 19
+<<< Matching done: dev-util/cmake:0::gentoo (priority=20)
+<<  Dispatching done 20
+<<< Matching done: dev-util/cmake-3.4.3-r1 (priority=21)
+<<  Dispatching done 21
+<<< Matching done: dev-util/cmake-3.4.3-r1::gentoo (priority=22)
+<<  Dispatching done 22
+<<< Matching done: dev-util/cmake-3.4.3-r1:0 (priority=23)
+<<  Dispatching done 23
+<<< Matching done: dev-util/cmake-3.4.3-r1:0::gentoo (priority=24)
+<<  Dispatching done 24
+<   Rendering done for dev-util/cmake-3.4.3-r1:0::gentoo
+#!/bin/sh
+#
+# ATTENTION: This script produced by filesystem-manager paludis hook
+# on installing dev-util/cmake-3.4.3-r1:0::gentoo package
+#
+source ${PALUDIS_EBUILD_DIR}/echo_functions.bash
+for cmd in /usr/share/paludis-hooks/filesystem-manager/commands/*.sh; do
+    source $cmd
+done
+
+
+    einfo "Filesystem Management Hook: Apply actions 'priority 24' for dev-util/cmake-3.4.3-r1:0::gentoo"
+
+    
+    einfo "Filesystem Management Hook: Apply actions 'priority 23' for dev-util/cmake-3.4.3-r1:0"
+
+    
+    einfo "Filesystem Management Hook: Apply actions 'priority 22' for dev-util/cmake-3.4.3-r1::gentoo"
+
+    
+    einfo "Filesystem Management Hook: Apply actions 'priority 21' for dev-util/cmake-3.4.3-r1"
+
+    
+    einfo "Filesystem Management Hook: Apply actions 'priority 20' for dev-util/cmake:0::gentoo"
+
+    
+    einfo "Filesystem Management Hook: Apply actions 'priority 19' for dev-util/cmake:0"
+
+    
+    einfo "Filesystem Management Hook: Apply actions 'priority 18' for dev-util/cmake::gentoo"
+
+    
+    einfo "Filesystem Management Hook: Apply actions 'priority 17' for dev-util/cmake"
+
+    
+    einfo "Filesystem Management Hook: Apply actions 'priority 16' for cmake-3.4.3-r1:0::gentoo"
+
+    
+    einfo "Filesystem Management Hook: Apply actions 'priority 15' for cmake-3.4.3-r1:0"
+
+    
+    einfo "Filesystem Management Hook: Apply actions 'priority 14' for cmake-3.4.3-r1::gentoo"
+
+    
+    einfo "Filesystem Management Hook: Apply actions 'priority 13' for cmake-3.4.3-r1"
+
+    
