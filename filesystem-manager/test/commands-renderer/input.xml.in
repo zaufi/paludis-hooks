@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE commands SYSTEM "@FILESYSTEM_MANAGER_DTD@">
+<?xml-stylesheet type="text/xsl" href="@FILESYSTEM_MANAGER_XSL@"?>
+
+<commands
+    version="2.0"
+    xmlns:smh="https://github.com/zaufi/paludis-hooks/#filesystem-management-hook"
+    xmlns="https://github.com/zaufi/paludis-hooks/#filesystem-management-hook"
+  >
+    <!-- NOTE Irrelevant package specs should be skipped -->
+    <package spec="media-sound/pulseaudio">
+        <symlink cd="/usr/share/bash-completion/completions" src="pulseaudio-bash-completion.sh">
+            <item dst="pactl" />
+            <item dst="pacmd" />
+            <item dst="pasuspender" />
+            <item dst="pacat" />
+            <item dst="paplay" />
+            <item dst="parecord" />
+            <item dst="pulseaudio" />
+        </symlink>
+    </package>
+
+    <package spec="cmake">
+        <symlink cd="/usr/share/doc" src="${PF}/html/" dst="${PN}" />
+        <rm cd="/usr/share/doc/${PF}">
+            <item dst="html/_sources" />
+            <item dst="cmcompress/" />
+            <item dst="cmcurl/" />
+            <item dst="cmexpat/" />
+            <item dst="cmlibarchive/" />
+            <item dst="cmsys/" />
+            <item dst="cmzlib/" />
+        </rm>
+    </package>
+
+    <package spec="*/*" descr="locale-cleaner">
+        <rm cd="/usr/share/locale/" dst="*/LC_MESSAGES/*.mo" />
+    </package>
+
+    <package spec="dev-util/*" descr="USE=-doc remover">
+        <if use="doc" negate="true">
+            <rm cd="/usr/share" dst="doc" />
+        </if>
+    </package>
+
+    <package spec="*/*" descr="docs-cleaner">
+        <rm cd="/usr/share/doc/${PF}">
+            <item dst="AUTHORS*" />
+            <item dst="*.AUTHORS*" />
+            <item dst="BUGS*" />
+            <item dst="CHANGELOG*" />
+            <item dst="CHANGES*" />
+        </rm>
+    </package>
+
+</commands>

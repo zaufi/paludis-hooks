@@ -2,62 +2,50 @@
 >>  Dispatching by priority 24
 ==== Matched 1 package nodes w/ priority 24
 >>> Package matched: dev-util/cmake-3.4.3-r1:0::gentoo (priority=24, stop=false)
-==== other items: 
-==== continue matching packages w/ lower priority ... 
+==== continue matching packages w/ lower priority ...
 >>  Dispatching by priority 23
 ==== Matched 1 package nodes w/ priority 23
 >>> Package matched: dev-util/cmake-3.4.3-r1:0 (priority=23, stop=false)
-==== other items: 
-==== continue matching packages w/ lower priority ... 
+==== continue matching packages w/ lower priority ...
 >>  Dispatching by priority 22
 ==== Matched 1 package nodes w/ priority 22
 >>> Package matched: dev-util/cmake-3.4.3-r1::gentoo (priority=22, stop=false)
-==== other items: 
-==== continue matching packages w/ lower priority ... 
+==== continue matching packages w/ lower priority ...
 >>  Dispatching by priority 21
 ==== Matched 1 package nodes w/ priority 21
 >>> Package matched: dev-util/cmake-3.4.3-r1 (priority=21, stop=false)
-==== other items: 
-==== continue matching packages w/ lower priority ... 
+==== continue matching packages w/ lower priority ...
 >>  Dispatching by priority 20
 ==== Matched 1 package nodes w/ priority 20
 >>> Package matched: dev-util/cmake:0::gentoo (priority=20, stop=false)
-==== other items: 
-==== continue matching packages w/ lower priority ... 
+==== continue matching packages w/ lower priority ...
 >>  Dispatching by priority 19
 ==== Matched 1 package nodes w/ priority 19
 >>> Package matched: dev-util/cmake:0 (priority=19, stop=false)
-==== other items: 
-==== continue matching packages w/ lower priority ... 
+==== continue matching packages w/ lower priority ...
 >>  Dispatching by priority 18
 ==== Matched 1 package nodes w/ priority 18
 >>> Package matched: dev-util/cmake::gentoo (priority=18, stop=false)
-==== other items: 
-==== continue matching packages w/ lower priority ... 
+==== continue matching packages w/ lower priority ...
 >>  Dispatching by priority 17
 ==== Matched 1 package nodes w/ priority 17
 >>> Package matched: dev-util/cmake (priority=17, stop=false)
-==== other items: 
-==== continue matching packages w/ lower priority ... 
+==== continue matching packages w/ lower priority ...
 >>  Dispatching by priority 16
 ==== Matched 1 package nodes w/ priority 16
 >>> Package matched: cmake-3.4.3-r1:0::gentoo (priority=16, stop=false)
-==== other items: 
-==== continue matching packages w/ lower priority ... 
+==== continue matching packages w/ lower priority ...
 >>  Dispatching by priority 15
 ==== Matched 1 package nodes w/ priority 15
 >>> Package matched: cmake-3.4.3-r1:0 (priority=15, stop=false)
-==== other items: 
-==== continue matching packages w/ lower priority ... 
+==== continue matching packages w/ lower priority ...
 >>  Dispatching by priority 14
 ==== Matched 1 package nodes w/ priority 14
 >>> Package matched: cmake-3.4.3-r1::gentoo (priority=14, stop=false)
-==== other items: 
-==== continue matching packages w/ lower priority ... 
+==== continue matching packages w/ lower priority ...
 >>  Dispatching by priority 13
 ==== Matched 1 package nodes w/ priority 13
 >>> Package matched: cmake-3.4.3-r1 (priority=13, stop=true)
-==== other items: 
 <<< Matching done: cmake-3.4.3-r1 (priority=13)
 <<  Dispatching done 13
 <<< Matching done: cmake-3.4.3-r1::gentoo (priority=14)

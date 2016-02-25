@@ -1,0 +1,168 @@
+>   Render a shell script for dev-util/cmake-3.4.3-r1:0::gentoo
+>>  Dispatching by priority 24
+==== ... nothing matched: trying lower priority ... 
+>>  Dispatching by priority 23
+==== ... nothing matched: trying lower priority ... 
+>>  Dispatching by priority 22
+==== ... nothing matched: trying lower priority ... 
+>>  Dispatching by priority 21
+==== ... nothing matched: trying lower priority ... 
+>>  Dispatching by priority 20
+==== ... nothing matched: trying lower priority ... 
+>>  Dispatching by priority 19
+==== ... nothing matched: trying lower priority ... 
+>>  Dispatching by priority 18
+==== ... nothing matched: trying lower priority ... 
+>>  Dispatching by priority 17
+==== ... nothing matched: trying lower priority ... 
+>>  Dispatching by priority 16
+==== ... nothing matched: trying lower priority ... 
+>>  Dispatching by priority 15
+==== ... nothing matched: trying lower priority ... 
+>>  Dispatching by priority 14
+==== ... nothing matched: trying lower priority ... 
+>>  Dispatching by priority 13
+==== ... nothing matched: trying lower priority ... 
+>>  Dispatching by priority 12
+==== ... nothing matched: trying lower priority ... 
+>>  Dispatching by priority 11
+==== ... nothing matched: trying lower priority ... 
+>>  Dispatching by priority 10
+==== ... nothing matched: trying lower priority ... 
+>>  Dispatching by priority 9
+==== Matched 1 package nodes w/ priority 9
+>>> Package matched: cmake (priority=9, stop=false)
+==== rendering `symlink`: cd=/usr/share/doc, src=cmake-3.4.3-r1/html/, dst=cmake
+==== rendering `rm`: cd=/usr/share/doc/cmake-3.4.3-r1, dst=none
+==== continue matching packages w/ lower priority ...
+>>  Dispatching by priority 8
+==== ... nothing matched: trying lower priority ... 
+>>  Dispatching by priority 7
+==== ... nothing matched: trying lower priority ... 
+>>  Dispatching by priority 6
+==== ... nothing matched: trying lower priority ... 
+>>  Dispatching by priority 5
+==== Matched 1 package nodes w/ priority 5
+>>> Package matched: dev-util/* (priority=5, stop=false)
+==== rendering `if`: use=doc, negate=true
+==== rendering `rm`: cd=/usr/share, dst=doc, negate=false
+==== continue matching packages w/ lower priority ...
+>>  Dispatching by priority 4
+==== ... nothing matched: trying lower priority ... 
+>>  Dispatching by priority 3
+==== ... nothing matched: trying lower priority ... 
+>>  Dispatching by priority 2
+==== ... nothing matched: trying lower priority ... 
+>>  Dispatching by priority 1
+==== Matched 2 package nodes w/ priority 1
+>>> Package matched: */* (priority=1, stop=false)
+==== rendering `rm`: cd=/usr/share/locale/, dst=*/LC_MESSAGES/*.mo, negate=false
+==== continue matching packages w/ lower priority ...
+>>  Dispatching by priority 0
+==== Recursion terminated ===
+<<  Dispatching done 0
+<<< Matching done: */* (priority=1)
+>>> Package matched: */* (priority=1, stop=false)
+==== rendering `rm`: cd=/usr/share/doc/cmake-3.4.3-r1, dst=none
+==== continue matching packages w/ lower priority ...
+>>  Dispatching by priority 0
+==== Recursion terminated ===
+<<  Dispatching done 0
+<<< Matching done: */* (priority=1)
+<<  Dispatching done 1
+<<  Dispatching done 2
+<<  Dispatching done 3
+<<  Dispatching done 4
+<<< Matching done: dev-util/* (priority=5)
+<<  Dispatching done 5
+<<  Dispatching done 6
+<<  Dispatching done 7
+<<  Dispatching done 8
+<<< Matching done: cmake (priority=9)
+<<  Dispatching done 9
+<<  Dispatching done 10
+<<  Dispatching done 11
+<<  Dispatching done 12
+<<  Dispatching done 13
+<<  Dispatching done 14
+<<  Dispatching done 15
+<<  Dispatching done 16
+<<  Dispatching done 17
+<<  Dispatching done 18
+<<  Dispatching done 19
+<<  Dispatching done 20
+<<  Dispatching done 21
+<<  Dispatching done 22
+<<  Dispatching done 23
+<<  Dispatching done 24
+<   Rendering done for dev-util/cmake-3.4.3-r1:0::gentoo
+#!/bin/sh
+#
+# ATTENTION: This script produced by filesystem-manager paludis hook
+# on installing dev-util/cmake-3.4.3-r1:0::gentoo package
+#
+source ${PALUDIS_EBUILD_DIR}/echo_functions.bash
+for cmd in /usr/share/paludis-hooks/filesystem-manager/commands/*.sh; do
+    source $cmd
+done
+
+
+    einfo "Filesystem Management Hook: Apply actions for cmake"
+
+    
+
+# Make a symlink cmake-3.4.3-r1/html/ --> cmake @ /usr/share/doc
+cmd_symlink \
+    "/usr/share/doc" \
+    "cmake-3.4.3-r1/html/" \
+    "cmake"
+
+# Remove a bunch of items in /usr/share/doc/cmake-3.4.3-r1
+cmd_rm "/usr/share/doc/cmake-3.4.3-r1" "html/_sources"
+    
+cmd_rm "/usr/share/doc/cmake-3.4.3-r1" "cmcompress/"
+    
+cmd_rm "/usr/share/doc/cmake-3.4.3-r1" "cmcurl/"
+    
+cmd_rm "/usr/share/doc/cmake-3.4.3-r1" "cmexpat/"
+    
+cmd_rm "/usr/share/doc/cmake-3.4.3-r1" "cmlibarchive/"
+    
+cmd_rm "/usr/share/doc/cmake-3.4.3-r1" "cmsys/"
+    
+cmd_rm "/usr/share/doc/cmake-3.4.3-r1" "cmzlib/"
+    
+    einfo "Filesystem Management Hook: Apply actions 'USE=-doc remover' for dev-util/*"
+
+    
+# Check use flags: doc
+if cmd_use "doc"; then
+    true
+else
+    einfo "'doc' not found in USE flags!"
+    
+# Remove doc @ /usr/share
+cmd_rm "/usr/share" "doc"
+
+fi
+
+    einfo "Filesystem Management Hook: Apply actions 'locale-cleaner' for */*"
+
+    
+# Remove */LC_MESSAGES/*.mo @ /usr/share/locale/
+cmd_rm "/usr/share/locale/" "*/LC_MESSAGES/*.mo"
+
+    einfo "Filesystem Management Hook: Apply actions 'docs-cleaner' for */*"
+
+    
+# Remove a bunch of items in /usr/share/doc/cmake-3.4.3-r1
+cmd_rm "/usr/share/doc/cmake-3.4.3-r1" "AUTHORS*"
+    
+cmd_rm "/usr/share/doc/cmake-3.4.3-r1" "*.AUTHORS*"
+    
+cmd_rm "/usr/share/doc/cmake-3.4.3-r1" "BUGS*"
+    
+cmd_rm "/usr/share/doc/cmake-3.4.3-r1" "CHANGELOG*"
+    
+cmd_rm "/usr/share/doc/cmake-3.4.3-r1" "CHANGES*"
+    

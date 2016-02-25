@@ -328,14 +328,10 @@ done
     <!-- Render script for given package -->
     <xsl:apply-templates select="*" />
 
-    <xsl:call-template name="debug">
-        <xsl:with-param name="message">==== other items: <xsl:value-of select="*" /> </xsl:with-param>
-    </xsl:call-template>
-
     <!-- Continue if no `stop' attribute -->
     <xsl:if test="@stop != 'true' and $priority &gt; 0">
         <xsl:call-template name="debug">
-            <xsl:with-param name="message">==== continue matching packages w/ lower priority ... </xsl:with-param>
+            <xsl:with-param name="message">==== continue matching packages w/ lower priority ...</xsl:with-param>
         </xsl:call-template>
         <xsl:call-template name="dispatch-by-priority">
             <xsl:with-param name="priority" select="$priority - 1" />
@@ -350,6 +346,10 @@ done
     Matching `symlink` nodes w/ all required parameters given
   -->
 <xsl:template match="fsmh:symlink[@cd][@src][@dst]">
+    <xsl:call-template name="debug">
+        <xsl:with-param name="message">==== rendering `symlink`: cd=<xsl:value-of select="@cd" />, src=<xsl:value-of select="@src" />, dst=<xsl:value-of select="@dst" /></xsl:with-param>
+    </xsl:call-template>
+
 # Make a symlink <xsl:value-of select="@src" /> --&gt; <xsl:value-of select="@dst" /> @ <xsl:value-of select="@cd" />
 cmd_symlink \
     "<xsl:value-of select="@cd" />" \
@@ -361,6 +361,9 @@ cmd_symlink \
     Matching `symlink` nodes w/ only `cd' attribute
   -->
 <xsl:template match="fsmh:symlink[@cd][not(@src)][not(@dst)]">
+    <xsl:call-template name="debug">
+        <xsl:with-param name="message">==== rendering `symlink`: cd=<xsl:value-of select="@cd" />, src=none, dst=none</xsl:with-param>
+    </xsl:call-template>
 # Symlink a bunch of items in <xsl:value-of select="@cd" />
 <xsl:variable name="cd" select="@cd" />
 <xsl:if test="count(fsmh:item/@src) &gt; 0 and count(fsmh:item/@dst) &gt; 0">
@@ -377,6 +380,9 @@ cmd_symlink \
     Matching `symlink` nodes w/ `cd' and `src' attribute
   -->
 <xsl:template match="fsmh:symlink[@cd][@src][not(@dst)]">
+    <xsl:call-template name="debug">
+        <xsl:with-param name="message">==== rendering `symlink`: cd=<xsl:value-of select="@cd" />, src=<xsl:value-of select="@src" />, dst=none</xsl:with-param>
+    </xsl:call-template>
 # Symlink a bunch of items in <xsl:value-of select="@cd" /> to <xsl:value-of select="@src" />
 <xsl:variable name="cd" select="@cd" />
 <xsl:variable name="src" select="@src" />
@@ -395,6 +401,9 @@ cmd_symlink \
     except target(s) specified
   -->
 <xsl:template match="fsmh:rm[@cd][@dst][@negate='true']">
+    <xsl:call-template name="debug">
+        <xsl:with-param name="message">==== rendering `rm`: cd=<xsl:value-of select="@cd" />, dst=<xsl:value-of select="@dst" />, negate=true</xsl:with-param>
+    </xsl:call-template>
 # Remove everything except <xsl:value-of select="@dst" /> @ <xsl:value-of select="@cd" />
 cmd_rm_inverted "<xsl:value-of select="@cd" />" "<xsl:value-of select="@dst" />"
 </xsl:template>
@@ -403,6 +412,9 @@ cmd_rm_inverted "<xsl:value-of select="@cd" />" "<xsl:value-of select="@dst" />"
     Matching `rm` nodes w/ all parameters given to remove specified target(s)
   -->
 <xsl:template match="fsmh:rm[@cd][@dst][@negate='false']">
+    <xsl:call-template name="debug">
+        <xsl:with-param name="message">==== rendering `rm`: cd=<xsl:value-of select="@cd" />, dst=<xsl:value-of select="@dst" />, negate=false</xsl:with-param>
+    </xsl:call-template>
 # Remove <xsl:value-of select="@dst" /> @ <xsl:value-of select="@cd" />
 cmd_rm "<xsl:value-of select="@cd" />" "<xsl:value-of select="@dst" />"
 </xsl:template>
@@ -411,6 +423,9 @@ cmd_rm "<xsl:value-of select="@cd" />" "<xsl:value-of select="@dst" />"
     Matching `rm` nodes w/ only `cd' attribute
   -->
 <xsl:template match="fsmh:rm[@cd][not(@dst)]">
+    <xsl:call-template name="debug">
+        <xsl:with-param name="message">==== rendering `rm`: cd=<xsl:value-of select="@cd" />, dst=none</xsl:with-param>
+    </xsl:call-template>
 # Remove a bunch of items in <xsl:value-of select="@cd" />
 <xsl:variable name="cd" select="@cd" />
 <xsl:if test="count(fsmh:item/@dst) &gt; 0">
@@ -432,6 +447,9 @@ cmd_mv "<xsl:value-of select="@cd" />" "<xsl:value-of select="@dst" />" "<xsl:va
     Matching `if` nodes
   -->
 <xsl:template match="fsmh:if[@use][@negate='false']">
+    <xsl:call-template name="debug">
+        <xsl:with-param name="message">==== rendering `if`: use=<xsl:value-of select="@use" />, negate=false</xsl:with-param>
+    </xsl:call-template>
 # Check use flags: <xsl:value-of select="@use" />
 if cmd_use "<xsl:value-of select="@use" />"; then
     einfo "'<xsl:value-of select="@use" />' found in USE flags!"
@@ -440,6 +458,9 @@ if cmd_use "<xsl:value-of select="@use" />"; then
 fi
 </xsl:template>
 <xsl:template match="fsmh:if[@use][@negate='true']">
+    <xsl:call-template name="debug">
+        <xsl:with-param name="message">==== rendering `if`: use=<xsl:value-of select="@use" />, negate=true</xsl:with-param>
+    </xsl:call-template>
 # Check use flags: <xsl:value-of select="@use" />
 if cmd_use "<xsl:value-of select="@use" />"; then
     true
