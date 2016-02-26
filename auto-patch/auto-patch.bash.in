@@ -35,6 +35,8 @@ issue_a_warning()
 try_to_apply_patches()
 {
     local check
+    # TODO: maybe realize dynamically detecting correct -pN for patch
+    local patch_cmd="patch -p1"
     for check in "${PATCH_DIR}/${HOOK}"/${CATEGORY}/{${P}-${PR},${P},${PN}}{,:${SLOT}}; do
         if [[ -d ${check} ]] ; then
             # activate nullglob if it isn't already
@@ -42,12 +44,18 @@ try_to_apply_patches()
             [[ ${saved_opt} == no ]] && shopt -s nullglob
 
             cd "${S}" || die "Failed to cd into ${S}!"
-            for i in "${check}"/*.patch ; do
-                if ! declare -f epatch >/dev/null ; then
-                    # TODO EAPI=6 has `eapply` and `epatch` could be deprecated soon...
-                    inherit eutils
+            for pfull in "${check}"/*.patch ; do
+                pname="$(basename ${pfull})"
+                ${patch_cmd} --dry-run -f < "${pfull}" 2>&1
+                pret="$?"
+                if [[ "$pret" = "0" ]]; then
+                    einfo "Applying ${pname} ..."
+                    ${patch_cmd} < "${pfull}" 2>&1
+                    pret="$?"
+                    [[ "$pret" = "0" ]] || die "Dry-run patching with ${pname} succeeded but actually failed"
+                else
+                    die "Patch ${pname} can not be used"
                 fi
-                epatch ${i}
                 touch "${_ap_rememberfile}" || die "Failed to touch ${_ap_rememberfile}!"
             done
 
