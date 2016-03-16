@@ -1,4 +1,3 @@
-# vim:ts=4:expandtab:
 # "Build" script for my paludis-hooks package
 # Copyright 2012-2016 by Alex Turbov <i.zaufi@gmail.com>
 #
@@ -62,12 +61,15 @@ if(WITH_PACKAGE_ENV)
             package.env/default-deps-trk.conf
             package.env/default-silent-rules.conf
             package.env/extra-optimize.conf
+            package.env/ld-no-gc-sections.conf
+            package.env/ld-no-hash-style.conf
+            package.env/ld-no-new-dtags.conf
+            package.env/ld-no-sort-common.conf
             package.env/lto.conf
             package.env/max-debug.conf
             package.env/no-debug.conf
             package.env/no-modern-c++.conf
             package.env/no-gnu-tls.conf
-            package.env/no-gc-sections.conf
             package.env/no-lto.conf
             package.env/spam.conf
             package.env/use-bfd-linker.conf
@@ -119,3 +121,5 @@ install(
     FILES README.md
     DESTINATION "${CMAKE_INSTALL_FULL_DOCDIR}"
   )
+
+# vim:ts=4:expandtab:
