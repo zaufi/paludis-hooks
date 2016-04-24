@@ -25,7 +25,8 @@ if [ x"${PALUDIS_HOOK_DEBUG}" = 'xyes' ]; then
 fi
 
 if [ ! -f ${CONFIG_FILE} ]; then
-    exit 0                                                  # Nothing to do w/o config
+	ewarn "Filesystem Manager hook: Config file is missing. Nothing to do..."
+    exit 1                                                  # Nothing to do w/o config
 fi
 
 # Validate config file
