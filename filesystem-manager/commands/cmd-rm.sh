@@ -6,21 +6,21 @@
 #
 # Function to remove smth in a given directory
 #
-# @param cd  -- directory to change to, before remove
-# @param dst -- what to remove (possible w/ wildcards)
+# @param cd     -- directory to change to, before remove
+# @param dst... -- what to remove (possible w/ wildcards)
 function cmd_rm()
 {
     local cd="$1"
-    local dst="$2"
+    shift 1
 
     if ! verify_dir "${cd}"; then
         eerror "Package image dir is undefined! Skip any actions..."
-        return
+        return 0
     fi
 
     if [ -d "${D}/${cd}" ]; then
         cd "${D}/${cd}"
-        rm -vrf ${dst} 2>/dev/null && schedule_a_warning_after_all
+        rm -vrf "${@}" 2>/dev/null && schedule_a_warning_after_all
         cd - >/dev/null
         # Walk through whole image and try to remove possible empty dirs
         # ATTENTION According EAPI it is incorrect to install empty directories!
@@ -32,4 +32,6 @@ function cmd_rm()
         # so paludis will complain about broken image :) -- Ok, lets restore it!
         mkdir -p "${D}"
     fi
+
+    return 0
 }

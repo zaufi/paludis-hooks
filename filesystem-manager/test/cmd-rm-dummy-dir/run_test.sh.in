@@ -1,0 +1,32 @@
+#!/bin/bash
+
+function verify_dir
+{
+    return 0
+}
+
+function schedule_a_warning_after_all()
+{
+    echo "Going to leave a warning"
+}
+
+# Bring testing command into scope
+. "@PROJECT_SOURCE_DIR@/filesystem-manager/commands/cmd-rm.sh"
+
+# Remove possible results from previous run
+[ -d D ] && rm -rf D
+
+# Make a fresh D directory
+mkdir -p D/nested/dummy
+
+set -x
+D="`pwd`/D"
+cmd_rm nested dummy
+set +x
+
+if [ "$?" = '0' -a ! -d "${D}/nested" -a -d "${D}" ]; then
+    echo Passed
+else
+    echo Failed
+    exit 1
+fi

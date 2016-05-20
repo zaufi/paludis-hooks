@@ -1,0 +1,23 @@
+#!/bin/bash
+set -x
+
+source @FILESYSTEM_CMD_DIR@/@_afct_cmd@.sh
+
+#BEGIN Dummy functions, a replacement instead of extected to be exported by FSM hook
+
+function schedule_a_warning_after_all()
+{
+    return 0
+}
+export -f schedule_a_warning_after_all
+
+function verify_dir()
+{
+    return 0
+}
+export -f verify_dir
+#END Dummy functions, a replacement instead of extected to be exported by FSM hook
+
+@_afct_cmd_fn@ . @_afct_args@
+
+set +x

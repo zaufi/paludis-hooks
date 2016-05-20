@@ -92,6 +92,7 @@ TODO
   when it is known apriory that required size doesn't change much (like `gentoo-sources`)
 * Add element to inject `USE=doc` for packages where it is not defined, so it'll be possible
   to continue processing and avoid rules duplication in FMS hook. (alsmost done)
+* Add some command to get last entries for ebuild Changelog
 
 Changelog
 =========

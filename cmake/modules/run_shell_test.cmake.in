@@ -1,0 +1,8 @@
+execute_process(
+    COMMAND /bin/sh "@_add_shell_functions_test_RUN_TEST_SH@"
+    RESULT_VARIABLE EXIT_CODE
+  )
+
+if(NOT EXIT_CODE EQUAL "0")
+    message(FATAL_ERROR "@_add_shell_functions_test_NAME@: Failed")
+endif()

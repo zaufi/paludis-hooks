@@ -5,6 +5,8 @@
 cmake_minimum_required(VERSION 3.4)
 project(paludis-hooks VERSION 1.3 LANGUAGES NONE)
 
+list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake/modules")
+
 # seek for xmllint to validate our XML files
 find_program(XMLLINT_EXECUTABLE xmllint REQUIRED)
 # check if xsltproc is even installed
@@ -25,6 +27,7 @@ include(GNUInstallDirs)
 
 # For tests
 include(CTest)
+include(AddShellFunctionsTest)
 
 option(WITH_AUTOPATCH "Install autopatch hook" ON)
 option(WITH_FS_MANAGER "Install filesystem manager hook" ON)

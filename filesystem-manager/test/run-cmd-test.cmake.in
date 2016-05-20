@@ -1,0 +1,9 @@
+include("@_afct_working_directory@/prepare.cmake")
+
+set(ENV{D} "@D@")
+
+execute_process(
+    COMMAND /bin/bash run-cmd-test.bash
+    WORKING_DIRECTORY "@_afct_working_directory@"
+    RESULT_VARIABLE BASH_EXIT_CODE
+  )

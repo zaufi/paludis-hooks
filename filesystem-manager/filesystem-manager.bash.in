@@ -6,7 +6,7 @@
 #
 # Copyright (c), 2010-2016 by Alex Turbov <i.zaufi@gmail.com>
 #
-# Version: @PH_VERSION@
+# Version: @PROJECT_VERSION@
 #
 
 source ${PALUDIS_EBUILD_DIR}/echo_functions.bash
@@ -60,9 +60,9 @@ function verify_dir()
 {
     if [ -n "${D}" ]; then
         # Make sure we have smth real in `D'!
-        local p1=`realpath -mq "${1}"`
-        local p2=`realpath -mq "${D}/$1"`
-        if [ "${p1}" != "${p2}" ]; then
+        local -r _vd_p1=`realpath -mq "${1}"`
+        local -r _vd_p2=`realpath -mq "${D}/$1"`
+        if [ "${_vd_p1}" != "${_vd_p2}" ]; then
             return 0
         fi
     fi
@@ -75,7 +75,7 @@ case "${HOOK}" in
     # ATTENTION This script must be symlinked to the following hook dirs:
     ebuild_install_post)
         tmp_file=`mktemp "${T}/fsmh.XXXXXXX.sh"`
-        /usr/bin/xsltproc -o $tmp_file \
+        /usr/bin/xsltproc -o "${tmp_file}" \
             --stringparam 'PN' "${PN}" \
             --stringparam 'PF' "${PF}" \
             --stringparam 'PR' "${PR}" \
@@ -89,10 +89,10 @@ case "${HOOK}" in
 
         if [ x"${PALUDIS_HOOK_DEBUG}" = 'xyes' ]; then
             einfo "Script to execute:"
-            cat $tmp_file
+            cat "${tmp_file}"
         fi
 
-        /bin/sh $tmp_file
+        /bin/sh "${tmp_file}"
         result=$?
 
         if [ -e "${_fsm_rememberfile}" ]; then

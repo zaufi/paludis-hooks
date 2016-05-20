@@ -15,7 +15,7 @@ function cmd_symlink()
 
     if ! verify_dir "${cd}"; then
         eerror "Package image dir is undefined! Skip any actions..."
-        return
+        return 0
     fi
 
     if [ -d "${D}/$cd" ]; then
@@ -26,4 +26,6 @@ function cmd_symlink()
           && cd - >/dev/null
         eend $?
     fi
+
+    return 0
 }
