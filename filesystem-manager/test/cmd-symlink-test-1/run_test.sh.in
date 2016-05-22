@@ -32,7 +32,7 @@ touch D/src/sample.file
 
 D="`pwd`/D" cmd_symlink dst ../src/sample.file sample.symlink
 
-if [ "$?" = '0' -a -e "${D}/dst/sample.symlink" ]; then
+if [ "$?" = '0' -a -L "${D}/dst/sample.symlink" ]; then
     echo Passed
 else
     echo Failed

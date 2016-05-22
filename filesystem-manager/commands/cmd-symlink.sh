@@ -18,7 +18,7 @@ function cmd_symlink()
         return 0
     fi
 
-    if [ -d "${D}/$cd" ]; then
+    if [ -d "${D}/$cd" -a -e "${D}/$cd/$src" ]; then
         ebegin "Making the symlink [$cd]: $src --> $dst"
         cd "${D}/$cd" \
           && ln -s $src $dst \
