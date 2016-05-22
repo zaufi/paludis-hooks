@@ -14,7 +14,9 @@
 >>  Dispatching by priority 18
 ==== ... nothing matched: trying lower priority ... 
 >>  Dispatching by priority 17
-==== ... nothing matched: trying lower priority ... 
+==== Matched 1 package nodes w/ priority 17
+>>> Package matched: dev-util/cmake (priority=17, stop=false)
+==== continue matching packages w/ lower priority ...
 >>  Dispatching by priority 16
 ==== ... nothing matched: trying lower priority ... 
 >>  Dispatching by priority 15
@@ -87,6 +89,7 @@
 <<  Dispatching done 14
 <<  Dispatching done 15
 <<  Dispatching done 16
+<<< Matching done: dev-util/cmake (priority=17)
 <<  Dispatching done 17
 <<  Dispatching done 18
 <<  Dispatching done 19
@@ -106,6 +109,14 @@ for cmd in /usr/share/paludis-hooks/filesystem-manager/commands/*.sh; do
     source $cmd
 done
 
+
+    einfo "Filesystem Management Hook: Apply actions for dev-util/cmake"
+
+    
+# Make directory cmake-3.4.3-r1 @ /usr/share/doc
+cmd_mkdir "/usr/share/doc" cmake-3.4.3-r1
+# Move html to ../cmake-3.4.3-r1 @ /usr/share/doc/cmake-3.4.3
+cmd_mv "/usr/share/doc/cmake-3.4.3" "../cmake-3.4.3-r1" "html"
 
     einfo "Filesystem Management Hook: Apply actions for cmake"
 

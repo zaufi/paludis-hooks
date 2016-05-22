@@ -20,6 +20,11 @@
         </symlink>
     </package>
 
+    <package spec="dev-util/cmake">
+        <mkdir cd="/usr/share/doc" dst="${PF}" />
+        <mv cd="/usr/share/doc/${P}" src="html" dst="../${PF}" />
+    </package>
+
     <package spec="cmake">
         <symlink cd="/usr/share/doc" src="${PF}/html/" dst="${PN}" />
         <rm cd="/usr/share/doc/${PF}">
