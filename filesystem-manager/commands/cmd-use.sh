@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Plugin to implement an `use` command
+# Plugin to implement the `use` command
 #
 
 #
@@ -10,7 +10,11 @@
 function cmd_use()
 {
     local use="$1"
+
     local e
-    for e in ${USE} xxx-dummy; do [[ "$e" == "$use" ]] && return 0; done
+    for e in ${USE} xxx-dummy; do
+        [[ "${e}" == "${use}" ]] && return 0
+    done
+
     return 1
 }

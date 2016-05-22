@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Plugin to implement an `mv` command of the config file
+# Plugin to implement the `mv` command of the config file
 #
 
 #
@@ -28,19 +28,20 @@ function cmd_mv()
 
     if [ -d "${D}/${cd}" ]; then
         cd "${D}/${cd}"
-        ebegin "Moving [$cd]: $* --> $dst"
-        mv -vf "$@" ${dst} 2>/dev/null && schedule_a_warning_after_all
-        eend $?
+        local -r src="`(shopt -s nullglob && echo $@)`"
+        if [ -n "${src}" ]; then
+            mv -vf ${src} "${dst}" 2>/dev/null && schedule_a_warning_after_all
+            # Walk through whole image and try to remove possible empty dirs
+            # ATTENTION According EAPI it is incorrect to install empty directories!
+            # If a package need some, then its ebuild must use `keepdir` for this!
+            # So this action also can be considered as sanitize an image before install :)
+            find ${D} -type d -a -empty -exec rmdir -p --ignore-fail-on-non-empty {} +
+            # Sometimes (if u really don't want a WHOLE package, but have to install it,
+            # like boring kde-wallpapers) the last command may delete even ${D} directory,
+            # so paludis will complain about broken image :) -- Ok, lets restore it!
+            test ! -e "${D}" && mkdir -p "${D}"
+        fi
         cd - >/dev/null
-        # Walk through whole image and try to remove possible empty dirs
-        # ATTENTION According EAPI it is incorrect to install empty directories!
-        # If a package need some, then its ebuild must use `keepdir` for this!
-        # So this action also can be considered as sanitize an image before install :)
-        find ${D} -type d -a -empty -exec rmdir -p --ignore-fail-on-non-empty {} +
-        # Sometimes (if u really don't want a WHOLE package, but have to install it,
-        # like boring kde-wallpapers) the last command may delete even ${D} directory,
-        # so paludis will complain about broken image :) -- Ok, lets restore it!
-        test ! -e "${D}" && mkdir -p "${D}"
     fi
     return 0
 }

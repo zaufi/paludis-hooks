@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Plugin to implement a `symlink` command of the config file
+# Plugin to implement the `symlink` command of the config file
 #
 
 # @param cd  -- directory to change to before making a symlink
@@ -18,13 +18,11 @@ function cmd_symlink()
         return 0
     fi
 
-    if [ -d "${D}/$cd" -a -e "${D}/$cd/$src" ]; then
-        ebegin "Making the symlink [$cd]: $src --> $dst"
-        cd "${D}/$cd" \
-          && ln -s $src $dst \
+    if [ -d "${D}/$cd" -a -e "${D}/${cd}/${src}" ]; then
+        cd "${D}/${cd}" \
+          && ln -vs ${src} ${dst} \
           && schedule_a_warning_after_all \
           && cd - >/dev/null
-        eend $?
     fi
 
     return 0

@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Plugin to implement a `mkdir` command of the config file
+# Plugin to implement the `mkdir` command of the config file
 #
 
 # @param cd  -- directory to change to before making a directory (can be empty)
@@ -17,12 +17,10 @@ function cmd_mkdir()
     fi
 
     if [ -d "${D}/${cd}" ]; then
-        ebegin "Create directory [${cd}]: $@"
         cd "${D}/${cd}" \
-          && mkdir -p "$@" \
+          && mkdir -vp "$@" \
           && schedule_a_warning_after_all \
           && cd - >/dev/null
-        eend $?
     fi
 
     return 0

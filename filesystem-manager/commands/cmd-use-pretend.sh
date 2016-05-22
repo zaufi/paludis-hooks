@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Plugin to implement an pretend use command
+# Plugin to implement the `pretend use` command
 #
 
 #
@@ -22,7 +22,7 @@ function cmd_pretend_use()
 {
     for use in $*; do
         # Ok, need to add a given USE (if latter still not here)
-        if [[ $use =~ \+(.*) ]]; then
+        if [[ ${use} =~ \+(.*) ]]; then
             local -r pure_use=${BASH_REMATCH[1]}
             [[ $USE =~ ${pure_use} ]] || USE="${USE} ${pure_use}"
             einfo "Pretending USE=${use} for ${P}"

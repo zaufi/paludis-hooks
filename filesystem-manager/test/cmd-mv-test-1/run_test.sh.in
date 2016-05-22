@@ -11,19 +11,20 @@ function schedule_a_warning_after_all()
 }
 
 # Bring testing command into scope
-. "@PROJECT_SOURCE_DIR@/filesystem-manager/commands/cmd-rm.sh"
+. "@PROJECT_SOURCE_DIR@/filesystem-manager/commands/cmd-mv.sh"
 
 # Remove possible results from previous run
 [ -d D ] && rm -rf D
 
 # Make a fresh D directory
-mkdir -p D
+mkdir -p D/pkg{,-r1}
+touch D/pkg/sample.file
 
 set -x
-D="`pwd`/D" cmd_rm not-existed-dir
+D="`pwd`/D" cmd_mv pkg ../pkg-r1 sample.file
 set +x
 
-if [ "$?" = '0'  -a -d "${D}" ]; then
+if [ "$?" = '0' -a ! -e "${D}/pkg" -a -e "${D}/pkg-r1/sample.file" ]; then
     echo Passed
 else
     echo Failed

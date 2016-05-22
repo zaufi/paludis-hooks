@@ -20,7 +20,7 @@ add_shell_functions_test(
   )
 add_shell_functions_test(
     NAME cmd-rm-dummy-dir
-    PASS_REGULAR_EXPRESSION "removed directory 'dummy'.*Going to leave a warning.*Passed"
+    PASS_REGULAR_EXPRESSION "Going to leave a warning.*Passed"
   )
 
 add_shell_functions_test(
@@ -29,14 +29,27 @@ add_shell_functions_test(
   )
 add_shell_functions_test(
     NAME cmd-symlink-test-1
-    PASS_REGULAR_EXPRESSION "Making the symlink.*Going to leave a warning.*Passed"
+    PASS_REGULAR_EXPRESSION "Going to leave a warning.*Passed"
   )
 add_shell_functions_test(
     NAME cmd-symlink-test-2
-    PASS_REGULAR_EXPRESSION "Making the symlink.*Going to leave a warning.*Passed"
+    PASS_REGULAR_EXPRESSION "Going to leave a warning.*Passed"
   )
 
 add_shell_functions_test(
     NAME cmd-mkdir-test-1
+    PASS_REGULAR_EXPRESSION "Going to leave a warning.*Passed"
+  )
+
+add_shell_functions_test(
+    NAME cmd-mv-not-existed-target
     PASS_REGULAR_EXPRESSION "Passed"
+  )
+add_shell_functions_test(
+    NAME cmd-mv-test-1
+    PASS_REGULAR_EXPRESSION "Going to leave a warning.*Passed"
+  )
+add_shell_functions_test(
+    NAME cmd-mv-test-2
+    PASS_REGULAR_EXPRESSION "Going to leave a warning.*Passed"
   )

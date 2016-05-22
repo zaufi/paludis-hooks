@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Plugin to implement an `rm` command of the config file
+# Plugin to implement the `rm` command of the config file
 #
 
 #
@@ -19,9 +19,10 @@ function cmd_rm()
     fi
 
     if [ -d "${D}/${cd}" ]; then
-        cd "${D}/${cd}"
-        rm -vrf "${@}" 2>/dev/null && schedule_a_warning_after_all
-        cd - >/dev/null
+        cd "${D}/${cd}" \
+          && rm -vrf "${@}" 2>/dev/null \
+          && schedule_a_warning_after_all \
+          && cd - >/dev/null
         # Walk through whole image and try to remove possible empty dirs
         # ATTENTION According EAPI it is incorrect to install empty directories!
         # If a package need some, then its ebuild must use `keepdir` for this!

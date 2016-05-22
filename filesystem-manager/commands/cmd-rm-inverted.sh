@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Plugin to implement an `rm` command of the config file
+# Plugin to implement the `rm` command of the config file
 # which would remove everything except target(s)
 #
 
