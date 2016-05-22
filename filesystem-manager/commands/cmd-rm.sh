@@ -30,7 +30,7 @@ function cmd_rm()
         # Sometimes (if u really don't want a WHOLE package, but have to install it,
         # like boring kde-wallpapers) the last command may delete even ${D} directory,
         # so paludis will complain about broken image :) -- Ok, lets restore it!
-        mkdir -p "${D}"
+        test ! -e "${D}" && mkdir -p "${D}"
     fi
 
     return 0

@@ -1,0 +1,40 @@
+#!/bin/bash
+
+function verify_dir
+{
+    return 0
+}
+
+function schedule_a_warning_after_all()
+{
+    echo "Going to leave a warning"
+}
+
+function ebegin()
+{
+    echo "$@"
+}
+function eend()
+{
+    return $?
+}
+
+# Bring testing command into scope
+. "@PROJECT_SOURCE_DIR@/filesystem-manager/commands/cmd-mkdir.sh"
+
+# Remove possible results from previous run
+[ -d D ] && rm -rf D
+
+set -x
+# Make a fresh D directory
+mkdir -p D/pkg
+
+D="`pwd`/D" cmd_mkdir pkg sample-directory-1 sample-directory-2/nested-directory
+
+if [ "$?" = '0' -a -d "${D}/pkg/sample-directory-1"  -a -d "${D}/pkg/sample-directory-2/nested-directory" ]; then
+    echo Passed
+else
+    echo Failed
+    exit 1
+fi
+set +x

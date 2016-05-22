@@ -35,3 +35,8 @@ add_shell_functions_test(
     NAME cmd-symlink-test-2
     PASS_REGULAR_EXPRESSION "Making the symlink.*Going to leave a warning.*Passed"
   )
+
+add_shell_functions_test(
+    NAME cmd-mkdir-test-1
+    PASS_REGULAR_EXPRESSION "Passed"
+  )
