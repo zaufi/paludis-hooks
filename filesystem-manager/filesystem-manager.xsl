@@ -447,6 +447,22 @@ cmd_mv "<xsl:value-of select="@cd" />" "<xsl:value-of select="@dst" />" "<xsl:va
 </xsl:template>
 
 <!--
+    Matching `mv` nodes w/ `cd' and `dst` attributes
+  -->
+<xsl:template match="fsmh:rm[@cd][@dst][not(@src)]">
+    <xsl:call-template name="debug">
+        <xsl:with-param name="message">==== rendering `mv`: cd=<xsl:value-of select="@cd" />, dst=<xsl:value-of select="@dst" />, src=none</xsl:with-param>
+    </xsl:call-template>
+<xsl:variable name="cd" select="@cd" />
+<xsl:if test="count(fsmh:item/@dst) &gt; 0">
+# Move a bunch of items in <xsl:value-of select="@cd" /> to <xsl:value-of select="@dst" />
+    <xsl:for-each select="fsmh:item[@src]">
+cmd_mv "<xsl:value-of select="$cd" />" "<xsl:value-of select="@dst" />" "<xsl:value-of select="@src" />"
+    </xsl:for-each>
+</xsl:if>
+</xsl:template>
+
+<!--
     Matching `if` nodes
   -->
 <xsl:template match="fsmh:if[@use][@negate='false']">

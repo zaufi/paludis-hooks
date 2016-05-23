@@ -48,5 +48,6 @@
 
 <!ELEMENT item EMPTY>
 <!ATTLIST item
-    dst CDATA #REQUIRED
+    dst CDATA #IMPLIED
+    src CDATA #IMPLIED
   >
