@@ -33,16 +33,16 @@
     negate (true|false) "false"
   >
 
-<!ELEMENT mv EMPTY>
+<!ELEMENT mv (item*)>
 <!ATTLIST mv
-    cd CDATA #IMPLIED
+    cd CDATA #REQUIRED
     src CDATA #IMPLIED
-    dst CDATA #IMPLIED
+    dst CDATA #REQUIRED
   >
 
-<!ELEMENT mkdir EMPTY>
+<!ELEMENT mkdir (item*)>
 <!ATTLIST mkdir
-    cd CDATA #IMPLIED
+    cd CDATA #REQUIRED
     dst CDATA #IMPLIED
   >
 

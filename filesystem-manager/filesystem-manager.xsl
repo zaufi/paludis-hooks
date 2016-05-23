@@ -454,10 +454,11 @@ cmd_mv "<xsl:value-of select="@cd" />" "<xsl:value-of select="@dst" />" "<xsl:va
         <xsl:with-param name="message">==== rendering `mv`: cd=<xsl:value-of select="@cd" />, dst=<xsl:value-of select="@dst" />, src=none</xsl:with-param>
     </xsl:call-template>
 <xsl:variable name="cd" select="@cd" />
-<xsl:if test="count(fsmh:item/@dst) &gt; 0">
-# Move a bunch of items in <xsl:value-of select="@cd" /> to <xsl:value-of select="@dst" />
+<xsl:variable name="dst" select="@cd" />
+<xsl:if test="count(fsmh:item/@src) &gt; 0">
     <xsl:for-each select="fsmh:item[@src]">
-cmd_mv "<xsl:value-of select="$cd" />" "<xsl:value-of select="@dst" />" "<xsl:value-of select="@src" />"
+# Move <xsl:value-of select="@src" /> to <xsl:value-of select="$dst" /> @ <xsl:value-of select="$cd" />
+cmd_mv "<xsl:value-of select="$cd" />" "<xsl:value-of select="$dst" />" "<xsl:value-of select="@src" />"
     </xsl:for-each>
 </xsl:if>
 </xsl:template>
@@ -499,6 +500,22 @@ fi
     </xsl:call-template>
 # Make directory <xsl:value-of select="@dst" /> @ <xsl:value-of select="@cd" />
 cmd_mkdir "<xsl:value-of select="@cd" />" <xsl:value-of select="@dst" />
+</xsl:template>
+
+<!--
+    Matching `mkdir` nodes w/ only `cd` attribute
+  -->
+<xsl:template match="fsmh:mkdir[@cd][not(@dst)]">
+    <xsl:call-template name="debug">
+        <xsl:with-param name="message">==== rendering `mkdir`: cd=<xsl:value-of select="@cd" />, dst=none</xsl:with-param>
+    </xsl:call-template>
+<xsl:variable name="cd" select="@cd" />
+<xsl:if test="count(fsmh:item/@dst) &gt; 0">
+    <xsl:for-each select="fsmh:item[@src]">
+# Make directory <xsl:value-of select="@dst" /> @ <xsl:value-of select="@cd" />
+cmd_mkdir "<xsl:value-of select="$cd" />" "<xsl:value-of select="@dst" />"
+    </xsl:for-each>
+</xsl:if>
 </xsl:template>
 
 <!--
