@@ -1,0 +1,36 @@
+#!/bin/bash
+
+function verify_dir
+{
+    return 0
+}
+
+function schedule_a_warning_after_all()
+{
+    echo "Going to leave a warning"
+}
+
+# Bring testing command into scope
+. "@PROJECT_SOURCE_DIR@/filesystem-manager/commands/cmd-rm.sh"
+
+# Remove possible results from previous run
+[ -d D ] && rm -rf D
+
+# Make a fresh D directory
+mkdir -p D/doc
+touch D/doc/README.md
+touch D/doc/SOME-README
+
+set -x
+
+D="`pwd`/D"
+cmd_rm doc '*README*'
+
+if [ "$?" = '0' -a ! -d "${D}/doc" -a -d "${D}" ]; then
+    echo Passed
+else
+    echo Failed
+    exit 1
+fi
+
+set +x

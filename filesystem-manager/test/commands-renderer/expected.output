@@ -16,6 +16,8 @@
 >>  Dispatching by priority 17
 ==== Matched 1 package nodes w/ priority 17
 >>> Package matched: dev-util/cmake (priority=17, stop=false)
+==== rendering `mkdir`: cd=/usr/share/doc, dst=cmake-3.4.3-r1
+==== rendering `mv`: cd=/usr/share/doc/cmake-3.4.3, dst=../cmake-3.4.3-r1, src=html
 ==== continue matching packages w/ lower priority ...
 >>  Dispatching by priority 16
 ==== ... nothing matched: trying lower priority ... 

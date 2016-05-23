@@ -439,6 +439,9 @@ cmd_rm "<xsl:value-of select="$cd" />" "<xsl:value-of select="@dst" />"
     Matching `mv` nodes w/ all parameters given to move specified target(s)
   -->
 <xsl:template match="fsmh:mv[@cd][@src][@dst]">
+    <xsl:call-template name="debug">
+        <xsl:with-param name="message">==== rendering `mv`: cd=<xsl:value-of select="@cd" />, dst=<xsl:value-of select="@dst" />, src=<xsl:value-of select="@src" /></xsl:with-param>
+    </xsl:call-template>
 # Move <xsl:value-of select="@src" /> to <xsl:value-of select="@dst" /> @ <xsl:value-of select="@cd" />
 cmd_mv "<xsl:value-of select="@cd" />" "<xsl:value-of select="@dst" />" "<xsl:value-of select="@src" />"
 </xsl:template>
@@ -475,6 +478,9 @@ fi
     Matching `mkdir` nodes w/ all parameters given
   -->
 <xsl:template match="fsmh:mkdir[@cd][@dst]">
+    <xsl:call-template name="debug">
+        <xsl:with-param name="message">==== rendering `mkdir`: cd=<xsl:value-of select="@cd" />, dst=<xsl:value-of select="@dst" /></xsl:with-param>
+    </xsl:call-template>
 # Make directory <xsl:value-of select="@dst" /> @ <xsl:value-of select="@cd" />
 cmd_mkdir "<xsl:value-of select="@cd" />" <xsl:value-of select="@dst" />
 </xsl:template>
