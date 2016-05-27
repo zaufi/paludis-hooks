@@ -2,6 +2,9 @@
 # Configuration options for paludis addons
 #
 
+# Protect self
+CONFIG_PROTECT='/etc/env.d/90cave'
+
 # Options for profile.d/ based stuff
 # (ATTENTION Not for `cave` itself!)
 CAVE_SEARCH_INDEX_FILE=/var/cache/paludis/csi
