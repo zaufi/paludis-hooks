@@ -93,6 +93,7 @@ TODO
 * Add element to inject `USE=doc` for packages where it is not defined, so it'll be possible
   to continue processing and avoid rules duplication in FMS hook. (alsmost done)
 * Add some command to get last entries for ebuild Changelog
+* Add `debug` attribute to command(s) to show `pwd` and contents of a directory before apply some action
 
 Changelog
 =========
