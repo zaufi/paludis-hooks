@@ -449,7 +449,7 @@ cmd_mv "<xsl:value-of select="@cd" />" "<xsl:value-of select="@dst" />" "<xsl:va
 <!--
     Matching `mv` nodes w/ `cd' and `dst` attributes
   -->
-<xsl:template match="fsmh:rm[@cd][@dst][not(@src)]">
+<xsl:template match="fsmh:mv[@cd][@dst][not(@src)]">
     <xsl:call-template name="debug">
         <xsl:with-param name="message">==== rendering `mv`: cd=<xsl:value-of select="@cd" />, dst=<xsl:value-of select="@dst" />, src=none</xsl:with-param>
     </xsl:call-template>
