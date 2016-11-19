@@ -35,13 +35,13 @@ issue_a_warning()
 try_to_apply_patches()
 {
     local check
-    # TODO: maybe realize dynamically detecting correct -pN for patch
+    # TODO: Maybe implement dynamically detecting correct -pN for patch?
     local patch_cmd="patch -p1"
     for check in "${PATCH_DIR}/${HOOK}"/${CATEGORY}/{${P}-${PR},${P},${PN}}{,:${SLOT}}; do
         if [[ -d ${check} ]] ; then
-            # activate nullglob if it isn't already
-            local saved_opt=$(shopt nullglob &> /dev/null && echo "yes" || echo "no")
-            [[ ${saved_opt} == no ]] && shopt -s nullglob
+            # Store `nullglob` state and enforce it set
+            local saved_opt=$(shopt -p nullglob)
+            shopt -s nullglob
 
             cd "${S}" || die "Failed to cd into ${S}!"
             for pfull in "${check}"/*.patch ; do
@@ -59,8 +59,8 @@ try_to_apply_patches()
                 touch "${_ap_rememberfile}" || die "Failed to touch ${_ap_rememberfile}!"
             done
 
-            # make sure nullglob is set to what it was before this function was called
-            [[ ${saved_opt} == no ]] && shopt -u nullglob
+            # Restore `nullglob` state
+            eval "${saved_opt}"
 
             if [[ -e ${_ap_rememberfile} ]]; then
                 issue_a_warning "will be"
