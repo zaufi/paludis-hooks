@@ -94,6 +94,7 @@ TODO
   to continue processing and avoid rules duplication in FMS hook. (alsmost done)
 * Add some command to get last entries for ebuild Changelog
 * Add `debug` attribute to command(s) to show `pwd` and contents of a directory before apply some action
+* Add sync post hook to update a repo with auto patches
 
 Changelog
 =========
