@@ -13,8 +13,8 @@ alias cu='cave uninstall'
 alias cy='cave sync'
 alias cz='cave resume -Cs ${CAVE_RESUME_FILE_OPT}'
 alias cfl='cave fix-linkage'
-alias world-up='cave resolve ${CAVE_RESUME_FILE_OPT} -c -km -Km -Cs -P "*/*" -Si -si -Rn world'
-alias system-up='cave resolve ${CAVE_RESUME_FILE_OPT} -c -km -Km -Cs -P "*/*" -Si -si -Rn system'
+alias world-up='cave resolve ${CAVE_RESUME_FILE_OPT} -c -km -Km -Cs -P "*/*" -U "*/*" -Si -si -Rn --dump-restarts world'
+alias system-up='cave resolve ${CAVE_RESUME_FILE_OPT} -c -km -Km -Cs -P "*/*" -U "*/*" -Si -si -Rn --dump-restarts system'
 
 #
 # Reuse cave bash completer to generate completions for just introduced aliases
