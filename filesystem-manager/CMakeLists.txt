@@ -10,7 +10,7 @@ install(
   )
 install(
     FILES "${CMAKE_CURRENT_BINARY_DIR}/filesystem-manager.conf"
-    DESTINATION "${CMAKE_INSTALL_FULL_SYSCONFDIR}/paludis/hooks/configs"
+    DESTINATION "${CMAKE_INSTALL_FULL_SYSCONFDIR}/paludis/hooks/configs/filesystem-manager.conf.example"
   )
 install(
     FILES

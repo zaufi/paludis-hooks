@@ -11,6 +11,7 @@ Briefly this package consists of:
 * A bunch of helper functions usable in a daily work w/ paludis
 * A hook to organize compiler/linker options into various sets and apply to packages
 
+
 Configuration details
 =====================
 
@@ -79,6 +80,7 @@ Workdir-tmpfs
 Most important parameter in `/etc/paludis/hooks/configs/workdir-tmpfs.conf` is
 `IN_MEMORY_BUILD_ENABLED`.
 
+
 TODO
 ====
 
@@ -96,6 +98,9 @@ TODO
 * Add `debug` attribute to command(s) to show `pwd` and contents of a directory before apply some action
 * Add sync post hook to update a repo with auto patches
 * Make it possible to remove by Ant-like wildcard `**/some`
+* Case insensitive glob expressions match, so `announce*`, `ANNOUNCE*` and `Announce*` can be replaced
+  with only one rule
+
 
 Changelog
 =========

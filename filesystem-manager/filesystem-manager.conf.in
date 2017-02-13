@@ -2,15 +2,18 @@
 <!DOCTYPE commands SYSTEM "@FILESYSTEM_MANAGER_DTD@">
 <?xml-stylesheet type="text/xsl" href="@FILESYSTEM_MANAGER_XSL@"?>
 
+<!-- NOTE Rename to `filesystem.conf` and edit according your needs -->
+
 <commands
     version="2.0"
     xmlns:smh="https://github.com/zaufi/paludis-hooks/#filesystem-management-hook"
     xmlns="https://github.com/zaufi/paludis-hooks/#filesystem-management-hook"
   >
-    <!-- Just few examples:
+    <!-- Just few examples for inspiration:
 
-    <package spec="dev-libs/boost">
-        <symlink cd="/usr/share/doc" src="${PF}/html" dst="${PN}" />
+    <package spec="app-doc/abs-guide" pretend-use="+doc">
+        <mkdir cd="/usr/share/doc/${P}" dst="html" />
+        <mv cd="/usr/share/doc/${P}/HTML" src="*" dst="html" />
     </package>
 
     <package spec="kde-base/kdelibs">
@@ -24,10 +27,41 @@
     <package spec="dev-python/python-docs" pretend-use="+doc">
         <symlink cd="/usr/share/doc" src="${PF}/html" dst="python-${SLOT}" />
     </package>
+
+    <package spec="dev-python/sphinx">
+        <mv cd="/usr/share/doc/${PF}/html/doc/_build/html/" src="*" dst="../../.." />
+        <rm cd="/usr/share/doc/${PF}/html/" dst="doc" />
+    </package>
+
+    <package spec="www-client/firefox">
+        <rm cd="/usr/lib64/${PN}/browser/searchplugins/">
+            <item dst="amazondotcom.xml" />
+            <item dst="bing.xml" />
+            <item dst="eBay.xml" />
+            <item dst="twitter.xml" />
+            <item dst="yahoo.xml" />
+        </rm>
+    </package>
+
     -->
 
-    <!-- Remove any translations from all packages! I use only English and USE=-nls
-        app-admin/localepurge doesn't needed anymore! ;-)
+    <!-- Remove EVERYTHING from /usr/share/doc dir, if package has no USE=doc -->
+    <package spec="*/*" descr="USE=-doc remover">
+        <if use="doc" negate="true">
+            <rm cd="/usr/share" dst="doc" />
+        </if>
+    </package>
+
+    <!-- Symlink HTML docs to make a "permanent" link for packages passed
+         the previous rule, so you don't need to clean a browser's history
+         after package upgrade.
+     -->
+    <package spec="*/*" descr="Make permanent link to HTML docs">
+        <symlink cd="/usr/share/doc" src="${PF}/html" dst="${PN}" />
+    </package>
+
+    <!-- Remove any translations from all packages! Use only English and USE=-nls,
+        so `app-admin/localepurge` doesn't needed anymore! ;-)
     -->
     <package spec="*/*" descr="locale-cleaner">
         <rm cd="/usr/share/locale/" dst="*/LC_MESSAGES/*.mo" />
@@ -38,48 +72,102 @@
         <rm cd="/usr/share/man/" dst="man{0p,1,1p,2,3,3p,4,5,6,7,8}" negate="true" />
     </package>
 
-    <!-- ATTENTION Remove EVERYTHING from /usr/share/doc dir, if package has no USE=doc -->
+    <!-- ATTENTION Remove EVERYTHING from `/usr/share/doc` dir, if package has no USE=doc -->
     <package spec="*/*" descr="USE=-doc remover">
         <if use="doc" negate="true">
             <rm cd="/usr/share" dst="doc" />
         </if>
     </package>
 
-    <!-- Remove unused (most of the time) shit^Wdocs from /usr/share/doc -->
-    <package spec="*/*" descr="docs-cleaner">
+    <!-- Remove unused (most of the time) shit^Wdocs from `/usr/share/doc` -->
+    <package spec="*/*" descr="Useless docs remover">
         <rm cd="/usr/share/doc/${PF}">
-            <item dst="AUTHORS*" />
+            <item dst="ABOUT*" />
+            <item dst="ACKNOWLEDGEMENT*" />
+            <item dst="ACKS" />
+            <item dst="announce*" />
+            <item dst="Announce*" />
+            <item dst="ANNOUNCE*" />
             <item dst="*.AUTHORS*" />
+            <item dst="AUTHORS*" />
+            <item dst="BUG-REPORT*" />
             <item dst="BUGS*" />
-            <item dst="CHANGELOG*" />
-            <item dst="CHANGES*" />
-            <item dst="CONTENTS*" />
-            <item dst="COPYING*" />
-            <item dst="Copyright*" />
-            <item dst="copyright*" />
-            <item dst="ChangeLog*" />
-            <item dst="*.ChangeLog" />
-            <item dst="Changelog*" />
             <item dst="changelog*" />
-            <item dst="CREDITS" />
+            <item dst="Changelog*" />
+            <item dst="*ChangeLog*" />
+            <item dst="CHANGELOG*" />
+            <item dst="changes*" />
+            <item dst="*Changes*" />
+            <item dst="CHANGES*" />
+            <item dst="CodingStyle" />
+            <item dst="COMMITTERS*" />
+            <item dst="COMPAT*" />
+            <item dst="CONFORMANCE*" />
+            <item dst="CONTENTS*" />
+            <item dst="CONTRIBUTERS*" />
+            <item dst="CONTRIBUTORS*" />
+            <item dst="CONVENTIONS*" />
+            <item dst="CONVERSION*" />
+            <item dst="COPYHEADER" />
+            <item dst="COPYING*" />
+            <item dst="copyright*" />
+            <item dst="Copyright*" />
+            <item dst="COPYRIGHT*" />
             <item dst="Credits" />
+            <item dst="*CREDITS*" />
+            <item dst="CUSTOMIZE*" />
+            <item dst="DEBUG*" />
+            <item dst="DESIGN*" />
+            <item dst="DETAILS*" />
+            <item dst="DEVELOPMENT-POLICY*" />
             <item dst="DISTFILES*" />
-            <item dst="NOTICE*" />
-            <item dst="FAQ*" />
-            <item dst="HACKING*" />
+            <item dst="*FAQ*" />
+            <item dst="FEATURES*" />
+            <item dst="GOALS*" />
+            <item dst="*HACKING*" />
+            <item dst="History*" />
+            <item dst="HISTORY*" />
+            <item dst="HOWTO*" />
             <item dst="INSTALL*" />
             <item dst="KEYS*" />
+            <item dst="KNOWN_BUGS*" />
             <item dst="LICENSE*" />
+            <item dst="LostLog" />
+            <item dst="MAIL" />
+            <item dst="MAINTAINERS*" />
+            <item dst="*MANIFEST*" />
             <item dst="NEWS*" />
-            <item dst="README*" />
-            <item dst="*.README*" />
+            <item dst="NOTES*" />
+            <item dst="NOTICE*" />
+            <item dst="OBTAINING" />
+            <item dst="ONEWS*" />
+            <item dst="ORIGIN*" />
+            <item dst="OVERVIEW" />
+            <item dst="PACKAGERS" />
+            <item dst="patents.*" />
+            <item dst="PLATFORMS*" />
+            <item dst="*PORTING*" />
+            <item dst="PROBLEMS*" />
+            <item dst="PROJECTS*" />
+            <item dst="*readme*" />
+            <item dst="*README*" />
             <item dst="RELEASE*" />
             <item dst="RELNOTES*" />
+            <item dst="thanks*" />
             <item dst="THANKS*" />
-            <item dst="TODO*" />
-            <item dst="*.TODO" />
+            <item dst="*TODO*" />
+            <item dst="ToDo*" />
+            <item dst="TO-DO*" />
+            <item dst="TRANSLATE*" />
+            <item dst="TROUBLESHOOTING*" />
+            <item dst="UPGRADE*" />
+            <item dst="UPGRADING*" />
+            <item dst="USAGE*" />
             <item dst="VERSION*" />
+            <item dst="WhatsNew*" />
+            <item dst="WHATS?NEW*" />
             <item dst="WHATSNEW*" />
+            <item dst="WHERE*" />
         </rm>
     </package>
 
