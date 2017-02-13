@@ -2,7 +2,7 @@
 #
 # Paludis hook script to apply patch (w/o modifying corresponding ebuild file).
 #
-# Copyright (c), 2010-2016 by Alex Turbov <i.zaufi@gmail.com>
+# Copyright (c), 2010-2017 by Alex Turbov <i.zaufi@gmail.com>
 #
 # Version: @PROJECT_VERSION@
 #
@@ -45,14 +45,14 @@ try_to_apply_patches()
 
             cd "${S}" || die "Failed to cd into ${S}!"
             for pfull in "${check}"/*.patch ; do
-                pname="$(basename ${pfull})"
+                local pname="$(basename ${pfull})"
                 ${patch_cmd} --dry-run -f < "${pfull}" 2>&1
-                pret="$?"
-                if [[ "$pret" = "0" ]]; then
+                local pret="$?"
+                if [[ "${pret}" = "0" ]]; then
                     einfo "Applying ${pname} ..."
                     ${patch_cmd} < "${pfull}" 2>&1
                     pret="$?"
-                    [[ "$pret" = "0" ]] || die "Dry-run patching with ${pname} succeeded but actually failed"
+                    [[ "${pret}" = "0" ]] || die "Dry-run patching with ${pname} succeeded but actually failed"
                 else
                     die "Patch ${pname} can not be used"
                 fi
