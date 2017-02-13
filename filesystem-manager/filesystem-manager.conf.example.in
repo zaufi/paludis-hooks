@@ -2,7 +2,7 @@
 <!DOCTYPE commands SYSTEM "@FILESYSTEM_MANAGER_DTD@">
 <?xml-stylesheet type="text/xsl" href="@FILESYSTEM_MANAGER_XSL@"?>
 
-<!-- NOTE Rename to `filesystem.conf` and edit according your needs -->
+<!-- NOTE Rename to `filesystem-manager.conf` and edit according your needs -->
 
 <commands
     version="2.0"
