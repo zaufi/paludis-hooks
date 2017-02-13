@@ -1,7 +1,7 @@
 set(FILESYSTEM_MANAGER_DTD "${CMAKE_INSTALL_FULL_DATAROOTDIR}/paludis-hooks/filesystem-manager/filesystem-manager.dtd")
 set(FILESYSTEM_MANAGER_XSL "${CMAKE_INSTALL_FULL_DATAROOTDIR}/paludis-hooks/filesystem-manager/filesystem-manager.xsl")
 
-configure_file(filesystem-manager.conf.in filesystem-manager.conf @ONLY)
+configure_file(filesystem-manager.conf.example.in filesystem-manager.conf.example @ONLY)
 configure_file(filesystem-manager.bash.in filesystem-manager.bash @ONLY)
 
 install(
@@ -9,8 +9,8 @@ install(
     DESTINATION "${CMAKE_INSTALL_FULL_DATAROOTDIR}/paludis-hooks"
   )
 install(
-    FILES "${CMAKE_CURRENT_BINARY_DIR}/filesystem-manager.conf"
-    DESTINATION "${CMAKE_INSTALL_FULL_SYSCONFDIR}/paludis/hooks/configs/filesystem-manager.conf.example"
+    FILES "${CMAKE_CURRENT_BINARY_DIR}/filesystem-manager.conf.example"
+    DESTINATION "${CMAKE_INSTALL_FULL_SYSCONFDIR}/paludis/hooks/configs/"
   )
 install(
     FILES
