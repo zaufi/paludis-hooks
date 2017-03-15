@@ -97,7 +97,7 @@ TODO
 * Add some command to get last entries for ebuild Changelog
 * Add `debug` attribute to command(s) to show `pwd` and contents of a directory before apply some action
 * Add sync post hook to update a repo with auto patches
-* Make it possible to remove by Ant-like wildcard `**/some` (hint: bash has `shopt globstar`)
+* <del>Make it possible to remove by Ant-like wildcard `**/some` (hint: bash has `shopt globstar`)</del>
 * Case insensitive glob expressions match, so `announce*`, `ANNOUNCE*` and `Announce*` can be replaced
   with only one rule
 

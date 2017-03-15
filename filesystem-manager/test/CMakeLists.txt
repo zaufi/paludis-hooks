@@ -26,6 +26,14 @@ add_shell_functions_test(
     NAME cmd-rm-test-1
     PASS_REGULAR_EXPRESSION "Going to leave a warning.*Passed"
   )
+add_shell_functions_test(
+    NAME cmd-rm-test-2
+    PASS_REGULAR_EXPRESSION "Going to leave a warning.*Passed"
+  )
+add_shell_functions_test(
+    NAME cmd-rm-with-starglobe
+    PASS_REGULAR_EXPRESSION "Going to leave a warning.*Passed"
+  )
 
 add_shell_functions_test(
     NAME cmd-symlink-not-existed-base

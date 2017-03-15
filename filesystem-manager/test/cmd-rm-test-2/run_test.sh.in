@@ -19,18 +19,18 @@ function schedule_a_warning_after_all()
 # Make a fresh D directory
 mkdir -p D/doc
 touch D/doc/README.md
-touch D/doc/SOME-README
 
 set -x
 
 D="`pwd`/D"
-cmd_rm doc "*README*"
+cmd_rm doc "*NEWS*"
 
-if [ "$?" = '0' -a ! -d "${D}/doc" -a -d "${D}" ]; then
+set +x
+
+if [ "$?" = '0' -a -f "${D}/doc/README.md" ]; then
     echo Passed
 else
     echo Failed
     exit 1
 fi
 
-set +x

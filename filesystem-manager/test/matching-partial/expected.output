@@ -81,6 +81,14 @@ for cmd in /usr/share/paludis-hooks/filesystem-manager/commands/*.sh; do
     source $cmd
 done
 
+# Save some shell options status
+_fsm_shopt_globstar=$(shopt -p globstar)
+_fsm_shopt_nullglob=$(shopt -p nullglob)
+
+# Enable some shell options
+shopt -qs globstar
+shopt -qs nullglob
+
 
     einfo "Filesystem Management Hook: Apply actions 'priority 24' for dev-util/cmake-3.4.3-r1:0::gentoo"
 
@@ -118,3 +126,6 @@ done
     einfo "Filesystem Management Hook: Apply actions 'priority 13' for cmake-3.4.3-r1"
 
     
+# Restore saved shell options
+eval "${_fsm_shopt_globstar}"
+eval "${_fsm_shopt_nullglob}"

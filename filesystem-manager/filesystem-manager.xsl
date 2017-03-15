@@ -37,6 +37,14 @@ for cmd in /usr/share/paludis-hooks/filesystem-manager/commands/*.sh; do
     source $cmd
 done
 
+# Save some shell options status
+_fsm_shopt_globstar=$(shopt -p globstar)
+_fsm_shopt_nullglob=$(shopt -p nullglob)
+
+# Enable some shell options
+shopt -qs globstar
+shopt -qs nullglob
+
 <!-- Initiate package spec pattern matching starting from highest priority -->
 <xsl:call-template name="dispatch-by-priority">
     <xsl:with-param name="priority" select="number(24)" />
@@ -45,6 +53,9 @@ done
 <xsl:call-template name="debug">
     <xsl:with-param name="message">&lt;   Rendering done for <xsl:value-of select="concat($CATEGORY,'/',$PF,':',$SLOT,'::',$REPOSITORY)" /></xsl:with-param>
 </xsl:call-template>
+# Restore saved shell options
+eval "${_fsm_shopt_globstar}"
+eval "${_fsm_shopt_nullglob}"
 </xsl:template>
 
 <!--

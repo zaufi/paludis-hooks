@@ -92,7 +92,7 @@ case "${HOOK}" in
             cat "${tmp_file}"
         fi
 
-        /bin/sh "${tmp_file}"
+        /bin/bash "${tmp_file}"
         result=$?
 
         if [ -e "${_fsm_rememberfile}" ]; then
@@ -101,6 +101,6 @@ case "${HOOK}" in
         ;;
 esac
 
-exit $result
+exit ${result}
 
 # kate: hl bash;
