@@ -32,11 +32,22 @@ issue_a_warning()
     fi
 }
 
+contains()
+{
+    local element
+    for element in "${@:2}"; do
+        [[ "${element}" = "$1" ]] && return 0
+    done
+    return 1
+}
+
 try_to_apply_patches()
 {
     local check
     # TODO: Maybe implement dynamically detecting correct -pN for patch?
-    local patch_cmd="patch -p1"
+    local patch_cmd='patch -p1'
+    local -a applied_patches
+
     for check in "${PATCH_DIR}/${HOOK}"/${CATEGORY}/{${P}-${PR},${P},${PN}}{,:${SLOT}}; do
         if [[ -d ${check} ]] ; then
             # Store `nullglob` state and enforce it set
@@ -46,9 +57,21 @@ try_to_apply_patches()
             cd "${S}" || die "Failed to cd into ${S}!"
             for pfull in "${check}"/*.patch ; do
                 local pname="$(basename ${pfull})"
+
+                # Check if already applied
+                if contains "${pname}" "${applied_patches[@]}"; then
+                    einfo "Skip already applied ${pname} ..."
+                    continue
+                fi
+
+                # Remember for further checking
+                applied_patches+=( "${pname}" )
+
+                # Check if patch could be applied
                 ${patch_cmd} --dry-run -f < "${pfull}" 2>&1
                 local pret="$?"
                 if [[ "${pret}" = "0" ]]; then
+                    # Ok, dry run successed, then try to apply
                     einfo "Applying ${pname} ..."
                     ${patch_cmd} < "${pfull}" 2>&1
                     pret="$?"
