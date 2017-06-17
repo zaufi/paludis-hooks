@@ -18,12 +18,11 @@ function cmd_symlink()
         return 0
     fi
 
-    if [ -d "${D}/$cd" -a -e "${D}/${cd}/${src}" ]; then
-        cd "${D}/${cd}" \
-          && ln -vs ${src} ${dst} \
-          && schedule_a_warning_after_all \
-          && cd - >/dev/null
-    fi
+    [[ -d ${D}/$cd && -e ${D}/${cd}/${src} ]] \
+      && cd "${D}/${cd}" \
+      && ln -vs ${src} ${dst} \
+      && schedule_a_warning_after_all \
+      && cd - >/dev/null
 
     return 0
 }

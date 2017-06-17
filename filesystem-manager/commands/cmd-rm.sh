@@ -18,20 +18,12 @@ function cmd_rm()
         return 0
     fi
 
-    if [ -d "${D}/${cd}" ]; then
+    if [[ -d ${D}/${cd} ]]; then
         cd "${D}/${cd}"
         local -r files=( ${@} )
-        [ -n "${files}" ] && rm -vrf ${files[@]} && schedule_a_warning_after_all
+        [[ -n ${files} ]] && rm -vrf ${files[@]} && schedule_a_warning_after_all
         cd - >/dev/null
-        # Walk through whole image and try to remove possible empty dirs
-        # ATTENTION According EAPI it is incorrect to install empty directories!
-        # If a package need some, then its ebuild must use `keepdir` for this!
-        # So this action also can be considered as sanitize an image before install :)
-        find ${D} -type d -a -empty -exec rmdir -p --ignore-fail-on-non-empty {} +
-        # Sometimes (if u really don't want a WHOLE package, but have to install it,
-        # like boring kde-wallpapers) the last command may delete even ${D} directory,
-        # so paludis will complain about broken image :) -- Ok, lets restore it!
-        test ! -e "${D}" && mkdir -p "${D}"
+        cleanup_empty_dirs
     fi
 
     return 0

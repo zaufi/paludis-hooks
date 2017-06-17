@@ -15,3 +15,5 @@ CAVE_FIX_LINKAGE_OPTIONS=" -- ${CAVE_RESUME_FILE_OPT}"
 
 # Options for pkg-meta-diff
 PKG_META_DIFF_OPTIONS='-u'
+
+# kate: hl bash;

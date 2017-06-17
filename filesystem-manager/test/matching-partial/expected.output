@@ -77,9 +77,6 @@
 # on installing dev-util/cmake-3.4.3-r1:0::gentoo package
 #
 source ${PALUDIS_EBUILD_DIR}/echo_functions.bash
-for cmd in /usr/share/paludis-hooks/filesystem-manager/commands/*.sh; do
-    source $cmd
-done
 
 # Save some shell options status
 _fsm_shopt_globstar=$(shopt -p globstar)
@@ -88,6 +85,12 @@ _fsm_shopt_nullglob=$(shopt -p nullglob)
 # Enable some shell options
 shopt -qs globstar
 shopt -qs nullglob
+
+# Loading command plug-ins
+for _fsm_cmd in /usr/share/paludis-hooks/filesystem-manager/commands/*.sh; do
+    source "${_fsm_cmd}"
+done
+unset _fsm_cmd
 
 
     einfo "Filesystem Management Hook: Apply actions 'priority 24' for dev-util/cmake-3.4.3-r1:0::gentoo"
@@ -129,3 +132,5 @@ shopt -qs nullglob
 # Restore saved shell options
 eval "${_fsm_shopt_globstar}"
 eval "${_fsm_shopt_nullglob}"
+unset _fsm_shopt_globstar
+unset _fsm_shopt_nullglob

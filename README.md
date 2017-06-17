@@ -8,7 +8,7 @@ Briefly this package consists of:
 * __Filesystem Manager__ hook -- a better way to avoid installation of some files than `INSTALL_MASK` +
   some other interesting usage practices w/o direct analogues in the portage
 * A smart way to build packages in a RAM disk with `workdir-tmpfs` hook
-* A bunch of helper functions usable in a daily work w/ paludis
+* A bunch of helper functions usable in a daily work w/ Paludis
 * A hook to organize compiler/linker options into various sets and apply to packages
 
 
@@ -47,6 +47,7 @@ This hook is also controlled by this variables in paludis' `bashrc`:
   * `PALUDIS_AUTOPATCH_HOOK_DO_NOTHING="yes"` disables all actions of this hook.
   * `PALUDIS_AUTOPATCH_HOOK_NO_WARNING="yes"` mutes annoying warnings about altered packages.
 
+
 Filesystem Manager
 ------------------
 
@@ -59,10 +60,11 @@ This hook is also controlled by this variables in paludis' `bashrc`:
   * `PALUDIS_FILESYSTEM_HOOK_DO_NOTHING="yes"` disables all actions of this hook.
   * `PALUDIS_FILESYSTEM_HOOK_NO_WARNING="yes"` mutes annoying warnings about altered packages.
 
+
 package.env
 -----------
 
-For using this hook add to paludis bashrc line:
+For using this hook add to Paludis' `bashrc` line:
 
     [ -e /usr/libexec/paludis-hooks/setup_pkg_env.bash ] && source /usr/libexec/paludis-hooks/setup_pkg_env.bash
 
@@ -74,11 +76,11 @@ So, at build time of `category/some_package`, all lines from the mentioned env f
 `/etc/paludis/env.conf.d/another_env.conf`) will be sourced at `init` ebuild phase. Hence, changing compiler/linker flags
 or setting another compiler would affect the build process only for given package.
 
+
 Workdir-tmpfs
 -------------
 
-Most important parameter in `/etc/paludis/hooks/configs/workdir-tmpfs.conf` is
-`IN_MEMORY_BUILD_ENABLED`.
+Most important boolean parameter in `/etc/paludis/hooks/configs/workdir-tmpfs.conf` is `IN_MEMORY_BUILD_ENABLED`.
 
 
 TODO
@@ -105,58 +107,65 @@ TODO
 Changelog
 =========
 
+Unreleased
+----------
+
+* Autopatch: Do not apply same patch twice, if found in multiple directories;
+* Review bash code and replace backticks with `$(...)`, also `[` has replaced with `[[` and
+  cleaned from redundant quotes. Replace some external program calls w/ bash built-in equivalent.
+  Some optimizations and code deduplication has been done as well ;-)
+
 Version 1.2
 -----------
 
-* Add a runtime option to filesystem management hook to suppress a warning
-* Rename `reverse` attribute of Filesystem Manager config to `negate`
-* Better docs and a bunch of fixes (thanks to Kapshuna Alexander, @kapsh)
-* Fix for issue #11
-* A bunch of improvements in environment manager: now it is possible to use
-  functions from `flag-o-matic.eclss` to manage compiler/linker options
-* Add `pretend-use` attribute to `package` element of Filesystem Manager hoost config
-* Introduce `mv` element in Filesystem Manager hoost config
+* Add a runtime option to the filesystem management hook to suppress a warning;
+* Rename `reverse` attribute of the Filesystem Manager's config to `negate`;
+* Better docs and a bunch of fixes (thanks to Kapshuna Alexander, @kapsh);
+* Fix for issue #11;
+* A bunch of improvements in the environment manager: now it is possible to use
+  functions from `flag-o-matic.eclss` to manage compiler/linker options;
+* Add `pretend-use` attribute to `package` element of the Filesystem Manager hook config;
+* Introduce `mv` element to Filesystem Manager hook config.
 
 Version 1.1
 -----------
 
-* Few improvements to `auto-patch` (thanks to Julian Ospald)
-* Remove autoconf cache hook.. that was a bad idea! ;-)
+* Few improvements to `auto-patch` (thanks to Julian Ospald);
+* Remove the autoconf cache hook.. that was a bad idea! ;-)
 
 Version 1.0
 -----------
-* add a hook to clean a "shared" autotools' `config.cache` before build (see rationale and the hook
-  description of a project's homepage)
-* add a hook to make it possble to build packages (smoothly) in a RAM (disk)
-* little refactorings in some other hooks
+* Add a hook to clean a "shared" autotools' `config.cache` before build (see rationale and the hook
+  description of a project's homepage);
+* Add a hook to make it possible to build packages (smoothly) in a RAM (disk)
+* Little refactorings in some other hooks.
 
 Version 0.9
 -----------
-* add a `if` command and the only, nowadays, expression type to check presence of some `USE`
-* add `config-cache-clear` hook to remove some harmful cached values from a `config.cache`
-  shared among packages
+* Add the `if` element to Filesystem Manager and the only, nowadays, expression type to check presence of some `USE`;
+* Add `config-cache-clear` hook to remove some harmful cached values from a `config.cache`
+  shared among packages.
 
 Version 0.8
 -----------
-* add a boolean attribute `reverse` (w/ values `true` or `false` (default)) to allow removal
-of everything except selected targets.
+* Add a boolean attribute `reverse` (w/ values `true` or `false` (default)) to allow removal
+  of everything except selected targets.
 
 Version 0.7
 -----------
-* `package` nodes now matched according full featured package specification.
-* also package matching was reimplemented, so now it is possible to combine actions
-  for different (partial) specs
+* `package` nodes now matched according full featured package specification;
+* Also package matching was rewritten, so now it is possible to combine actions
+  for different (partial) specs.
 
 Version 0.6
 -----------
-* add remove command, so one may remove some files/directories from an image. If there is
-  no more files after removal, empty directory will be removed as well to avoid warnings
-  from `cave`
-* validate configuration file against DTD
+* Add remove command, so one may remove some files/directories from an image. If there is
+  no files remain, empty directories will be removed as well, to avoid warnings from `cave`;
+* Validate configuration file against DTD.
 
 Version 0.5
 -----------
-* initial commit to github
+* Initial commit to github
 
 
 License

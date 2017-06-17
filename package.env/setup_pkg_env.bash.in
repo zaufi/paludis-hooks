@@ -3,7 +3,7 @@
 # Helper functions to use from /etc/paludis/bashrc and
 # package environment control files.
 #
-# Copyright 2014-2016 by Alex Turbov <i.zaufi@gmail.com>
+# Copyright 2014-2017 by Alex Turbov <i.zaufi@gmail.com>
 #
 
 source ${PALUDIS_EBUILD_DIR}/echo_functions.bash
@@ -13,7 +13,7 @@ source ${PALUDIS_EBUILD_DIR}/echo_functions.bash
 # NOTE When `WORKDIR` is defined -- we are ready to really build the package!
 # (i.e. fetch has completed)
 #
-if [ x"${PALUDIS_ACTION}" != 'xsync' -a -n "${WORKDIR}" ]; then
+if [[ ${PALUDIS_ACTION} != sync && -n ${WORKDIR} ]]; then
     # Bring flag-o-matic.eclass into the scope, so env files may use functions from it to manupulate compiler/linker flags
     inherit flag-o-matic
 fi
@@ -25,7 +25,7 @@ fi
 phenv-get-gcc-version()
 {
     local gcc_bin="${CC:-gcc}"
-    set -- `"${gcc_bin}" -E -P - <<<"__GNUC__ __GNUC_MINOR__ __GNUC_PATCHLEVEL__"`
+    set -- $("${gcc_bin}" -E -P - <<<"__GNUC__ __GNUC_MINOR__ __GNUC_PATCHLEVEL__")
     echo $1.$2.$3
 }
 
@@ -114,12 +114,12 @@ phenv-filter-var()
 #
 setup_pkg_env()
 {
-    [ ! -f ${PALUDIS_CONFIG_DIR}/package_env.conf -o x"${EBUILD_PHASE}" = 'xinitmisc' ] && return
+    [[ ! -f ${PALUDIS_CONFIG_DIR}/package_env.conf || ${EBUILD_PHASE} = initmisc ]] && return
     # Select configured environments
     # NOTE It is important to apply them in the same order! (even duplicates)
-    local envs=`for i in \`egrep "^${CATEGORY}/(${PN}|\*)(:[^\s]+)?\s" ${PALUDIS_CONFIG_DIR}/package_env.conf | sed 's,[^ ]\+\s,,'\`; do echo "${i}"; done`
+    local envs=$(for i in $(egrep "^${CATEGORY}/(${PN}|\*)(:[^\s]+)?\s" ${PALUDIS_CONFIG_DIR}/package_env.conf | sed 's,[^ ]\+\s,,'); do echo "${i}"; done)
     for conf in $envs; do
-        if [ -f ${PALUDIS_CONFIG_DIR}/env.conf.d/${conf}.conf ]; then
+        if [[ -f ${PALUDIS_CONFIG_DIR}/env.conf.d/${conf}.conf ]]; then
             source ${PALUDIS_CONFIG_DIR}/env.conf.d/${conf}.conf
         fi
         # NOTE Silently ignore undefined environment.
@@ -136,6 +136,6 @@ setup_pkg_env()
 #
 # TODO Make sure the rest will run only on real build of some package.
 #
-[ x"${PALUDIS_ACTION}" != 'xsync' -a -n "${WORKDIR}" ] && setup_pkg_env
+[[ ${PALUDIS_ACTION} != sync && -n ${WORKDIR} ]] && setup_pkg_env
 
 # kate: hl bash;

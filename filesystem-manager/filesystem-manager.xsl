@@ -5,7 +5,7 @@
   >
 <!--
     Transform a config file into a shell script
-    Copyright (c), 2010-2014 by Alex Turbov <i.zaufi@gmail.com>
+    Copyright (c), 2010-2017 by Alex Turbov <i.zaufi@gmail.com>
   -->
 
 <xsl:output method="text" encoding="UTF-8"/>
@@ -33,9 +33,6 @@
 # on installing <xsl:value-of select="concat($CATEGORY,'/',$PN,'-',$PV,'-',$PR,':',$SLOT,'::',$REPOSITORY)" /> package
 #
 source ${PALUDIS_EBUILD_DIR}/echo_functions.bash
-for cmd in /usr/share/paludis-hooks/filesystem-manager/commands/*.sh; do
-    source $cmd
-done
 
 # Save some shell options status
 _fsm_shopt_globstar=$(shopt -p globstar)
@@ -44,6 +41,12 @@ _fsm_shopt_nullglob=$(shopt -p nullglob)
 # Enable some shell options
 shopt -qs globstar
 shopt -qs nullglob
+
+# Loading command plug-ins
+for _fsm_cmd in /usr/share/paludis-hooks/filesystem-manager/commands/*.sh; do
+    source "${_fsm_cmd}"
+done
+unset _fsm_cmd
 
 <!-- Initiate package spec pattern matching starting from highest priority -->
 <xsl:call-template name="dispatch-by-priority">
@@ -56,6 +59,8 @@ shopt -qs nullglob
 # Restore saved shell options
 eval "${_fsm_shopt_globstar}"
 eval "${_fsm_shopt_nullglob}"
+unset _fsm_shopt_globstar
+unset _fsm_shopt_nullglob
 </xsl:template>
 
 <!--
@@ -309,7 +314,7 @@ eval "${_fsm_shopt_nullglob}"
         </xsl:when>
         <xsl:when test="count($packages-set) = 0 and $priority &gt; 0">
             <xsl:call-template name="debug">
-                <xsl:with-param name="message">==== ... nothing matched: trying lower priority ... </xsl:with-param>
+                <xsl:with-param name="message">==== ... nothing has matched: trying lower priority ... </xsl:with-param>
             </xsl:call-template>
             <xsl:call-template name="dispatch-by-priority">
                 <xsl:with-param name="priority" select="$priority - 1" />

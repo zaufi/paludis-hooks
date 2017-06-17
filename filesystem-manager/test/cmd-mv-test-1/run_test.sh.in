@@ -1,5 +1,11 @@
 #!/bin/bash
 
+function cleanup_empty_dirs()
+{
+    find ${D} -type d -a -empty -exec rmdir -p --ignore-fail-on-non-empty {} +
+    [[ ! -e ${D} ]] && mkdir -p "${D}"
+}
+
 function verify_dir
 {
     return 0

@@ -1,5 +1,5 @@
 # "Build" script for my paludis-hooks package
-# Copyright 2012-2016 by Alex Turbov <i.zaufi@gmail.com>
+# Copyright 2012-2017 by Alex Turbov <i.zaufi@gmail.com>
 #
 
 cmake_minimum_required(VERSION 3.4)

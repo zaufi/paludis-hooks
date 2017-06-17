@@ -4,7 +4,7 @@
 # installed self into an image directory and before actual installing
 # into a system will take place.
 #
-# Copyright (c), 2010-2016 by Alex Turbov <i.zaufi@gmail.com>
+# Copyright (c), 2010-2017 by Alex Turbov <i.zaufi@gmail.com>
 #
 # Version: @PROJECT_VERSION@
 #
@@ -14,24 +14,23 @@ source ${PALUDIS_EBUILD_DIR}/echo_functions.bash
 CONFIG_FILE="@CMAKE_INSTALL_FULL_SYSCONFDIR@/paludis/hooks/configs/filesystem-manager.conf"
 TEMPLATE_FILE="@CMAKE_INSTALL_FULL_DATAROOTDIR@/paludis-hooks/filesystem-manager/filesystem-manager.xsl"
 
-if [[ "x${PALUDIS_FILESYSTEM_HOOK_DO_NOTHING}" = 'xyes' ]]; then
+if [[ ${PALUDIS_FILESYSTEM_HOOK_DO_NOTHING} = yes ]]; then
     einfo "Filesystem Manager Hook: Do not process any actions due explicit request"
     exit 0
 fi
 
 # Output environment to log, if debug enabled
-if [ x"${PALUDIS_HOOK_DEBUG}" = 'xyes' ]; then
+if [[ ${PALUDIS_HOOK_DEBUG} = yes ]]; then
     env | sort > /tmp/paludis-fsm-hook-env.log
 fi
 
-if [ ! -f ${CONFIG_FILE} ]; then
-	ewarn "Filesystem Manager hook: Config file is missing. Nothing to do..."
+if [[ ! -f ${CONFIG_FILE} ]]; then
+    ewarn "Filesystem Manager hook: Config file is missing. Nothing to do..."
     exit 1                                                  # Nothing to do w/o config
 fi
 
 # Validate config file
-/usr/bin/xmllint --valid --noout ${CONFIG_FILE}
-if [ "$?" != "0" ]; then
+if ! /usr/bin/xmllint --valid --noout ${CONFIG_FILE}; then
     eerror "Filesystem Manager hook: Config file is invalid. Ignoring any actions..."
     exit 1                                                  # Nothing to do w/ incorrect config
 fi
@@ -41,7 +40,7 @@ export _fsm_rememberfile
 
 function issue_a_warning()
 {
-    if [ x"${PALUDIS_FILESYSTEM_HOOK_NO_WARNING}" != 'xyes' ]; then
+    if [[ ${PALUDIS_FILESYSTEM_HOOK_NO_WARNING} != yes ]]; then
         ewarn "WARNING: ${CATEGORY}/${PF} package installation was altered by the filesystem manager hook."
         ewarn "WARNING: Before filing a bug, remove all configured rules, reinstall, and try again..."
     fi
@@ -49,32 +48,41 @@ function issue_a_warning()
 
 function schedule_a_warning_after_all()
 {
-    if [ ! -e ${_fsm_rememberfile} ]; then
-        touch "${_fsm_rememberfile}"
-    fi
-    return 0
+    return [[ ! -e ${_fsm_rememberfile} ]] && touch "${_fsm_rememberfile}"
 }
 export -f schedule_a_warning_after_all
 
 function verify_dir()
 {
-    if [ -n "${D}" ]; then
-        # Make sure we have smth real in `D'!
-        local -r _vd_p1=`realpath -mq "${1}"`
-        local -r _vd_p2=`realpath -mq "${D}/$1"`
-        if [ "${_vd_p1}" != "${_vd_p2}" ]; then
-            return 0
-        fi
+    if [[ -n ${D} ]]; then
+        # Make sure we have smth real in `D`!
+        local -r _vd_p1=$(realpath -mq "${1}")
+        local -r _vd_p2=$(realpath -mq "${D}/$1")
+        return [[ ${_vd_p1} != ${_vd_p2} ]]
     fi
     return 1
 }
 export -f verify_dir
 
+function cleanup_empty_dirs()
+{
+    # Walk through whole image and try to remove possible empty dirs
+    # ATTENTION According EAPI it is incorrect to install empty directories!
+    # If a package need some, then its ebuild must use `keepdir` for this!
+    # So this action also can be considered as sanitize an image before install :)
+    find ${D} -type d -a -empty -exec rmdir -p --ignore-fail-on-non-empty {} +
+    # Sometimes (if u really don't want a WHOLE package, but have to install it,
+    # like boring kde-wallpapers) the last command may delete even ${D} directory,
+    # so paludis will complain about broken image :) -- Ok, lets restore it!
+    [[ ! -e ${D} ]] && mkdir -p "${D}"
+}
+export -f cleanup_empty_dirs
+
 result=0
 case "${HOOK}" in
     # ATTENTION This script must be symlinked to the following hook dirs:
     ebuild_install_post)
-        tmp_file=`mktemp "${T}/fsmh.XXXXXXX.sh"`
+        tmp_file=$(mktemp "${T}/fsmh.XXXXXXX.sh")
         /usr/bin/xsltproc -o "${tmp_file}" \
             --stringparam 'PN' "${PN}" \
             --stringparam 'PF' "${PF}" \
@@ -87,7 +95,7 @@ case "${HOOK}" in
             --stringparam 'debug' "${PALUDIS_HOOK_DEBUG}" \
             "${TEMPLATE_FILE}" "${CONFIG_FILE}"
 
-        if [ x"${PALUDIS_HOOK_DEBUG}" = 'xyes' ]; then
+        if [[ ${PALUDIS_HOOK_DEBUG} = yes ]]; then
             einfo "Script to execute:"
             cat "${tmp_file}"
         fi
@@ -95,9 +103,7 @@ case "${HOOK}" in
         /bin/bash "${tmp_file}"
         result=$?
 
-        if [ -e "${_fsm_rememberfile}" ]; then
-            issue_a_warning
-        fi
+        [[ -e ${_fsm_rememberfile} ]] && issue_a_warning
         ;;
 esac
 

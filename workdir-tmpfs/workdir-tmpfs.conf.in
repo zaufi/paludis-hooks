@@ -1,6 +1,6 @@
-# Use in memory builds (default 'true').
-# Any other value than 'true' considered as 'false'.
-IN_MEMORY_BUILD_ENABLED=${IN_MEMORY_BUILD_ENABLED:-true}
+# Use in memory builds (default 'yes').
+# Any other value than 'yes' or 'true' considered as 'no'/'false'.
+IN_MEMORY_BUILD_ENABLED=${IN_MEMORY_BUILD_ENABLED:-yes}
 
 # Location of disk usage statistics file.
 # This file used to "predict" how much memory required

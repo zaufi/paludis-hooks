@@ -15,20 +15,20 @@ function ebuild_for()
 #
 function show_ebuild_for()
 {
-    less `ebuild_for $*`
+    ${PAGER:-less} $(ebuild_for $*)
 }
 
 function _pkg_ebuilds_diff()
 {
     local op="$1"
     local pkg="$2"
-    if [ -z "${pkg}" ]; then
-        return
-    fi
+
+    [[ -z ${pkg} ]] && return
+
     local i
     for i in `ebuild_for -i "${pkg}"`; do
-        p=`ebuild_for "${op}\`basename \"${i}\" .ebuild\`"`
-        if [ -n "${p}" ]; then
+        p=$(ebuild_for "${op}$(basename "${i}" .ebuild)")
+        if [[ -n ${p} ]]; then
             diff ${PKG_META_DIFF_OPTIONS} "${i}" "${p}"
         else
             return

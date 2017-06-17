@@ -20,28 +20,17 @@ function cmd_mv()
         return
     fi
 
-    if [ -z "$*" ]; then
+    if [[ -z $@ ]]; then
         # NOTE This shouldn't happened! Config file will be validated with DTD...
-        eerror "No source to move has specified"
+        eerror "No source(s) to move has specified"
         return
     fi
 
-    if [ -d "${D}/${cd}" ]; then
+    if [[ -d ${D}/${cd} ]]; then
         cd "${D}/${cd}"
-        local -r src="`(shopt -s nullglob && echo $@)`"
-        if [ -n "${src}" ]; then
-            mv -vf ${src} "${dst}" 2>/dev/null && schedule_a_warning_after_all
-            # Walk through whole image and try to remove possible empty dirs
-            # ATTENTION According EAPI it is incorrect to install empty directories!
-            # If a package need some, then its ebuild must use `keepdir` for this!
-            # So this action also can be considered as sanitize an image before install :)
-            find ${D} -type d -a -empty -exec rmdir -p --ignore-fail-on-non-empty {} +
-            # Sometimes (if u really don't want a WHOLE package, but have to install it,
-            # like boring kde-wallpapers) the last command may delete even ${D} directory,
-            # so paludis will complain about broken image :) -- Ok, lets restore it!
-            test ! -e "${D}" && mkdir -p "${D}"
-        fi
+        mv -vf $@ "${dst}" 2>/dev/null && schedule_a_warning_after_all
         cd - >/dev/null
+        cleanup_empty_dirs
     fi
     return 0
 }

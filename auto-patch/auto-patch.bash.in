@@ -16,7 +16,7 @@ PATCH_DIR="@CMAKE_INSTALL_FULL_LOCALSTATEDIR@/db/paludis/autopatches"
 [[ -f ${CONFIG_FILE} ]] && source ${CONFIG_FILE}
 
 
-if [[ "x${PALUDIS_AUTOPATCH_HOOK_DO_NOTHING}" = 'xyes' ]]; then
+if [[ ${PALUDIS_AUTOPATCH_HOOK_DO_NOTHING} = yes ]]; then
     einfo "Autopatch Hook: Do not apply any patches due explicit request"
     exit 0
 fi
@@ -25,7 +25,7 @@ _ap_rememberfile="${T}/.autopatch_was_here_${PALUDIS_PID}"
 
 issue_a_warning()
 {
-    if [[ x"${PALUDIS_AUTOPATCH_HOOK_NO_WARNING}" != 'xyes' ]]; then
+    if [[ ${PALUDIS_AUTOPATCH_HOOK_NO_WARNING} != yes ]]; then
         local -r tobe="$1"
         ewarn "WARNING: ${CATEGORY}/${PF} package $tobe installed with additional patches applied by auto-patch hook."
         ewarn "WARNING: Before filing a bug, remove all patches, reinstall, and try again..."
@@ -36,7 +36,7 @@ contains()
 {
     local element
     for element in "${@:2}"; do
-        [[ "${element}" = "$1" ]] && return 0
+        [[ ${element} = $1 ]] && return 0
     done
     return 1
 }
@@ -70,12 +70,12 @@ try_to_apply_patches()
                 # Check if patch could be applied
                 ${patch_cmd} --dry-run -f < "${pfull}" 2>&1
                 local pret="$?"
-                if [[ "${pret}" = "0" ]]; then
+                if [[ ${pret} = 0 ]]; then
                     # Ok, dry run successed, then try to apply
                     einfo "Applying ${pname} ..."
                     ${patch_cmd} < "${pfull}" 2>&1
                     pret="$?"
-                    [[ "${pret}" = "0" ]] || die "Dry-run patching with ${pname} succeeded but actually failed"
+                    [[ ${pret} = 0 ]] || die "Dry-run patching with ${pname} succeeded but actually failed"
                 else
                     die "Patch ${pname} can not be used"
                 fi

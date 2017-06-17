@@ -16,7 +16,7 @@ function cmd_mkdir()
         return 0
     fi
 
-    if [ -d "${D}/${cd}" ]; then
+    if [[ -d ${D}/${cd} ]]; then
         cd "${D}/${cd}" \
           && mkdir -vp "$@" \
           && schedule_a_warning_after_all \

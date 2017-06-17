@@ -13,7 +13,7 @@ function cmd_use()
 
     local e
     for e in ${USE} xxx-dummy; do
-        [[ "${e}" == "${use}" ]] && return 0
+        [[ ${e} == ${use} ]] && return 0
     done
 
     return 1

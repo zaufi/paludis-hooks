@@ -2,7 +2,7 @@
 #
 # Paludis hook script to manage build directory in the RAM.
 #
-# Copyright (c), 2014-2016 by Alex Turbov <i.zaufi@gmail.com>
+# Copyright (c), 2014-2017 by Alex Turbov <i.zaufi@gmail.com>
 #
 # Version: @PROJECT_VERSION@
 #
@@ -18,22 +18,22 @@ DISK_USAGE_STATS_CACHE="@CMAKE_INSTALL_FULL_LOCALSTATEDIR@/cache/paludis/disk_us
 IN_MEMORY_BUILD_ENABLED=${IN_MEMORY_BUILD_ENABLED:-true}
 
 # Configuration override
-[ -f ${CONFIG_FILE} ] && source ${CONFIG_FILE}
+[[ -f ${CONFIG_FILE} ]] && source ${CONFIG_FILE}
 
 # Check if hook enabled
-if [ "${IN_MEMORY_BUILD_ENABLED}" != 'true' ]; then
+if [[ ${IN_MEMORY_BUILD_ENABLED} =~ (yes|true) ]]; then
     ewarn "In-memory-build hook disabled"
     exit 0
 fi
 
 # Output environment to log, if debug enabled
-if [ x"${PALUDIS_HOOK_DEBUG}" = 'xyes' ]; then
+if [[ ${PALUDIS_HOOK_DEBUG} = yes ]]; then
     env | sort >> /tmp/paludis-wdm-hook-env.log
 fi
 
 _wdm_shmbasedir="/dev/shm"
 
-declare -r _B2H_PROGRAM=`cat <<_EOF
+declare -r _B2H_PROGRAM=$(cat <<_EOF
     {
         hum[1024**3] = "Gb";
         hum[1024**2] = "Mb";
@@ -47,7 +47,7 @@ declare -r _B2H_PROGRAM=`cat <<_EOF
             }
         }
     }
-_EOF`
+_EOF)
 
 
 _bytes_to_human()
@@ -60,7 +60,7 @@ _aux_check_action()
     case "${PALUDIS_PACKAGE_BUILDDIR}" in
     '' | *-uninstall | *-pretend)
         # Do nothing for uninstalled package and pretend action
-        if [ x"${PALUDIS_HOOK_DEBUG}" = 'xyes' ]; then
+        if [[ ${PALUDIS_HOOK_DEBUG} = yes ]]; then
             einfo "${1}: Do nothing for uninstall/pretend action!"
         fi
         exit 0
@@ -74,16 +74,16 @@ try_prepare_workdir()
 
     # Check if package can be build in tmpfs
     # 0) try to get estimated size required to build package
-    if [ -f "${DISK_USAGE_STATS_CACHE}" ]; then
+    if [[ -f ${DISK_USAGE_STATS_CACHE} ]]; then
         source "${DISK_USAGE_STATS_CACHE}"
-        if [ x"${PALUDIS_HOOK_DEBUG}" = 'xyes' ]; then
+        if [[ ${PALUDIS_HOOK_DEBUG} = yes ]]; then
             einfo "Loading disk usage stats cache: ${DISK_USAGE_STATS_CACHE}"
             declare -p _wdm_disk_usage_stats
         fi
     fi
 
     local -r _tpwd_pkg_name="${CATEGORY}/${PN}:${SLOT}"
-    if [ ${_wdm_disk_usage_stats[${_tpwd_pkg_name}]+_} ]; then
+    if [[ ${_wdm_disk_usage_stats[${_tpwd_pkg_name}]+_} ]]; then
         local _tpwd_estimated_size=${_wdm_disk_usage_stats[${_tpwd_pkg_name}]}
         local -r _tpwd_10_percents=$(( _tpwd_estimated_size / 10 ))
         local _tpwd_reserved="${_tpwd_10_percents}"
@@ -95,8 +95,8 @@ try_prepare_workdir()
         fi
         _tpwd_estimated_size=$(( _tpwd_estimated_size + _tpwd_reserved ))
         # 1) get RAM disk space available
-        local -r _tpwd_shm_avail=`df -B1 --output=avail "${_wdm_shmbasedir}" | tail -n1`
-        if [ x"${PALUDIS_HOOK_DEBUG}" = 'xyes' ]; then
+        local -r _tpwd_shm_avail=$(df -B1 --output=avail "${_wdm_shmbasedir}" | tail -n1)
+        if [[ ${PALUDIS_HOOK_DEBUG} = yes ]]; then
             einfo "${P}: prev=${_wdm_disk_usage_stats[${_tpwd_pkg_name}]}, est=${_tpwd_estimated_size}, avail=${_tpwd_shm_avail}"
         fi
         if (( _tpwd_shm_avail < _tpwd_estimated_size )); then
@@ -111,15 +111,15 @@ try_prepare_workdir()
         return 0
     fi
 
-    if [ -d "${PALUDIS_PACKAGE_BUILDDIR}" ]; then
+    if [[ -d ${PALUDIS_PACKAGE_BUILDDIR} ]]; then
         # TODO Handle errors
-        local -r _tpwd_pwd=`pwd`
-        local -r _tpwd_pkg_dir=`basename ${PALUDIS_PACKAGE_BUILDDIR}`
+        local -r _tpwd_pwd=$(pwd)
+        local -r _tpwd_pkg_dir=$(basename ${PALUDIS_PACKAGE_BUILDDIR})
         einfo "Moving ${PALUDIS_PACKAGE_BUILDDIR}  --> ${_wdm_shmbasedir}"
         test -e "${_wdm_shmbasedir}/${_tpwd_pkg_dir}" && rm -rf "${_wdm_shmbasedir}/${_tpwd_pkg_dir}"
         mv "${PALUDIS_PACKAGE_BUILDDIR}" "${_wdm_shmbasedir}"
         einfo "Link it back ${_wdm_shmbasedir}/${_tpwd_pkg_dir} --> ${PALUDIS_PACKAGE_BUILDDIR}"
-        ln -sdf "${_wdm_shmbasedir}/${_tpwd_pkg_dir}" "`dirname ${PALUDIS_PACKAGE_BUILDDIR}`"
+        ln -sdf "${_wdm_shmbasedir}/${_tpwd_pkg_dir}" "$(dirname ${PALUDIS_PACKAGE_BUILDDIR})"
         cd "${_tpwd_pwd}"
     fi
 }
@@ -128,64 +128,64 @@ try_update_disk_usage_stats()
 {
     _aux_check_action "UpdateUsageStats"                    # Make sure we can proceed
 
-    local -r _tudus_total_size=`du -LsB1 "${PALUDIS_PACKAGE_BUILDDIR}" 2>/dev/null | cut -f1`
-    local -r _tudus_total_size_human=`du -Lhs "${PALUDIS_PACKAGE_BUILDDIR}" 2>/dev/null | cut -f1`
-    if [ "${_tudus_total_size_human}" = '0' ]; then
+    local -r _tudus_total_size=$(du -LsB1 "${PALUDIS_PACKAGE_BUILDDIR}" 2>/dev/null | cut -f1)
+    local -r _tudus_total_size_human=$(du -Lhs "${PALUDIS_PACKAGE_BUILDDIR}" 2>/dev/null | cut -f1)
+    if [[ ${_tudus_total_size_human} = 0 ]]; then
         # NOTE "pretend" phase do not generate any content,
         # so no need to update anything
         return 0
     fi
     einfo "${_tudus_total_size_human} used for working directory [${PALUDIS_PACKAGE_BUILDDIR}]"
     # Update disk usage stats cache
-    if [ -f "${DISK_USAGE_STATS_CACHE}" ]; then
+    if [[ -f ${DISK_USAGE_STATS_CACHE} ]]; then
         source "${DISK_USAGE_STATS_CACHE}"
-        if [ x"${PALUDIS_HOOK_DEBUG}" = 'xyes' ]; then
+        if [[ ${PALUDIS_HOOK_DEBUG} = yes ]]; then
             einfo "Loading disk usage stats cache: ${DISK_USAGE_STATS_CACHE}"
             declare -p _wdm_disk_usage_stats
         fi
     fi
     # Make a new associative array if still not declared
-    if [ ! -v _wdm_disk_usage_stats ]; then
+    if [[ ! -v _wdm_disk_usage_stats ]]; then
         declare -A _wdm_disk_usage_stats
     fi
     # Add or update the usage value
     local -r _tcwd_pkg_name="${CATEGORY}/${PN}:${SLOT}"
     local _tudus_need_update='0'
-    if [ ${_wdm_disk_usage_stats[${_tcwd_pkg_name}]+_} ]; then
+    if [[ ${_wdm_disk_usage_stats[${_tcwd_pkg_name}]+_} ]]; then
         # Update the key
         local -r _tuwd_prev_total_size=${_wdm_disk_usage_stats[${_tcwd_pkg_name}]}
         if (( _tuwd_prev_total_size < _tudus_total_size )); then
             _tudus_need_update='1'
-            if [ x"${PALUDIS_HOOK_DEBUG}" = 'xyes' ]; then
+            if [[ ${PALUDIS_HOOK_DEBUG} = yes ]]; then
                 einfo "Going to update an entry: ${_tcwd_pkg_name} -> ${_tudus_total_size} (${_tuwd_prev_total_size})"
             fi
-        elif [ "${WDM_FORCE_UPDATE_STATS}" ]; then
+        elif [[ ${WDM_FORCE_UPDATE_STATS} = yes ]]; then
             _tudus_need_update='1'
-            if [ x"${PALUDIS_HOOK_DEBUG}" = 'xyes' ]; then
+            if [[ ${PALUDIS_HOOK_DEBUG} = yes ]]; then
                 einfo "Going to force-update an entry: ${_tcwd_pkg_name} -> ${_tudus_total_size}"
             fi
         fi
     else
         # Set a new key/value
         _tudus_need_update='1'
-        if [ x"${PALUDIS_HOOK_DEBUG}" = 'xyes' ]; then
+        if [[ ${PALUDIS_HOOK_DEBUG} = yes ]]; then
             einfo "Going to add a new entry: ${_tcwd_pkg_name} -> ${_tudus_total_size}"
         fi
     fi
-    if [ "${_tudus_need_update}" = '1' ]; then
+    if [[ ${_tudus_need_update} = 1 ]]; then
         _wdm_disk_usage_stats[${_tcwd_pkg_name}]="${_tudus_total_size}"
-        if [ x"${PALUDIS_HOOK_DEBUG}" = 'xyes' ]; then
+        if [[ ${PALUDIS_HOOK_DEBUG} = yes ]]; then
             einfo "Storing disk usage stats cache: ${DISK_USAGE_STATS_CACHE}"
             declare -p _wdm_disk_usage_stats
         fi
         # Write stats back to the file
-        local -r _tudus_cache_dir=`dirname "${DISK_USAGE_STATS_CACHE}"`
-        if [ ! -d "${_tudus_cache_dir}" ]; then
+        local -r _tudus_cache_dir=$(dirname "${DISK_USAGE_STATS_CACHE}")
+        if [[ ! -d ${_tudus_cache_dir} ]]; then
             mkdir -p "${_tudus_cache_dir}"
             # TODO Handle `mkdir` errors
         fi
         declare -p _wdm_disk_usage_stats >"${DISK_USAGE_STATS_CACHE}" 2>/dev/null
-        if [ "$?" != '0' ]; then
+        if [[ $? != 0 ]]; then
             ewarn "Unable to update cache file: ${DISK_USAGE_STATS_CACHE}. Check permissions!"
         fi
     fi
@@ -195,9 +195,9 @@ try_clean_workdir()
 {
     _aux_check_action "Clean"                               # Make sure we can proceed
 
-    local -r _tcwd_pkg_dir=`basename ${PALUDIS_PACKAGE_BUILDDIR}`
-    if [ -d "${_wdm_shmbasedir}/${_tcwd_pkg_dir}" ]; then
-        if [ x"${PALUDIS_HOOK_DEBUG}" = 'xyes' ]; then
+    local -r _tcwd_pkg_dir=$(basename ${PALUDIS_PACKAGE_BUILDDIR})
+    if [[ -d ${_wdm_shmbasedir}/${_tcwd_pkg_dir} ]]; then
+        if [[ ${PALUDIS_HOOK_DEBUG} = yes ]]; then
             einfo "Going to clean: ${_wdm_shmbasedir}/${_tcwd_pkg_dir}"
         fi
         rm -rf "${_wdm_shmbasedir}/${_tcwd_pkg_dir}"
@@ -209,10 +209,10 @@ try_keep_workdir()
     # NOTE At this point PALUDIS_PACKAGE_BUILDDIR is not defined!
     # So we have to assemble it manually. It is also known, that
     # `pwd` is a paludis build dir...
-    local -r _tkwd_pwd=`pwd`
-    local -r _tkwd_pkg_dir=`sed -e 's,:.*,,' -e 's,/,-,' <<<${TARGET}`
+    local -r _tkwd_pwd=$(pwd)
+    local -r _tkwd_pkg_dir=$(sed -e 's,:.*,,' -e 's,/,-,' <<<${TARGET})
     local -r PALUDIS_PACKAGE_BUILDDIR="${_tkwd_pwd}/${_tkwd_pkg_dir}"
-    if [ -L "${PALUDIS_PACKAGE_BUILDDIR}" ]; then
+    if [[ -L ${PALUDIS_PACKAGE_BUILDDIR} ]]; then
         echo "Moving failed build out of RAM: ${_wdm_shmbasedir}/${_tkwd_pkg_dir} --> ${PALUDIS_PACKAGE_BUILDDIR}"
         rm "${PALUDIS_PACKAGE_BUILDDIR}" && mv "${_wdm_shmbasedir}/${_tkwd_pkg_dir}" "${_tkwd_pwd}"
     fi
