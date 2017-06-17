@@ -15,13 +15,13 @@ declare -r CONFIG_FILE="@CMAKE_INSTALL_FULL_SYSCONFDIR@/paludis/hooks/configs/wo
 MIN_RESERVED_SPACE=$(( 1024 * 1024 * 10 ))
 MAX_RESERVED_SPACE=$(( 1024 * 1024 * 100 ))
 DISK_USAGE_STATS_CACHE="@CMAKE_INSTALL_FULL_LOCALSTATEDIR@/cache/paludis/disk_usage_stats.cache"
-IN_MEMORY_BUILD_ENABLED=${IN_MEMORY_BUILD_ENABLED:-true}
+IN_MEMORY_BUILD_ENABLED=${IN_MEMORY_BUILD_ENABLED:-yes}
 
 # Configuration override
 [[ -f ${CONFIG_FILE} ]] && source ${CONFIG_FILE}
 
 # Check if hook enabled
-if [[ ${IN_MEMORY_BUILD_ENABLED} =~ (yes|true) ]]; then
+if [[ ! ${IN_MEMORY_BUILD_ENABLED} =~ (yes|true) ]]; then
     ewarn "In-memory-build hook disabled"
     exit 0
 fi
