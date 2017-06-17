@@ -47,7 +47,8 @@ declare -r _B2H_PROGRAM=$(cat <<_EOF
             }
         }
     }
-_EOF)
+_EOF
+)
 
 
 _bytes_to_human()
