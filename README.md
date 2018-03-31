@@ -102,6 +102,21 @@ TODO
 * <del>Make it possible to remove by Ant-like wildcard `**/some` (hint: bash has `shopt globstar`)</del>
 * Case insensitive glob expressions match, so `announce*`, `ANNOUNCE*` and `Announce*` can be replaced
   with only one rule
+* Allow loops?
+
+    <for-each>
+        <items>
+            <item>notepad</item>
+            <item>winefile</item>
+            ...
+        </items>
+        <do>
+            <rm cd="/usr/lib32/${P}/wine/fakedlls" dst="${item}.exe" />
+            <rm cd="/usr/lib32/${P}/wine" dst="${item}.exe.so" />
+            <rm cd="/usr/lib64/${P}/bin" dst="${item}" />
+            <rm cd="/usr/bin" dst="${item}-vanilla-${PV}" />
+        </do>
+    </for-each>
 
 
 Changelog
