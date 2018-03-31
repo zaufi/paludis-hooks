@@ -35,10 +35,12 @@
 source ${PALUDIS_EBUILD_DIR}/echo_functions.bash
 
 # Save some shell options status
+_fsm_shopt_extglob=$(shopt -p extglob)
 _fsm_shopt_globstar=$(shopt -p globstar)
 _fsm_shopt_nullglob=$(shopt -p nullglob)
 
 # Enable some shell options
+shopt -qs extglob
 shopt -qs globstar
 shopt -qs nullglob
 
@@ -57,6 +59,7 @@ unset _fsm_cmd
     <xsl:with-param name="message">&lt;   Rendering done for <xsl:value-of select="concat($CATEGORY,'/',$PF,':',$SLOT,'::',$REPOSITORY)" /></xsl:with-param>
 </xsl:call-template>
 # Restore saved shell options
+eval "${_fsm_shopt_extglob}"
 eval "${_fsm_shopt_globstar}"
 eval "${_fsm_shopt_nullglob}"
 unset _fsm_shopt_globstar
