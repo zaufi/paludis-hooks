@@ -9,11 +9,12 @@ function make_completion_wrapper()
     local comp_function_name="$1"
     shift 2
     local function="
-function $function_name {
-    ((COMP_CWORD+=$arg_count))
-    COMP_WORDS=( "$@" \${COMP_WORDS[@]:1} )
-    "$comp_function_name"
-    return 0
-}"
+        function $function_name {
+            ((COMP_CWORD+=$arg_count))
+            COMP_WORDS=( "$@" \${COMP_WORDS[@]:1} )
+            "$comp_function_name"
+            return 0
+        }"
     eval "$function"
+    test "$(type -t _completion_loader)" = 'function' && _completion_loader "$@"
 }
