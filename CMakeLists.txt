@@ -5,6 +5,11 @@
 cmake_minimum_required(VERSION 3.4)
 project(paludis-hooks VERSION 1.3 LANGUAGES NONE)
 
+option(WITH_AUTOPATCH "Install autopatch hook" ON)
+option(WITH_FS_MANAGER "Install filesystem manager hook" ON)
+option(WITH_PACKAGE_ENV "Install per package environment manager" ON)
+option(WITH_PYTHON_EXTENSIONS "Install some `cave` aux commands" AUTO)
+
 list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake/modules")
 
 # seek for xmllint to validate our XML files
@@ -14,9 +19,15 @@ find_program(XSLTPROC_EXECUTABLE xsltproc REQUIRED)
 # `diff` is needed for some unit tests
 find_program(DIFF_EXECUTABLE diff)
 # python interpreter is needed for some optional scripts
-find_package(PythonInterp)
-if(NOT PYTHONINTERP_FOUND)
-    message(STATUS "Python scripts will not be installed")
+if(WITH_PYTHON_EXTENSIONS AND (WITH_PYTHON_EXTENSIONS STREQUAL ON OR WITH_PYTHON_EXTENSIONS STREQUAL AUTO))
+    find_package(PythonInterp)
+    if(NOT PYTHONINTERP_FOUND)
+        if(WITH_PYTHON_EXTENSIONS STREQUAL AUTO)
+            message(STATUS "Python scripts will not be installed")
+        elseif(WITH_PYTHON_EXTENSIONS STREQUAL ON)
+            message(FATAL_ERROR "Python extensions has requested, but interpreter not found")
+        endif()
+    endif()
 endif()
 
 # Define install destination dirs
@@ -28,10 +39,6 @@ include(GNUInstallDirs)
 # For tests
 include(CTest)
 include(AddShellFunctionsTest)
-
-option(WITH_AUTOPATCH "Install autopatch hook" ON)
-option(WITH_FS_MANAGER "Install filesystem manager hook" ON)
-option(WITH_PACKAGE_ENV "Install per package environment manager" ON)
 
 # Autopatch hook
 if(WITH_AUTOPATCH)
