@@ -128,7 +128,7 @@ endif()
 
 # Docs (not much)
 install(
-    FILES README.md
+    FILES ChangeLog.md LICENSE README.md
     DESTINATION "${CMAKE_INSTALL_FULL_DOCDIR}"
   )
 
